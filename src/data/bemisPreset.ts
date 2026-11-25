@@ -380,7 +380,7 @@ export function createInitialItems(): PanelItem[] {
       posZMm: 48,
       rating: 'PG36 • Ø47,5 mm delik • 36×42,5 spiral',
       color: '#06b6d4',
-      notes: 'Alt gövde ortasında (S1 ve S2 arası 120 mm boşluğun merkezinde)',
+      notes: 'Giriş kabloları: 1× 5×2,5 besleme + 2× 7 damar motor + 2× 5×1 sektör sinyal (~%48 doluluk, PG36 uygun)',
     },
   ];
 }

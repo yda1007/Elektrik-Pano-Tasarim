@@ -44,8 +44,8 @@ const WIRE_PRESETS = [
   { name: 'Yardımcı (Sarı)', color: '#eab308', section: '1,0' },
 ];
 
-const CANVAS_W = 1360;
-const CANVAS_H = 860;
+const CANVAS_W = 1480;
+const CANVAS_H = 940;
 const GRID = 10;
 
 function snap(val: number): number {
@@ -81,24 +81,26 @@ function makeTopBottomPins(
 function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
   const nodes: SchematicNode[] = [];
 
-  // 1. Sabit pano besleme ve Bemis dahili N/PE baraları
+  // 1. Sabit pano besleme (5×2,5 mm²) ve Bemis dahili N/PE baraları
   nodes.push({
     id: 'sys-supply',
-    title: 'ŞEBEKE GİRİŞ',
-    subtitle: '3~ 400V / 230V',
-    width: 170,
-    height: 58,
+    title: 'BESLEME (5×2,5 mm²)',
+    subtitle: '3~ 400V / 230V Ana Giriş',
+    width: 230,
+    height: 66,
     accent: '#ef4444',
     defaultX: 40,
-    defaultY: 30,
+    defaultY: 28,
     pins: makeTopBottomPins(
-      170,
-      58,
+      230,
+      66,
       [],
       [
-        { id: 'L1', label: 'L1', title: 'Faz L1 Girişi' },
-        { id: 'L2', label: 'L2', title: 'Faz L2 Girişi' },
-        { id: 'L3', label: 'L3', title: 'Faz L3 Girişi' },
+        { id: 'L1', label: 'L1', subLabel: 'Faz', subColor: '#d97706', title: 'Besleme 5×2,5 — Faz L1' },
+        { id: 'L2', label: 'L2', subLabel: 'Faz', subColor: '#94a3b8', title: 'Besleme 5×2,5 — Faz L2' },
+        { id: 'L3', label: 'L3', subLabel: 'Faz', subColor: '#e2e8f0', title: 'Besleme 5×2,5 — Faz L3' },
+        { id: 'N', label: 'N', subLabel: 'Nötr', subColor: '#3b82f6', title: 'Besleme 5×2,5 — Nötr' },
+        { id: 'PE', label: 'PE', subLabel: 'Toprak', subColor: '#22c55e', title: 'Besleme 5×2,5 — Toprak' },
       ]
     ),
   });
@@ -108,13 +110,13 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     title: 'PANO NÖTR (N)',
     subtitle: 'Bemis Dahili Bara',
     width: 220,
-    height: 58,
+    height: 60,
     accent: '#3b82f6',
-    defaultX: 250,
+    defaultX: 300,
     defaultY: 30,
     pins: makeTopBottomPins(
       220,
-      58,
+      60,
       [],
       [1, 2, 3, 4, 5, 6].map((n) => ({
         id: `N${n}`,
@@ -129,13 +131,13 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     title: 'PANO TOPRAK (PE)',
     subtitle: 'Bemis Dahili Bara',
     width: 220,
-    height: 58,
+    height: 60,
     accent: '#22c55e',
-    defaultX: 510,
+    defaultX: 550,
     defaultY: 30,
     pins: makeTopBottomPins(
       220,
-      58,
+      60,
       [],
       [1, 2, 3, 4, 5, 6].map((n) => ({
         id: `PE${n}`,
@@ -350,25 +352,54 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     });
   });
 
-  // 9. Saha Motorları (M1 ve M2)
+  // 9. Saha Motorları (2× Motor — Her birinden 7 kablo: U, V, W, PE + 3 limit/switch damarı)
   ['M1', 'M2'].forEach((mCode, idx) => {
     nodes.push({
       id: `sys-${mCode.toLowerCase()}`,
-      title: `MOTOR ${idx + 1} (${mCode})`,
-      subtitle: 'Ters Yönlü Motor (PG36)',
-      width: 210,
-      height: 64,
+      title: `MOTOR ${idx + 1} (${mCode} • 7 Damar)`,
+      subtitle: '3 Faz + PE + Limit / Sinyal (PG36)',
+      width: 310,
+      height: 76,
       accent: '#06b6d4',
-      defaultX: 520 + idx * 260,
-      defaultY: 740,
+      defaultX: 40 + idx * 340,
+      defaultY: 790,
       pins: makeTopBottomPins(
-        210,
-        64,
+        310,
+        76,
         [
-          { id: 'U', label: 'U', title: `${mCode} Faz U` },
-          { id: 'V', label: 'V', title: `${mCode} Faz V` },
-          { id: 'W', label: 'W', title: `${mCode} Faz W` },
-          { id: 'PE', label: 'PE', title: `${mCode} Toprak` },
+          { id: '1', label: '1', subLabel: 'U', subColor: '#d97706', title: `${mCode} Damar 1 — Faz U` },
+          { id: '2', label: '2', subLabel: 'V', subColor: '#94a3b8', title: `${mCode} Damar 2 — Faz V` },
+          { id: '3', label: '3', subLabel: 'W', subColor: '#e2e8f0', title: `${mCode} Damar 3 — Faz W` },
+          { id: '4', label: '4', subLabel: 'PE', subColor: '#22c55e', title: `${mCode} Damar 4 — Toprak (PE)` },
+          { id: '5', label: '5', subLabel: 'C', subColor: '#38bdf8', title: `${mCode} Damar 5 — Limit Ortak (COM)` },
+          { id: '6', label: '6', subLabel: 'L↑', subColor: '#fbbf24', title: `${mCode} Damar 6 — Yukarı Limit / Termik` },
+          { id: '7', label: '7', subLabel: 'L↓', subColor: '#fbbf24', title: `${mCode} Damar 7 — Aşağı Limit / Termik` },
+        ],
+        []
+      ),
+    });
+  });
+
+  // 10. 2 Adet 5×1 mm² Sektör Sinyal Kablosu
+  [1, 2].forEach((secNo, idx) => {
+    nodes.push({
+      id: `sys-sector-${secNo}`,
+      title: `SEKTÖR ${secNo} SİNYAL (5×1 mm²)`,
+      subtitle: `5×1 mm² Kumanda / Sektör Kablosu ${secNo}`,
+      width: 260,
+      height: 76,
+      accent: '#ec4899',
+      defaultX: 740 + idx * 290,
+      defaultY: 790,
+      pins: makeTopBottomPins(
+        260,
+        76,
+        [
+          { id: '1', label: '1', subLabel: 'D1', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 1` },
+          { id: '2', label: '2', subLabel: 'D2', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 2` },
+          { id: '3', label: '3', subLabel: 'D3', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 3` },
+          { id: '4', label: '4', subLabel: 'D4', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 4` },
+          { id: '5', label: '5', subLabel: 'D5', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 5` },
         ],
         []
       ),
