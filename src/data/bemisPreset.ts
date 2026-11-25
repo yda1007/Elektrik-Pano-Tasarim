@@ -3,7 +3,7 @@ import type { CatalogTemplate, EnclosureSpec, PanelItem, RailSpec } from '../typ
 export const BEMIS_BH6_6000: EnclosureSpec = {
   brand: 'Bemis',
   model: 'BH6-6000-0000',
-  series: 'V12 Boş Kombinasyon Kutusu (12 Modül)',
+  series: 'V12 Boş Kombinasyon Kutusu (12 Modül + Dahili N/PE Klemens Yeri)',
   ipRating: 'IP66',
   material: 'ABS Halojen Free',
   outerWidthMm: 245,
@@ -30,8 +30,9 @@ export const DEFAULT_RAILS: Record<'top-rail' | 'bottom-rail', RailSpec> = {
   'bottom-rail': {
     id: 'bottom-rail',
     name: 'Alt DIN Rayı (Ek Ray)',
-    usableWidthMm: 216,
-    centerYMm: 176,
+    // 4×45 mm kontaktör + 9×5 mm klemens = 225 mm -> iç gövde 228 mm içinde tam kesim 226 mm ray gerektirir
+    usableWidthMm: 226,
+    centerYMm: 174,
     railHeightMm: 35,
     standoffZMm: 12,
   },
@@ -82,26 +83,13 @@ export const COMPONENT_CATALOG: CatalogTemplate[] = [
     name: '5 mm Ray Klemensi',
     model: '2,5 mm² Geçiş Klemensi (5 mm)',
     category: 'terminal',
-    defaultMount: 'top-rail',
+    defaultMount: 'bottom-rail',
     codePrefix: 'X',
     widthMm: 5,
     heightMm: 46,
     depthMm: 42,
-    rating: '2,5 mm²',
+    rating: '5 mm / 2,5 mm²',
     color: '#64748b',
-  },
-  {
-    key: 'terminal-pe-5mm',
-    name: 'Toprak Klemensi (PE)',
-    model: '2,5 mm² Toprak Klemensi (5 mm)',
-    category: 'terminal',
-    defaultMount: 'bottom-rail',
-    codePrefix: 'PE',
-    widthMm: 5,
-    heightMm: 46,
-    depthMm: 42,
-    rating: '2,5 mm² PE',
-    color: '#22c55e',
   },
   {
     key: 'button-sw-bl4252',
@@ -118,6 +106,38 @@ export const COMPONENT_CATALOG: CatalogTemplate[] = [
     wireClearanceMm: 10,
     rating: 'Ø22 mm 1NO+1NO',
     color: '#10b981',
+  },
+  {
+    key: 'gland-odb42-pg36',
+    name: 'PG 36 Spiral Rakor (ODB-42)',
+    model: 'Ortaç ODB-42 PG 36 Geçmeli Tip Polyamid Spiral Rakoru',
+    category: 'gland',
+    defaultMount: 'bottom-wall',
+    codePrefix: 'RK',
+    widthMm: 58,
+    heightMm: 58,
+    depthMm: 16,
+    protrusionMm: 46,
+    holeDiameterMm: 47.5,
+    wireClearanceMm: 18,
+    rating: 'PG36 • Ø47,5 mm • 36×42,5 spiral',
+    color: '#06b6d4',
+  },
+  {
+    key: 'gland-pg21',
+    name: 'PG 21 Polyamid Rakor',
+    model: 'PG 21 Kablo Rakoru (Ø28,5 mm)',
+    category: 'gland',
+    defaultMount: 'bottom-wall',
+    codePrefix: 'RK',
+    widthMm: 36,
+    heightMm: 36,
+    depthMm: 13,
+    protrusionMm: 34,
+    holeDiameterMm: 28.5,
+    wireClearanceMm: 12,
+    rating: 'PG21 • Ø28,5 mm',
+    color: '#06b6d4',
   },
   {
     key: 'mcb-1p',
@@ -137,7 +157,7 @@ export const COMPONENT_CATALOG: CatalogTemplate[] = [
     name: 'Ray Durdurucu (Stop)',
     model: 'DIN Ray Sonlandırma Durdurucu',
     category: 'stopper',
-    defaultMount: 'bottom-rail',
+    defaultMount: 'top-rail',
     codePrefix: 'ST',
     widthMm: 8,
     heightMm: 44,
@@ -162,7 +182,7 @@ export const COMPONENT_CATALOG: CatalogTemplate[] = [
 
 export function createInitialItems(): PanelItem[] {
   return [
-    // Üst DIN Rayı: 2× 1-1,6A MKŞ + 3× 14 pin mini röle + 6× 5mm klemens = 201 mm / 216 mm
+    // Üst DIN Rayı: 2× 1-1,6A MKŞ (90) + 3× 14 pin mini röle (81) + 3× 5mm klemens (15) = 186 mm / 216 mm (30 mm boşluk)
     {
       id: 'q1',
       code: 'Q1',
@@ -238,7 +258,7 @@ export function createInitialItems(): PanelItem[] {
       color: '#8b5cf6',
       notes: 'Kumanda rölesi 3',
     },
-    ...[1, 2, 3, 4, 5, 6].map((n, idx): PanelItem => ({
+    ...[1, 2, 3].map((n, idx): PanelItem => ({
       id: `xt-${n}`,
       code: `X${n}`,
       name: `Üst Ray Klemens ${n}`,
@@ -253,7 +273,7 @@ export function createInitialItems(): PanelItem[] {
       color: '#64748b',
     })),
 
-    // Alt DIN Rayı: 4× Mini Kontaktör (180 mm) + 1× 2,5mm² PE/özel klemens + 5× 5mm klemens (30 mm) = 210 mm / 216 mm
+    // Alt DIN Rayı: 4× Mini Kontaktör (180 mm) + 9× 5mm klemens (45 mm) = 225 mm (N ve PE panodaki kendi baralarında!)
     {
       id: 'km1',
       code: 'KM1',
@@ -314,37 +334,22 @@ export function createInitialItems(): PanelItem[] {
       color: '#f59e0b',
       notes: 'Motor 2 aşağı yön kontaktörü',
     },
-    {
-      id: 'xb-pe',
-      code: 'PE1',
-      name: 'Alt Ray 2,5 mm² Klemens (1 Adet)',
-      model: '2,5 mm² Toprak / Giriş Klemensi (5 mm)',
-      category: 'terminal',
-      mount: 'bottom-rail',
-      widthMm: 5,
-      heightMm: 46,
-      depthMm: 42,
-      order: 4,
-      rating: '2,5 mm² PE',
-      color: '#22c55e',
-      notes: 'Alt ray 2,5 mm² tekli klemens',
-    },
-    ...[1, 2, 3, 4, 5].map((n, idx): PanelItem => ({
+    ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n, idx): PanelItem => ({
       id: `xb-${n}`,
-      code: `X${6 + n}`,
+      code: `X${3 + n}`,
       name: `Alt Ray Klemens ${n}`,
-      model: '2,5 mm² Ray Klemensi (5 mm)',
+      model: '5 mm Ray Klemensi (2,5 mm²)',
       category: 'terminal',
       mount: 'bottom-rail',
       widthMm: 5,
       heightMm: 46,
       depthMm: 42,
-      order: 5 + idx,
+      order: 4 + idx,
       rating: '5 mm / 2,5 mm²',
       color: '#64748b',
     })),
 
-    // Sol ve Sağ Yan Duvarlar: 2× Mutlusan SW-BL4252 (Alt rayın altında çakışmasız bölgede)
+    // Sol ve Sağ Yan Duvarlar: 2× Mutlusan SW-BL4252
     {
       id: 's1',
       code: 'S1',
@@ -363,7 +368,7 @@ export function createInitialItems(): PanelItem[] {
       posZMm: 48,
       rating: 'Ø22 mm 1NO+1NO',
       color: '#10b981',
-      notes: 'Motor 1 manuel yukarı-aşağı ters yönlü ikiz buton (alt gövde sol yan duvar)',
+      notes: 'Motor 1 manuel yukarı-aşağı ters yönlü ikiz buton',
     },
     {
       id: 's2',
@@ -383,7 +388,29 @@ export function createInitialItems(): PanelItem[] {
       posZMm: 48,
       rating: 'Ø22 mm 1NO+1NO',
       color: '#10b981',
-      notes: 'Motor 2 manuel yukarı-aşağı ters yönlü ikiz buton (alt gövde sağ yan duvar)',
+      notes: 'Motor 2 manuel yukarı-aşağı ters yönlü ikiz buton',
+    },
+
+    // Alt Duvar: Ortaç ODB-42 PG 36 Geçmeli Tip Polyamid Spiral Rakoru (İki butonun ortasında)
+    {
+      id: 'rk1',
+      code: 'RK1',
+      name: 'PG 36 Spiral Rakor (Ana Giriş)',
+      model: 'Ortaç ODB-42 PG 36 Geçmeli Tip Polyamid Spiral Rakoru',
+      category: 'gland',
+      mount: 'bottom-wall',
+      widthMm: 58,
+      heightMm: 58,
+      depthMm: 16,
+      protrusionMm: 46,
+      holeDiameterMm: 47.5,
+      wireClearanceMm: 18,
+      order: 0,
+      posXMm: 122.5,
+      posZMm: 48,
+      rating: 'PG36 • Ø47,5 mm delik • 36×42,5 spiral',
+      color: '#06b6d4',
+      notes: 'Alt gövde ortasında (S1 ve S2 arası 120 mm boşluğun merkezinde)',
     },
   ];
 }

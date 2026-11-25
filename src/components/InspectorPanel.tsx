@@ -14,6 +14,7 @@ interface InspectorPanelProps {
   onDeleteItem: (id: string) => void;
   onSelect: (id: string) => void;
   onImportJson: (raw: string) => void;
+  onExportJson: () => void;
 }
 
 const MOUNT_LABELS: Record<MountLocation, string> = {
@@ -21,6 +22,8 @@ const MOUNT_LABELS: Record<MountLocation, string> = {
   'bottom-rail': 'Alt DIN Rayı',
   'left-wall': 'Sol Yan Duvar',
   'right-wall': 'Sağ Yan Duvar',
+  'bottom-wall': 'Alt Duvar',
+  'top-wall': 'Üst Duvar',
 };
 
 export default function InspectorPanel({
@@ -34,6 +37,7 @@ export default function InspectorPanel({
   onDeleteItem,
   onSelect,
   onImportJson,
+  onExportJson,
 }: InspectorPanelProps) {
   const [tab, setTab] = useState<InspectorTab>('props');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -41,7 +45,6 @@ export default function InspectorPanel({
   const errorCount = analysis.issues.filter((i) => i.severity === 'error').length;
   const warnCount = analysis.issues.filter((i) => i.severity === 'warning').length;
 
-  // Gruplanmış Malzeme Listesi (BOM)
   const bomGroups = (() => {
     const map = new Map<
       string,
@@ -75,10 +78,10 @@ export default function InspectorPanel({
         '1',
         'PANO',
         `${enclosure.brand} ${enclosure.model} — ${enclosure.series} (${enclosure.ipRating})`,
-        'Ana Gövde',
+        'Ana Gövde (Dahili N + PE Klemensli)',
         `${enclosure.outerWidthMm}×${enclosure.outerHeightMm}×${enclosure.outerDepthMm} mm`,
       ],
-      ['1', 'DIN-2', '35 mm Ek DIN Rayı (216 mm)', 'Alt Ray', '216×35×7,5 mm'],
+      ['1', 'DIN-2', '35 mm Ek DIN Rayı (Alt Ray)', 'Alt Ray', '226×35×7,5 mm'],
       ...bomGroups.map((g) => [String(g.count), g.codes.join(', '), g.model, g.mount, g.dims]),
     ];
 
@@ -97,18 +100,13 @@ export default function InspectorPanel({
     URL.revokeObjectURL(url);
   };
 
-  const handleDownloadJson = () => {
-    const payload = JSON.stringify({ enclosure, items }, null, 2);
-    const blob = new Blob([payload], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Bemis-${enclosure.model}-Yerlesim.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const sideItems = items.filter((i) => i.mount === 'left-wall' || i.mount === 'right-wall');
+  const wallDrillItems = items.filter(
+    (i) =>
+      i.mount === 'left-wall' ||
+      i.mount === 'right-wall' ||
+      i.mount === 'bottom-wall' ||
+      i.mount === 'top-wall'
+  );
 
   return (
     <aside className="inspector-panel">
@@ -193,7 +191,7 @@ export default function InspectorPanel({
                 </label>
 
                 <label className="field">
-                  <span>Değer / Etiket (Amper, Kontak vb.)</span>
+                  <span>Değer / Etiket</span>
                   <input
                     value={selectedItem.rating ?? ''}
                     onChange={(e) => onUpdateItem(selectedItem.id, { rating: e.target.value })}
@@ -210,6 +208,9 @@ export default function InspectorPanel({
                       if (nextMount === 'left-wall' || nextMount === 'right-wall') {
                         patch.posYMm = selectedItem.posYMm ?? 262;
                         patch.posZMm = selectedItem.posZMm ?? 48;
+                      } else if (nextMount === 'bottom-wall' || nextMount === 'top-wall') {
+                        patch.posXMm = selectedItem.posXMm ?? 122.5;
+                        patch.posZMm = selectedItem.posZMm ?? 48;
                       }
                       onUpdateItem(selectedItem.id, patch);
                     }}
@@ -218,6 +219,8 @@ export default function InspectorPanel({
                     <option value="bottom-rail">Alt DIN Rayı</option>
                     <option value="left-wall">Sol Yan Duvar</option>
                     <option value="right-wall">Sağ Yan Duvar</option>
+                    <option value="bottom-wall">Alt Duvar (Rakor)</option>
+                    <option value="top-wall">Üst Duvar (Rakor)</option>
                   </select>
                 </label>
 
@@ -225,18 +228,10 @@ export default function InspectorPanel({
                   <div className="rail-order-row">
                     <span>Ray Sırası</span>
                     <div className="btn-group">
-                      <button
-                        type="button"
-                        className="btn-sm"
-                        onClick={() => onMoveOnRail(selectedItem.id, -1)}
-                      >
+                      <button type="button" className="btn-sm" onClick={() => onMoveOnRail(selectedItem.id, -1)}>
                         ← Sola Al
                       </button>
-                      <button
-                        type="button"
-                        className="btn-sm"
-                        onClick={() => onMoveOnRail(selectedItem.id, 1)}
-                      >
+                      <button type="button" className="btn-sm" onClick={() => onMoveOnRail(selectedItem.id, 1)}>
                         Sağa Al →
                       </button>
                     </div>
@@ -245,7 +240,9 @@ export default function InspectorPanel({
 
                 {(selectedItem.mount === 'left-wall' || selectedItem.mount === 'right-wall') && (
                   <div className="side-coords-box">
-                    <div className="sub-title">Yan Duvar Delik Merkezi (Ø{selectedItem.holeDiameterMm ?? 22} mm)</div>
+                    <div className="sub-title">
+                      Yan Duvar Delik Merkezi (Ø{selectedItem.holeDiameterMm ?? 22} mm)
+                    </div>
                     <label className="field">
                       <span>Üstten Y: {selectedItem.posYMm ?? 262} mm</span>
                       <input
@@ -254,9 +251,7 @@ export default function InspectorPanel({
                         max={290}
                         step={1}
                         value={selectedItem.posYMm ?? 262}
-                        onChange={(e) =>
-                          onUpdateItem(selectedItem.id, { posYMm: Number(e.target.value) })
-                        }
+                        onChange={(e) => onUpdateItem(selectedItem.id, { posYMm: Number(e.target.value) })}
                       />
                     </label>
                     <label className="field">
@@ -267,26 +262,59 @@ export default function InspectorPanel({
                         max={95}
                         step={1}
                         value={selectedItem.posZMm ?? 48}
-                        onChange={(e) =>
-                          onUpdateItem(selectedItem.id, { posZMm: Number(e.target.value) })
-                        }
+                        onChange={(e) => onUpdateItem(selectedItem.id, { posZMm: Number(e.target.value) })}
                       />
                     </label>
                     <button
                       type="button"
                       className="btn-sm"
-                      onClick={() =>
-                        onUpdateItem(selectedItem.id, { posYMm: 262, posZMm: 48 })
-                      }
+                      onClick={() => onUpdateItem(selectedItem.id, { posYMm: 262, posZMm: 48 })}
                     >
                       Güvenli Alt Konuma Al (Y=262, Z=48)
                     </button>
                   </div>
                 )}
 
+                {(selectedItem.mount === 'bottom-wall' || selectedItem.mount === 'top-wall') && (
+                  <div className="side-coords-box">
+                    <div className="sub-title">
+                      Rakor Delik Merkezi (Ø{selectedItem.holeDiameterMm ?? 47.5} mm Panç)
+                    </div>
+                    <label className="field">
+                      <span>Soldan X: {selectedItem.posXMm ?? 122.5} mm</span>
+                      <input
+                        type="range"
+                        min={40}
+                        max={205}
+                        step={0.5}
+                        value={selectedItem.posXMm ?? 122.5}
+                        onChange={(e) => onUpdateItem(selectedItem.id, { posXMm: Number(e.target.value) })}
+                      />
+                    </label>
+                    <label className="field">
+                      <span>Arkadan Z: {selectedItem.posZMm ?? 48} mm</span>
+                      <input
+                        type="range"
+                        min={30}
+                        max={85}
+                        step={1}
+                        value={selectedItem.posZMm ?? 48}
+                        onChange={(e) => onUpdateItem(selectedItem.id, { posZMm: Number(e.target.value) })}
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      className="btn-sm"
+                      onClick={() => onUpdateItem(selectedItem.id, { posXMm: 122.5, posZMm: 48 })}
+                    >
+                      Merkeze Ortala (X=122,5, Z=48)
+                    </button>
+                  </div>
+                )}
+
                 <div className="dims-grid">
                   <label className="field">
-                    <span>Genişlik (mm)</span>
+                    <span>Genişlik / Ø (mm)</span>
                     <input
                       type="number"
                       min={2}
@@ -312,15 +340,15 @@ export default function InspectorPanel({
                     />
                   </label>
                   <label className="field">
-                    <span>Derinlik (mm)</span>
+                    <span>İç Derinlik (mm)</span>
                     <input
                       type="number"
-                      min={10}
+                      min={5}
                       max={130}
                       step={1}
                       value={selectedItem.depthMm}
                       onChange={(e) =>
-                        onUpdateItem(selectedItem.id, { depthMm: Math.max(10, Number(e.target.value)) })
+                        onUpdateItem(selectedItem.id, { depthMm: Math.max(5, Number(e.target.value)) })
                       }
                     />
                   </label>
@@ -328,8 +356,7 @@ export default function InspectorPanel({
 
                 {selectedItem.category === 'relay' && (
                   <div className="hint-box">
-                    İpucu: Finder 94.04 soketi <strong>27 mm</strong>, Omron PYF14A soketi{' '}
-                    <strong>29,5 mm</strong> genişliğindedir. Kullandığınız sokete göre genişliği değiştirebilirsiniz.
+                    Finder 94.04 soketi <strong>27 mm</strong>, Omron PYF14A soketi <strong>29,5 mm</strong> genişliğindedir.
                   </div>
                 )}
 
@@ -348,7 +375,6 @@ export default function InspectorPanel({
 
         {tab === 'checks' && (
           <div className="checks-view">
-            {/* Ray doluluk özetleri */}
             {[
               { label: 'Üst DIN Rayı', m: analysis.topRail },
               { label: 'Alt DIN Rayı', m: analysis.bottomRail },
@@ -382,34 +408,37 @@ export default function InspectorPanel({
               </div>
               {analysis.sideButtonMiddleGapMm !== null && (
                 <div className="metric-row" style={{ marginTop: 6 }}>
-                  <span>Yan Butonlar Arası Net Açıklık</span>
+                  <span>Yan Butonlar Arası Orta Koridor</span>
                   <strong>{analysis.sideButtonMiddleGapMm} mm</strong>
                 </div>
               )}
             </div>
 
-            {/* Yan duvar delme koordinatları */}
-            {sideItems.length > 0 && (
+            {wallDrillItems.length > 0 && (
               <div className="metric-card">
-                <div className="sub-title">Yan Duvar Delik Delme Koordinatları</div>
+                <div className="sub-title">Duvar Delik Delme Koordinatları</div>
                 <table className="mini-table">
                   <thead>
                     <tr>
                       <th>Kod</th>
                       <th>Yüzey</th>
                       <th>Delik</th>
-                      <th>Y (Üstten)</th>
-                      <th>Z (Arkadan)</th>
+                      <th>Konum</th>
+                      <th>Z</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {sideItems.map((s) => (
+                    {wallDrillItems.map((s) => (
                       <tr key={s.id} onClick={() => onSelect(s.id)} style={{ cursor: 'pointer' }}>
                         <td><strong>{s.code}</strong></td>
-                        <td>{s.mount === 'left-wall' ? 'Sol' : 'Sağ'}</td>
+                        <td>{MOUNT_LABELS[s.mount].replace(' Duvar', '')}</td>
                         <td>Ø{s.holeDiameterMm ?? 22}</td>
-                        <td>{s.posYMm ?? 262} mm</td>
-                        <td>{s.posZMm ?? 48} mm</td>
+                        <td>
+                          {s.mount === 'left-wall' || s.mount === 'right-wall'
+                            ? `Y=${s.posYMm ?? 262}`
+                            : `X=${s.posXMm ?? 122.5}`}
+                        </td>
+                        <td>{s.posZMm ?? 48}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -417,27 +446,19 @@ export default function InspectorPanel({
               </div>
             )}
 
-            {/* Sorun / Uyarı listesi */}
             <div className="issues-list">
-              {analysis.issues.length === 0 ? (
-                <div className="issue-card issue-ok">
-                  <strong>Tüm kontroller başarılı</strong>
-                  <p>Hiçbir çakışma veya sığma hatası yok.</p>
+              {analysis.issues.map((issue) => (
+                <div
+                  key={issue.id}
+                  className={`issue-card issue-${issue.severity}`}
+                  onClick={() => {
+                    if (issue.itemIds[0]) onSelect(issue.itemIds[0]);
+                  }}
+                >
+                  <strong>{issue.title}</strong>
+                  <p>{issue.detail}</p>
                 </div>
-              ) : (
-                analysis.issues.map((issue) => (
-                  <div
-                    key={issue.id}
-                    className={`issue-card issue-${issue.severity}`}
-                    onClick={() => {
-                      if (issue.itemIds[0]) onSelect(issue.itemIds[0]);
-                    }}
-                  >
-                    <strong>{issue.title}</strong>
-                    <p>{issue.detail}</p>
-                  </div>
-                ))
-              )}
+              ))}
             </div>
           </div>
         )}
@@ -448,14 +469,10 @@ export default function InspectorPanel({
               <button type="button" className="btn-primary" onClick={handleDownloadCsv}>
                 CSV İndir
               </button>
-              <button type="button" className="btn-sm" onClick={handleDownloadJson}>
+              <button type="button" className="btn-sm" onClick={onExportJson}>
                 JSON Kaydet
               </button>
-              <button
-                type="button"
-                className="btn-sm"
-                onClick={() => fileInputRef.current?.click()}
-              >
+              <button type="button" className="btn-sm" onClick={() => fileInputRef.current?.click()}>
                 JSON Yükle
               </button>
               <input
@@ -473,7 +490,7 @@ export default function InspectorPanel({
             </div>
 
             <div className="metric-card">
-              <div className="sub-title">Ana Pano Gövdesi</div>
+              <div className="sub-title">Ana Pano Gövdesi (Dahili N + PE Klemensli)</div>
               <div className="bom-pano-row">
                 <strong>
                   1× {enclosure.brand} {enclosure.model}
@@ -499,7 +516,9 @@ export default function InspectorPanel({
                     <td><strong>{g.count}</strong></td>
                     <td>
                       <div>{g.model}</div>
-                      <div className="bom-codes">{g.codes.join(', ')} • {g.dims}</div>
+                      <div className="bom-codes">
+                        {g.codes.join(', ')} • {g.dims}
+                      </div>
                     </td>
                     <td>{g.mount}</td>
                   </tr>

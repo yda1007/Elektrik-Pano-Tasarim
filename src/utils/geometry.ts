@@ -43,7 +43,6 @@ function layoutRail(
   const railStartX = (enclosure.outerWidthMm - rail.usableWidthMm) / 2;
   const backWallZ = getWallOffsets(enclosure).backWallZ;
 
-  // Eğer elemanlar raya sığıyorsa ortala, taşıyorsa ray başından diz
   let cursorX =
     usedWidthMm <= rail.usableWidthMm
       ? railStartX + (rail.usableWidthMm - usedWidthMm) / 2
@@ -89,7 +88,7 @@ function layoutRail(
 
 function layoutSideItem(item: PanelItem, enclosure: EnclosureSpec): PlacedItem {
   const { innerX1, innerX2 } = getWallOffsets(enclosure);
-  const posY = item.posYMm ?? 260;
+  const posY = item.posYMm ?? 262;
   const posZ = item.posZMm ?? 48;
   const halfH = item.heightMm / 2;
   const halfW = item.widthMm / 2;
@@ -104,14 +103,9 @@ function layoutSideItem(item: PanelItem, enclosure: EnclosureSpec): PlacedItem {
       z1: posZ - halfW,
       z2: posZ + halfW,
     };
-    const clearanceBox: Box3D = {
-      ...box,
-      x2: box.x2 + wire,
-    };
-    return { item, box, clearanceBox };
+    return { item, box, clearanceBox: { ...box, x2: box.x2 + wire } };
   }
 
-  // right-wall
   const box: Box3D = {
     x1: innerX2 - item.depthMm,
     x2: innerX2,
@@ -120,11 +114,39 @@ function layoutSideItem(item: PanelItem, enclosure: EnclosureSpec): PlacedItem {
     z1: posZ - halfW,
     z2: posZ + halfW,
   };
-  const clearanceBox: Box3D = {
-    ...box,
-    x1: box.x1 - wire,
+  return { item, box, clearanceBox: { ...box, x1: box.x1 - wire } };
+}
+
+function layoutHorizontalWallItem(item: PanelItem, enclosure: EnclosureSpec): PlacedItem {
+  const { innerY1, innerY2 } = getWallOffsets(enclosure);
+  const posX = item.posXMm ?? enclosure.outerWidthMm / 2;
+  const posZ = item.posZMm ?? 48;
+  const halfW = item.widthMm / 2;
+  const halfD = item.heightMm / 2; // dairesel somun/flanş için Z eksenindeki yarıçap
+  const wire = item.wireClearanceMm ?? 15;
+
+  if (item.mount === 'bottom-wall') {
+    const box: Box3D = {
+      x1: posX - halfW,
+      x2: posX + halfW,
+      y1: innerY2 - item.depthMm,
+      y2: innerY2,
+      z1: posZ - halfD,
+      z2: posZ + halfD,
+    };
+    return { item, box, clearanceBox: { ...box, y1: box.y1 - wire } };
+  }
+
+  // top-wall
+  const box: Box3D = {
+    x1: posX - halfW,
+    x2: posX + halfW,
+    y1: innerY1,
+    y2: innerY1 + item.depthMm,
+    z1: posZ - halfD,
+    z2: posZ + halfD,
   };
-  return { item, box, clearanceBox };
+  return { item, box, clearanceBox: { ...box, y2: box.y2 + wire } };
 }
 
 export function analyzeLayout(
@@ -136,37 +158,51 @@ export function analyzeLayout(
   const topItems = items.filter((i) => i.mount === 'top-rail');
   const bottomItems = items.filter((i) => i.mount === 'bottom-rail');
   const sideItems = items.filter((i) => i.mount === 'left-wall' || i.mount === 'right-wall');
+  const horizWallItems = items.filter((i) => i.mount === 'bottom-wall' || i.mount === 'top-wall');
 
   const topResult = layoutRail(topItems, rails['top-rail'], enclosure);
   const bottomResult = layoutRail(bottomItems, rails['bottom-rail'], enclosure);
   const sidePlaced = sideItems.map((i) => layoutSideItem(i, enclosure));
+  const horizPlaced = horizWallItems.map((i) => layoutHorizontalWallItem(i, enclosure));
 
-  const placed: PlacedItem[] = [...topResult.placed, ...bottomResult.placed, ...sidePlaced];
+  const wallPlaced = [...sidePlaced, ...horizPlaced];
+  const railPlaced = [...topResult.placed, ...bottomResult.placed];
+  const placed: PlacedItem[] = [...railPlaced, ...wallPlaced];
   const issues: LayoutIssue[] = [];
   const collidingItemIds = new Set<string>();
 
   // 1. Ray genişlik taşma kontrolleri
   for (const metrics of [topResult.metrics, bottomResult.metrics]) {
-    const railName = rails[metrics.railId].name;
+    const railSpec = rails[metrics.railId];
+    const railName = railSpec.name;
     const railItemIds = placed
       .filter((p) => p.item.mount === metrics.railId)
       .map((p) => p.item.id);
 
-    if (metrics.overflow) {
+    if (metrics.usedWidthMm > enclosure.innerWidthMm + 0.05) {
+      railItemIds.forEach((id) => collidingItemIds.add(id));
+      issues.push({
+        id: `inner-overflow-${metrics.railId}`,
+        severity: 'error',
+        title: `${railName} iç gövde genişliğini aşıyor`,
+        detail: `Toplam ${metrics.usedWidthMm} mm (Bemis iç genişlik ~${enclosure.innerWidthMm} mm).`,
+        itemIds: railItemIds,
+      });
+    } else if (metrics.overflow) {
       railItemIds.forEach((id) => collidingItemIds.add(id));
       issues.push({
         id: `overflow-${metrics.railId}`,
         severity: 'error',
-        title: `${railName} kapasitesi aşıldı`,
-        detail: `Toplam ${metrics.usedWidthMm} mm (ray limiti ${metrics.usableWidthMm} mm, ${Math.abs(metrics.remainingMm)} mm taşma var).`,
+        title: `${railName} ray boyunu aşıyor`,
+        detail: `Toplam ${metrics.usedWidthMm} mm (ray boyu ${metrics.usableWidthMm} mm, ${Math.abs(metrics.remainingMm)} mm taşma).`,
         itemIds: railItemIds,
       });
     } else if (metrics.remainingMm < 10 && metrics.itemCount > 0) {
       issues.push({
         id: `tight-${metrics.railId}`,
         severity: 'warning',
-        title: `${railName} sıkı yerleşim`,
-        detail: `${metrics.usedWidthMm} / ${metrics.usableWidthMm} mm kullanılıyor (kalan ${metrics.remainingMm} mm — montaj payı dar).`,
+        title: `${railName} çok sıkı yerleşim`,
+        detail: `${metrics.usedWidthMm} / ${metrics.usableWidthMm} mm kullanılıyor (kalan ${metrics.remainingMm} mm). 5,2 mm klemens kullanılıyorsa gerçek kumpas ölçüsünü kontrol edin.`,
         itemIds: railItemIds,
       });
     }
@@ -190,10 +226,9 @@ export function analyzeLayout(
         severity: 'error',
         title: 'Üst ve alt ray elemanları dikeyde çakışıyor',
         detail: `${Math.abs(interRailGapMm)} mm bindirme var. Alt rayı aşağı kaydırın.`,
-        itemIds: [...topResult.placed, ...bottomResult.placed].map((p) => p.item.id),
+        itemIds: railPlaced.map((p) => p.item.id),
       });
-      topResult.placed.forEach((p) => collidingItemIds.add(p.item.id));
-      bottomResult.placed.forEach((p) => collidingItemIds.add(p.item.id));
+      railPlaced.forEach((p) => collidingItemIds.add(p.item.id));
     } else if (interRailGapMm < 24) {
       issues.push({
         id: 'rail-vertical-tight',
@@ -205,9 +240,29 @@ export function analyzeLayout(
     }
   }
 
-  // 3. İç sınır (üst/alt/derinlik) ve yan gövde derinliği kontrolleri
+  // 3. İç sınır (X/Y/Z) ve kapak birleşim kontrolleri
   for (const p of placed) {
-    if (p.box.y1 < walls.innerY1) {
+    if (p.box.x1 < walls.innerX1 - 0.1) {
+      collidingItemIds.add(p.item.id);
+      issues.push({
+        id: `left-bound-${p.item.id}`,
+        severity: 'error',
+        title: `${p.item.code} sol iç duvara çarpıyor`,
+        detail: `Sol kenar ${Math.round(walls.innerX1 - p.box.x1)} mm dışarı taşıyor.`,
+        itemIds: [p.item.id],
+      });
+    }
+    if (p.box.x2 > walls.innerX2 + 0.1) {
+      collidingItemIds.add(p.item.id);
+      issues.push({
+        id: `right-bound-${p.item.id}`,
+        severity: 'error',
+        title: `${p.item.code} sağ iç duvara çarpıyor`,
+        detail: `Sağ kenar ${Math.round(p.box.x2 - walls.innerX2)} mm dışarı taşıyor.`,
+        itemIds: [p.item.id],
+      });
+    }
+    if (p.box.y1 < walls.innerY1 - 0.1) {
       collidingItemIds.add(p.item.id);
       issues.push({
         id: `top-bound-${p.item.id}`,
@@ -217,7 +272,7 @@ export function analyzeLayout(
         itemIds: [p.item.id],
       });
     }
-    if (p.box.y2 > walls.innerY2) {
+    if (p.box.y2 > walls.innerY2 + 0.1) {
       collidingItemIds.add(p.item.id);
       issues.push({
         id: `bottom-bound-${p.item.id}`,
@@ -227,7 +282,7 @@ export function analyzeLayout(
         itemIds: [p.item.id],
       });
     }
-    if (p.box.z2 > walls.innerZ2) {
+    if (p.box.z2 > walls.innerZ2 + 0.1) {
       collidingItemIds.add(p.item.id);
       issues.push({
         id: `depth-bound-${p.item.id}`,
@@ -237,7 +292,12 @@ export function analyzeLayout(
         itemIds: [p.item.id],
       });
     }
-    if (p.item.mount === 'left-wall' || p.item.mount === 'right-wall') {
+    if (
+      p.item.mount === 'left-wall' ||
+      p.item.mount === 'right-wall' ||
+      p.item.mount === 'bottom-wall' ||
+      p.item.mount === 'top-wall'
+    ) {
       if (p.box.z1 < walls.innerZ1) {
         collidingItemIds.add(p.item.id);
         issues.push({
@@ -253,49 +313,61 @@ export function analyzeLayout(
           id: `lid-seam-${p.item.id}`,
           severity: 'warning',
           title: `${p.item.code} gövde-kapak birleşim çizgisine yakın`,
-          detail: `Alt kasa yan duvar derinliği ~${enclosure.baseDepthMm} mm; buton Z merkezini arkaya doğru çekmeniz önerilir.`,
+          detail: `Alt kasa yan/alt duvar derinliği ~${enclosure.baseDepthMm} mm; Z merkezini arka tarafa çekmeniz önerilir.`,
           itemIds: [p.item.id],
         });
       }
     }
   }
 
-  // 4. 3D Elemanlar arası çakışma (Yan butonlar vs Ray elemanları & Yan butonlar birbirine)
-  for (let i = 0; i < sidePlaced.length; i++) {
-    const side = sidePlaced[i];
-    for (const railItem of [...topResult.placed, ...bottomResult.placed]) {
-      if (boxesOverlap3D(side.box, railItem.box)) {
-        collidingItemIds.add(side.item.id);
-        collidingItemIds.add(railItem.item.id);
+  // 4. 3D Elemanlar arası çakışma (Duvar elemanları vs Ray elemanları + Duvar elemanları kendi arasında)
+  for (let i = 0; i < wallPlaced.length; i++) {
+    const wItem = wallPlaced[i];
+    for (const rItem of railPlaced) {
+      if (boxesOverlap3D(wItem.box, rItem.box)) {
+        collidingItemIds.add(wItem.item.id);
+        collidingItemIds.add(rItem.item.id);
         issues.push({
-          id: `collision-${side.item.id}-${railItem.item.id}`,
+          id: `collision-${wItem.item.id}-${rItem.item.id}`,
           severity: 'error',
-          title: `3D Çakışma: ${side.item.code} ↔ ${railItem.item.code}`,
-          detail: `${side.item.code} yan duvar kontak bloğu (${side.item.depthMm} mm) içeride ${railItem.item.code} elemanı ile çakışıyor! Yan butonu alt boşluğa indirin.`,
-          itemIds: [side.item.id, railItem.item.id],
+          title: `3D Çakışma: ${wItem.item.code} ↔ ${rItem.item.code}`,
+          detail: `${wItem.item.code} iç gövdesi (${wItem.item.depthMm} mm) içeride ${rItem.item.code} elemanı ile çakışıyor!`,
+          itemIds: [wItem.item.id, rItem.item.id],
         });
-      } else if (side.clearanceBox && boxesOverlap3D(side.clearanceBox, railItem.box)) {
+      } else if (wItem.clearanceBox && boxesOverlap3D(wItem.clearanceBox, rItem.box)) {
         issues.push({
-          id: `wire-tight-${side.item.id}-${railItem.item.id}`,
+          id: `wire-tight-${wItem.item.id}-${rItem.item.id}`,
           severity: 'warning',
-          title: `Dar Kablo Payı: ${side.item.code} ↔ ${railItem.item.code}`,
-          detail: `${side.item.code} arkasındaki kablo bağlantı payı ${railItem.item.code} gövdesine çok yakın.`,
-          itemIds: [side.item.id, railItem.item.id],
+          title: `Dar Kablo Payı: ${wItem.item.code} ↔ ${rItem.item.code}`,
+          detail: `${wItem.item.code} kablo geçiş payı ${rItem.item.code} gövdesine çok yakın.`,
+          itemIds: [wItem.item.id, rItem.item.id],
         });
       }
     }
 
-    for (let j = i + 1; j < sidePlaced.length; j++) {
-      const other = sidePlaced[j];
-      if (boxesOverlap3D(side.box, other.box)) {
-        collidingItemIds.add(side.item.id);
+    for (let j = i + 1; j < wallPlaced.length; j++) {
+      const other = wallPlaced[j];
+      if (boxesOverlap3D(wItem.box, other.box)) {
+        collidingItemIds.add(wItem.item.id);
         collidingItemIds.add(other.item.id);
         issues.push({
-          id: `side-collision-${side.item.id}-${other.item.id}`,
+          id: `wall-collision-${wItem.item.id}-${other.item.id}`,
           severity: 'error',
-          title: `Çakışma: ${side.item.code} ↔ ${other.item.code}`,
-          detail: `İki yan duvar elemanı birbirine çarpıyor.`,
-          itemIds: [side.item.id, other.item.id],
+          title: `3D Çakışma: ${wItem.item.code} ↔ ${other.item.code}`,
+          detail: `İki duvar elemanı (buton/rakor) içeride birbirine çarpıyor.`,
+          itemIds: [wItem.item.id, other.item.id],
+        });
+      } else if (
+        wItem.clearanceBox &&
+        other.clearanceBox &&
+        boxesOverlap3D(wItem.clearanceBox, other.clearanceBox)
+      ) {
+        issues.push({
+          id: `wall-tight-${wItem.item.id}-${other.item.id}`,
+          severity: 'warning',
+          title: `Yakın Yerleşim: ${wItem.item.code} ↔ ${other.item.code}`,
+          detail: `Kablo payları birbirine yaklaşıyor; kablolamayı kontrol edin.`,
+          itemIds: [wItem.item.id, other.item.id],
         });
       }
     }
@@ -311,18 +383,15 @@ export function analyzeLayout(
     sideButtonMiddleGapMm = Number((minRightX - maxLeftX).toFixed(1));
   }
 
-  // 6. Bemis V12 şeffaf pencere bilgilendirmesi (üst raydaki röle derinliği)
-  const upperRelays = topResult.placed.filter((p) => p.item.category === 'relay');
-  if (upperRelays.length > 0) {
-    issues.push({
-      id: 'info-v12-window',
-      severity: 'info',
-      title: 'Bemis V12 Üst Pencere Notu',
-      detail:
-        'Üst 12 modül penceresi standart 45 mm ön yüzlü sigorta/MKŞ içindir; 14 pin mini röleler şeffaf kapağın arkasında kalır (derinlik kurtarıyor, kapağı kapatmaya engel değildir).',
-      itemIds: upperRelays.map((p) => p.item.id),
-    });
-  }
+  // 6. Bemis V12 dahili N/PE ve üst pencere bilgilendirmesi
+  issues.push({
+    id: 'info-v12-npe',
+    severity: 'info',
+    title: 'Dahili Nötr & Toprak Klemensleri',
+    detail:
+      'Bemis BH6-6000-0000 panosunun kendi 2 adet dahili klemens barası (N + PE) kullanılmaktadır; DIN rayında yer kaplamaz.',
+    itemIds: [],
+  });
 
   return {
     placed,

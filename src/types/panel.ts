@@ -4,11 +4,18 @@ export type ComponentCategory =
   | 'contactor'
   | 'terminal'
   | 'button'
+  | 'gland'
   | 'breaker'
   | 'psu'
   | 'stopper';
 
-export type MountLocation = 'top-rail' | 'bottom-rail' | 'left-wall' | 'right-wall';
+export type MountLocation =
+  | 'top-rail'
+  | 'bottom-rail'
+  | 'left-wall'
+  | 'right-wall'
+  | 'bottom-wall'
+  | 'top-wall';
 
 export interface RailSpec {
   id: 'top-rail' | 'bottom-rail';
@@ -44,23 +51,25 @@ export interface PanelItem {
   model: string;
   category: ComponentCategory;
   mount: MountLocation;
-  /** DIN rayı boyunca genişlik (mm) veya yan duvarda ön çerçeve genişliği (mm) */
+  /** DIN rayı boyunca genişlik (mm), yan duvarda ön çerçeve genişliği veya rakorda dış somun çapı (mm) */
   widthMm: number;
-  /** Dikey yükseklik (mm) */
+  /** Dikey yükseklik (mm) — rakorda dış somun çapı (mm) */
   heightMm: number;
-  /** Pano içine giren derinlik (mm) */
+  /** Pano içine giren derinlik/diş+kontra somun uzunluğu (mm) */
   depthMm: number;
-  /** Yan duvarda dışa taşan buton başlığı yüksekliği (mm) */
+  /** Kasa dışına taşan buton başlığı veya rakor gövde uzunluğu (mm) */
   protrusionMm?: number;
-  /** Montaj deliği çapı (mm) — örn. Ø22 mm */
+  /** Montaj deliği / panç çapı (mm) — örn. Ø22 mm veya PG36 için Ø47,5 mm */
   holeDiameterMm?: number;
-  /** Kablo bükülme payı (mm) */
+  /** Kablo bükülme / giriş payı (mm) */
   wireClearanceMm?: number;
   /** Ray üzerindeki sıralama indeksi */
   order: number;
+  /** Alt/üst duvar elemanları için sol dış kenardan merkez X mesafesi (mm) */
+  posXMm?: number;
   /** Yan duvar elemanı için dış üst kenardan merkez Y mesafesi (mm) */
   posYMm?: number;
-  /** Yan duvar elemanı için arka tabandan merkez Z mesafesi (mm) */
+  /** Yan/alt/üst duvar elemanı için arka tabandan merkez Z mesafesi (mm) */
   posZMm?: number;
   rating?: string;
   color: string;
@@ -97,7 +106,7 @@ export interface PlacedItem {
   item: PanelItem;
   /** Fiziksel gövde 3D kutusu (dış pano köşesi 0,0,0 referanslı, mm) */
   box: Box3D;
-  /** Kablo payı dahil güvenli hacim (yan butonlar için) */
+  /** Kablo payı dahil güvenli hacim */
   clearanceBox?: Box3D;
 }
 
@@ -130,4 +139,27 @@ export interface LayoutAnalysis {
   sideButtonMiddleGapMm: number | null;
   issues: LayoutIssue[];
   collidingItemIds: Set<string>;
+}
+
+/** Manuel Kumanda Şeması Tipleri */
+export interface SchematicNodePos {
+  x: number;
+  y: number;
+}
+
+export interface SchematicPoint {
+  x: number;
+  y: number;
+}
+
+export interface SchematicWire {
+  id: string;
+  fromNodeId: string;
+  fromPinId: string;
+  toNodeId: string;
+  toPinId: string;
+  waypoints: SchematicPoint[];
+  color: string;
+  sectionMm2: string;
+  label: string;
 }

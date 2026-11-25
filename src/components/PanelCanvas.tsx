@@ -15,6 +15,7 @@ interface PanelCanvasProps {
   showWireClearance: boolean;
   onSelect: (id: string) => void;
   onUpdateSidePosY: (id: string, nextYMm: number) => void;
+  onUpdateHorizPosX: (id: string, nextXMm: number) => void;
 }
 
 function renderRailComponentGraphic(
@@ -41,7 +42,6 @@ function renderRailComponentGraphic(
       }}
       style={{ cursor: 'pointer' }}
     >
-      {/* Gövde */}
       <rect
         x={box.x1 + 0.4}
         y={box.y1}
@@ -53,33 +53,16 @@ function renderRailComponentGraphic(
         strokeWidth={strokeW}
       />
 
-      {/* Kategoriye özel gerçekçi detaylar */}
       {item.category === 'mks' && (
         <>
-          <rect
-            x={box.x1 + 1.5}
-            y={box.y1 + 1.5}
-            width={w - 3}
-            height={11}
-            rx={1}
-            fill="#0f172a"
-          />
-          <rect
-            x={box.x1 + 1.5}
-            y={box.y2 - 12.5}
-            width={w - 3}
-            height={11}
-            rx={1}
-            fill="#0f172a"
-          />
-          {/* 3 kutup üst-alt vida */}
+          <rect x={box.x1 + 1.5} y={box.y1 + 1.5} width={w - 3} height={11} rx={1} fill="#0f172a" />
+          <rect x={box.x1 + 1.5} y={box.y2 - 12.5} width={w - 3} height={11} rx={1} fill="#0f172a" />
           {[0.22, 0.5, 0.78].map((ratio, idx) => (
             <g key={idx}>
               <circle cx={box.x1 + w * ratio} cy={box.y1 + 7} r={2.3} fill="#64748b" />
               <circle cx={box.x1 + w * ratio} cy={box.y2 - 7} r={2.3} fill="#64748b" />
             </g>
           ))}
-          {/* Ön yüz şerit ve Start/Stop düğmeleri */}
           <rect
             x={box.x1 + 2}
             y={cy - 18}
@@ -91,12 +74,10 @@ function renderRailComponentGraphic(
             stroke={item.color}
             strokeWidth={0.7}
           />
-          {/* Start (siyah) ve Stop (kırmızı) butonları */}
           <rect x={cx - 12} y={cy - 6} width={10} height={11} rx={1.5} fill="#0f172a" stroke="#94a3b8" strokeWidth={0.6} />
           <rect x={cx + 2} y={cy - 6} width={10} height={11} rx={1.5} fill="#dc2626" stroke="#fca5a5" strokeWidth={0.6} />
           <text x={cx - 7} y={cy + 2} textAnchor="middle" fontSize={5} fill="#e2e8f0" fontWeight={700}>I</text>
           <text x={cx + 7} y={cy + 2} textAnchor="middle" fontSize={5} fill="#fff" fontWeight={700}>O</text>
-          {/* Termik ayar kadranı */}
           <circle cx={cx - 10} cy={cy + 12} r={4.2} fill="#0f172a" stroke="#38bdf8" strokeWidth={0.7} />
           <line x1={cx - 10} y1={cy + 9} x2={cx - 10} y2={cy + 15} stroke="#38bdf8" strokeWidth={0.8} />
           <text x={cx} y={cy - 10} textAnchor="middle" fontSize={6.5} fill="#f8fafc" fontWeight={700}>
@@ -110,7 +91,6 @@ function renderRailComponentGraphic(
 
       {item.category === 'relay' && (
         <>
-          {/* 14 pin soket üst/alt klemens sırası */}
           <rect x={box.x1 + 1.5} y={box.y1 + 1.5} width={w - 3} height={11} rx={1} fill="#0f172a" />
           <rect x={box.x1 + 1.5} y={box.y2 - 12.5} width={w - 3} height={11} rx={1} fill="#0f172a" />
           {[0.2, 0.4, 0.6, 0.8].map((ratio, idx) => (
@@ -119,7 +99,6 @@ function renderRailComponentGraphic(
               <circle cx={box.x1 + w * ratio} cy={box.y2 - 7} r={1.6} fill="#94a3b8" />
             </g>
           ))}
-          {/* Şeffaf röle gövdesi */}
           <rect
             x={box.x1 + 2.5}
             y={cy - 18}
@@ -131,7 +110,6 @@ function renderRailComponentGraphic(
             stroke={item.color}
             strokeWidth={0.8}
           />
-          {/* Bobin / LED göstergesi */}
           <circle cx={cx + 6} cy={cy - 12} r={1.6} fill="#ef4444" />
           <rect x={cx - 6} y={cy + 4} width={12} height={8} rx={1} fill="#312e81" stroke="#a78bfa" strokeWidth={0.5} />
           <text x={cx} y={cy - 2} textAnchor="middle" fontSize={6.5} fill="#f8fafc" fontWeight={700}>
@@ -145,7 +123,6 @@ function renderRailComponentGraphic(
 
       {item.category === 'contactor' && (
         <>
-          {/* Mini kontaktör üst-alt 4 kutup vidaları */}
           <rect x={box.x1 + 1.5} y={box.y1 + 1.5} width={w - 3} height={9.5} rx={1} fill="#0f172a" />
           <rect x={box.x1 + 1.5} y={box.y2 - 11} width={w - 3} height={9.5} rx={1} fill="#0f172a" />
           {[0.18, 0.39, 0.61, 0.82].map((ratio, idx) => (
@@ -165,7 +142,6 @@ function renderRailComponentGraphic(
             stroke={item.color}
             strokeWidth={0.7}
           />
-          {/* Kontak pozisyon penceresi */}
           <rect x={cx - 7} y={cy + 2} width={14} height={6} rx={1} fill="#0f172a" stroke="#fbbf24" strokeWidth={0.5} />
           <text x={cx} y={cy - 4} textAnchor="middle" fontSize={6.5} fill="#f8fafc" fontWeight={700}>
             {item.code}
@@ -184,7 +160,7 @@ function renderRailComponentGraphic(
             width={Math.max(1, w - 1)}
             height={h - 1}
             fill={item.color}
-            fillOpacity={item.color === '#22c55e' ? 0.35 : 0.25}
+            fillOpacity={0.28}
           />
           <circle cx={cx} cy={box.y1 + 6} r={1.2} fill="#cbd5e1" />
           <circle cx={cx} cy={box.y2 - 6} r={1.2} fill="#cbd5e1" />
@@ -193,7 +169,7 @@ function renderRailComponentGraphic(
             y={cy}
             textAnchor="middle"
             dominantBaseline="central"
-            fontSize={3.6}
+            fontSize={3.5}
             fill="#f8fafc"
             fontWeight={600}
             transform={`rotate(-90 ${cx} ${cy})`}
@@ -245,12 +221,13 @@ export default function PanelCanvas({
   showWireClearance,
   onSelect,
   onUpdateSidePosY,
+  onUpdateHorizPosX,
 }: PanelCanvasProps) {
   const frontSvgRef = useRef<SVGSVGElement | null>(null);
-  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [dragState, setDragState] = useState<{ id: string; axis: 'y' | 'x' } | null>(null);
 
   const walls = getWallOffsets(enclosure);
-  const railStartX = (enclosure.outerWidthMm - rails['top-rail'].usableWidthMm) / 2;
+  const topRailStartX = (enclosure.outerWidthMm - rails['top-rail'].usableWidthMm) / 2;
 
   const railPlaced = analysis.placed.filter(
     (p) => p.item.mount === 'top-rail' || p.item.mount === 'bottom-rail'
@@ -258,16 +235,22 @@ export default function PanelCanvas({
   const sidePlaced = analysis.placed.filter(
     (p) => p.item.mount === 'left-wall' || p.item.mount === 'right-wall'
   );
+  const horizWallPlaced = analysis.placed.filter(
+    (p) => p.item.mount === 'bottom-wall' || p.item.mount === 'top-wall'
+  );
   const leftSides = sidePlaced.filter((p) => p.item.mount === 'left-wall');
   const rightSides = sidePlaced.filter((p) => p.item.mount === 'right-wall');
+  const bottomGlands = horizWallPlaced.filter((p) => p.item.mount === 'bottom-wall');
 
-  const pad = 42;
-  const frontViewBox = `${-pad} ${-pad} ${enclosure.outerWidthMm + pad * 2} ${enclosure.outerHeightMm + pad * 2}`;
+  const padX = 42;
+  const padTop = 38;
+  const padBottom = 64; // PG 36 rakor dış gövde görünümü için alt boşluk
+  const frontViewBox = `${-padX} ${-padTop} ${enclosure.outerWidthMm + padX * 2} ${enclosure.outerHeightMm + padTop + padBottom}`;
   const sideViewBox = `${-30} ${-30} ${enclosure.outerDepthMm + 68} ${enclosure.outerHeightMm + 60}`;
-  const topViewBox = `${-36} ${-26} ${enclosure.outerWidthMm + 72} ${enclosure.outerDepthMm + 56}`;
+  const bottomViewBox = `${-36} ${-26} ${enclosure.outerWidthMm + 72} ${enclosure.outerDepthMm + 58}`;
 
   const handleFrontPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
-    if (!draggingId || !frontSvgRef.current) return;
+    if (!dragState || !frontSvgRef.current) return;
     const svg = frontSvgRef.current;
     const pt = svg.createSVGPoint();
     pt.x = e.clientX;
@@ -275,8 +258,13 @@ export default function PanelCanvas({
     const ctm = svg.getScreenCTM();
     if (!ctm) return;
     const local = pt.matrixTransform(ctm.inverse());
-    const clampedY = Math.round(Math.max(40, Math.min(enclosure.outerHeightMm - 40, local.y)));
-    onUpdateSidePosY(draggingId, clampedY);
+    if (dragState.axis === 'y') {
+      const clampedY = Math.round(Math.max(40, Math.min(enclosure.outerHeightMm - 40, local.y)));
+      onUpdateSidePosY(dragState.id, clampedY);
+    } else {
+      const clampedX = Math.round(Math.max(36, Math.min(enclosure.outerWidthMm - 36, local.x)));
+      onUpdateHorizPosX(dragState.id, clampedX);
+    }
   };
 
   const renderSideElevation = (side: 'left-wall' | 'right-wall', title: string) => {
@@ -289,11 +277,10 @@ export default function PanelCanvas({
         <div className="cad-card-header">
           <span>{title}</span>
           <span className="cad-meta">
-            {D} × {H} mm • Delik Delme Şablonu
+            {D} × {H} mm • Delme Şablonu
           </span>
         </div>
         <svg viewBox={sideViewBox} className="cad-svg side-svg">
-          {/* Pano yan profili */}
           <rect
             x={0}
             y={0}
@@ -304,7 +291,6 @@ export default function PanelCanvas({
             stroke="#475569"
             strokeWidth={1.6}
           />
-          {/* Taban / Kapak birleşim çizgisi */}
           <line
             x1={enclosure.baseDepthMm}
             y1={0}
@@ -327,7 +313,6 @@ export default function PanelCanvas({
             Kapak
           </text>
 
-          {/* İç hacim arka ve ön sınırı */}
           <rect
             x={walls.innerZ1}
             y={walls.innerY1}
@@ -339,7 +324,6 @@ export default function PanelCanvas({
             strokeDasharray="3 2"
           />
 
-          {/* İçerideki DIN rayı elemanlarının hayalet silüeti (Z derinlik kontrolü için) */}
           {(['top-rail', 'bottom-rail'] as const).map((railId) => {
             const railItems = railPlaced.filter((p) => p.item.mount === railId);
             if (railItems.length === 0) return null;
@@ -372,7 +356,6 @@ export default function PanelCanvas({
             );
           })}
 
-          {/* Yan duvar butonları */}
           {itemsOnSide.map((p) => {
             const { item } = p;
             const cy = item.posYMm ?? 262;
@@ -382,12 +365,7 @@ export default function PanelCanvas({
             const rHole = (item.holeDiameterMm ?? 22) / 2;
 
             return (
-              <g
-                key={item.id}
-                onClick={() => onSelect(item.id)}
-                style={{ cursor: 'pointer' }}
-              >
-                {/* Ön çerçeve (30 x 55 mm) */}
+              <g key={item.id} onClick={() => onSelect(item.id)} style={{ cursor: 'pointer' }}>
                 <rect
                   x={cz - item.widthMm / 2}
                   y={cy - item.heightMm / 2}
@@ -398,47 +376,14 @@ export default function PanelCanvas({
                   stroke={isColliding ? '#ef4444' : isSelected ? '#38bdf8' : '#10b981'}
                   strokeWidth={isSelected ? 1.8 : 1.1}
                 />
-                {/* Yukarı / Aşağı tuşları */}
-                <rect
-                  x={cz - 9}
-                  y={cy - 21}
-                  width={18}
-                  height={18}
-                  rx={2}
-                  fill="#0f172a"
-                  stroke="#34d399"
-                  strokeWidth={0.7}
-                />
-                <text x={cz} y={cy - 10} textAnchor="middle" fontSize={8} fill="#34d399">
-                  ▲
-                </text>
-                <rect
-                  x={cz - 9}
-                  y={cy + 3}
-                  width={18}
-                  height={18}
-                  rx={2}
-                  fill="#0f172a"
-                  stroke="#f87171"
-                  strokeWidth={0.7}
-                />
-                <text x={cz} y={cy + 14.5} textAnchor="middle" fontSize={8} fill="#f87171">
-                  ▼
-                </text>
-                {/* Ø22 mm delme dairesi */}
-                <circle
-                  cx={cz}
-                  cy={cy}
-                  r={rHole}
-                  fill="none"
-                  stroke="#fbbf24"
-                  strokeWidth={0.8}
-                  strokeDasharray="2 2"
-                />
+                <rect x={cz - 9} y={cy - 21} width={18} height={18} rx={2} fill="#0f172a" stroke="#34d399" strokeWidth={0.7} />
+                <text x={cz} y={cy - 10} textAnchor="middle" fontSize={8} fill="#34d399">▲</text>
+                <rect x={cz - 9} y={cy + 3} width={18} height={18} rx={2} fill="#0f172a" stroke="#f87171" strokeWidth={0.7} />
+                <text x={cz} y={cy + 14.5} textAnchor="middle" fontSize={8} fill="#f87171">▼</text>
+                <circle cx={cz} cy={cy} r={rHole} fill="none" stroke="#fbbf24" strokeWidth={0.8} strokeDasharray="2 2" />
                 <line x1={cz - 4} y1={cy} x2={cz + 4} y2={cy} stroke="#fbbf24" strokeWidth={0.7} />
                 <line x1={cz} y1={cy - 4} x2={cz} y2={cy + 4} stroke="#fbbf24" strokeWidth={0.7} />
 
-                {/* Delik merkezi ölçü çizgileri */}
                 {showDimensions && (
                   <>
                     <line x1={-16} y1={0} x2={-16} y2={cy} stroke="#38bdf8" strokeWidth={0.7} />
@@ -480,7 +425,7 @@ export default function PanelCanvas({
           <div className="cad-card-header">
             <span>Ön İç Yerleşim — {enclosure.brand} {enclosure.model}</span>
             <span className="cad-meta">
-              {enclosure.outerWidthMm} × {enclosure.outerHeightMm} × {enclosure.outerDepthMm} mm • Yan butonları dikey sürükleyebilirsiniz
+              {enclosure.outerWidthMm} × {enclosure.outerHeightMm} × {enclosure.outerDepthMm} mm • Butonları dikey, rakoru yatay sürükleyebilirsiniz
             </span>
           </div>
 
@@ -489,8 +434,8 @@ export default function PanelCanvas({
             viewBox={frontViewBox}
             className="cad-svg front-svg"
             onPointerMove={handleFrontPointerMove}
-            onPointerUp={() => setDraggingId(null)}
-            onPointerLeave={() => setDraggingId(null)}
+            onPointerUp={() => setDragState(null)}
+            onPointerLeave={() => setDragState(null)}
           >
             <defs>
               <pattern id="grid-10mm" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -501,7 +446,7 @@ export default function PanelCanvas({
               </pattern>
             </defs>
 
-            {/* Dış ABS Kasa (245 x 325 mm) */}
+            {/* Dış ABS Kasa */}
             <rect
               x={0}
               y={0}
@@ -513,7 +458,7 @@ export default function PanelCanvas({
               strokeWidth={2}
             />
 
-            {/* İç Kasa Hacmi (228 x 300 mm) + 10 mm ızgara */}
+            {/* İç Kasa Hacmi + 10 mm ızgara */}
             <rect
               x={walls.innerX1}
               y={walls.innerY1}
@@ -538,11 +483,17 @@ export default function PanelCanvas({
               </g>
             ))}
 
-            {/* Nötr ve Toprak Klemens Barası Referansı (Bemis 2 klemensli standart) */}
-            <rect x={44} y={14} width={64} height={6} rx={1.5} fill="#1d4ed8" fillOpacity={0.35} stroke="#3b82f6" strokeWidth={0.6} />
-            <text x={76} y={18.7} textAnchor="middle" fontSize={4.2} fill="#93c5fd">N Bara</text>
-            <rect x={137} y={14} width={64} height={6} rx={1.5} fill="#15803d" fillOpacity={0.35} stroke="#22c55e" strokeWidth={0.6} />
-            <text x={169} y={18.7} textAnchor="middle" fontSize={4.2} fill="#86efac">PE Bara</text>
+            {/* Bemis Dahili Nötr ve Toprak Klemens Baraları (Panoda ayrı yeri) */}
+            <g>
+              <rect x={36} y={14} width={76} height={7} rx={1.5} fill="#1d4ed8" fillOpacity={0.45} stroke="#3b82f6" strokeWidth={0.8} />
+              <text x={74} y={19.2} textAnchor="middle" fontSize={4.4} fill="#bfdbfe" fontWeight={700}>
+                Pano Nötr Barası (N)
+              </text>
+              <rect x={133} y={14} width={76} height={7} rx={1.5} fill="#15803d" fillOpacity={0.45} stroke="#22c55e" strokeWidth={0.8} />
+              <text x={171} y={19.2} textAnchor="middle" fontSize={4.4} fill="#bbf7d0" fontWeight={700}>
+                Pano Toprak Barası (PE)
+              </text>
+            </g>
 
             {/* Üst ve Alt 35 mm DIN Rayları */}
             {(['top-rail', 'bottom-rail'] as const).map((railId) => {
@@ -564,7 +515,6 @@ export default function PanelCanvas({
                     stroke={isOverflow ? '#ef4444' : '#64748b'}
                     strokeWidth={1}
                   />
-                  {/* Ray orta oluk ve montaj slotları */}
                   <rect
                     x={rx + 2}
                     y={rail.centerYMm - 10}
@@ -585,18 +535,6 @@ export default function PanelCanvas({
                       fill="#1e293b"
                     />
                   ))}
-                  {/* 12 Modül çizgileri */}
-                  {Array.from({ length: 13 }).map((_, mod) => (
-                    <line
-                      key={mod}
-                      x1={rx + mod * 18}
-                      y1={railY - 2}
-                      x2={rx + mod * 18}
-                      y2={railY + 2}
-                      stroke="#475569"
-                      strokeWidth={0.5}
-                    />
-                  ))}
                 </g>
               );
             })}
@@ -611,7 +549,7 @@ export default function PanelCanvas({
               )
             )}
 
-            {/* Yan Duvar İkiz Butonları (Dış çıkıntı + İç derinlik X-Ray projeksiyonu) */}
+            {/* Yan Duvar İkiz Butonları */}
             {sidePlaced.map((p) => {
               const { item, box, clearanceBox } = p;
               const isLeft = item.mount === 'left-wall';
@@ -627,11 +565,10 @@ export default function PanelCanvas({
                   onPointerDown={(e) => {
                     e.stopPropagation();
                     onSelect(item.id);
-                    setDraggingId(item.id);
+                    setDragState({ id: item.id, axis: 'y' });
                   }}
                   style={{ cursor: 'ns-resize' }}
                 >
-                  {/* Kablo bükülme payı bölgesi */}
                   {showWireClearance && clearanceBox && (
                     <rect
                       x={clearanceBox.x1}
@@ -646,24 +583,18 @@ export default function PanelCanvas({
                     />
                   )}
 
-                  {/* Pano içine giren kontak bloğu derinliği (~54 mm) */}
                   <rect
                     x={box.x1}
                     y={box.y1}
                     width={box.x2 - box.x1}
                     height={h}
                     rx={2}
-                    fill={
-                      isColliding
-                        ? 'rgba(239, 68, 68, 0.35)'
-                        : 'rgba(16, 185, 129, 0.16)'
-                    }
+                    fill={isColliding ? 'rgba(239, 68, 68, 0.35)' : 'rgba(16, 185, 129, 0.16)'}
                     stroke={isColliding ? '#ef4444' : isSelected ? '#38bdf8' : '#10b981'}
                     strokeWidth={isSelected || isColliding ? 1.6 : 1}
                     strokeDasharray="4 2"
                   />
 
-                  {/* Kasa dışına taşan SW-BL4252 buton başlığı */}
                   <rect
                     x={isLeft ? -protrusion : enclosure.outerWidthMm}
                     y={box.y1}
@@ -674,7 +605,6 @@ export default function PanelCanvas({
                     stroke={isColliding ? '#ef4444' : isSelected ? '#38bdf8' : '#34d399'}
                     strokeWidth={isSelected ? 1.8 : 1.1}
                   />
-                  {/* Dış başlık ok göstergeleri */}
                   <text
                     x={isLeft ? -protrusion / 2 : enclosure.outerWidthMm + protrusion / 2}
                     y={cy - 10}
@@ -694,7 +624,6 @@ export default function PanelCanvas({
                     ▼
                   </text>
 
-                  {/* İç etiket */}
                   <text
                     x={(box.x1 + box.x2) / 2}
                     y={cy - 4}
@@ -705,23 +634,115 @@ export default function PanelCanvas({
                   >
                     {item.code} (Yan)
                   </text>
-                  <text
-                    x={(box.x1 + box.x2) / 2}
-                    y={cy + 5}
-                    textAnchor="middle"
-                    fontSize={5}
-                    fill="#cbd5e1"
-                  >
+                  <text x={(box.x1 + box.x2) / 2} y={cy + 5} textAnchor="middle" fontSize={5} fill="#cbd5e1">
                     Derinlik: {item.depthMm} mm
                   </text>
-                  <text
-                    x={(box.x1 + box.x2) / 2}
-                    y={cy + 13}
-                    textAnchor="middle"
-                    fontSize={4.8}
-                    fill="#94a3b8"
-                  >
+                  <text x={(box.x1 + box.x2) / 2} y={cy + 13} textAnchor="middle" fontSize={4.8} fill="#94a3b8">
                     Y={Math.round(cy)} mm ↕
+                  </text>
+                </g>
+              );
+            })}
+
+            {/* Alt / Üst Duvar Rakorları (PG 36 Ortaç ODB-42 vb.) */}
+            {horizWallPlaced.map((p) => {
+              const { item, box, clearanceBox } = p;
+              const isBottom = item.mount === 'bottom-wall';
+              const isSelected = selectedId === item.id;
+              const isColliding = analysis.collidingItemIds.has(item.id);
+              const protrusion = item.protrusionMm ?? 46;
+              const cx = (box.x1 + box.x2) / 2;
+              const w = box.x2 - box.x1;
+              const holeW = item.holeDiameterMm ?? 47.5;
+              const extY = isBottom ? enclosure.outerHeightMm : -protrusion;
+
+              return (
+                <g
+                  key={item.id}
+                  onPointerDown={(e) => {
+                    e.stopPropagation();
+                    onSelect(item.id);
+                    setDragState({ id: item.id, axis: 'x' });
+                  }}
+                  style={{ cursor: 'ew-resize' }}
+                >
+                  {/* Kablo giriş boşluğu */}
+                  {showWireClearance && clearanceBox && (
+                    <rect
+                      x={cx - holeW / 2}
+                      y={clearanceBox.y1}
+                      width={holeW}
+                      height={clearanceBox.y2 - clearanceBox.y1}
+                      rx={2}
+                      fill="rgba(6, 182, 212, 0.08)"
+                      stroke="#22d3ee"
+                      strokeWidth={0.6}
+                      strokeDasharray="2.5 2.5"
+                    />
+                  )}
+                  {/* Pano içi kontra somun ve diş (~16 mm) */}
+                  <rect
+                    x={box.x1}
+                    y={box.y1}
+                    width={w}
+                    height={box.y2 - box.y1}
+                    rx={2}
+                    fill={isColliding ? 'rgba(239,68,68,0.35)' : 'rgba(6, 182, 212, 0.22)'}
+                    stroke={isColliding ? '#ef4444' : isSelected ? '#38bdf8' : '#06b6d4'}
+                    strokeWidth={isSelected || isColliding ? 1.6 : 1}
+                  />
+                  {/* Dış altıgen rakor gövdesi + geçmeli spiral kafası */}
+                  <rect
+                    x={box.x1 + 2}
+                    y={extY}
+                    width={w - 4}
+                    height={14}
+                    rx={2}
+                    fill="#155e75"
+                    stroke={isSelected ? '#38bdf8' : '#22d3ee'}
+                    strokeWidth={1.1}
+                  />
+                  <rect
+                    x={cx - holeW / 2 + 2}
+                    y={isBottom ? extY + 14 : extY}
+                    width={holeW - 4}
+                    height={protrusion - 14}
+                    rx={3}
+                    fill="#0e7490"
+                    stroke={isSelected ? '#38bdf8' : '#22d3ee'}
+                    strokeWidth={1}
+                  />
+                  {/* Spiral geçme kilit halkaları */}
+                  {[0.3, 0.55, 0.8].map((r, i) => (
+                    <line
+                      key={i}
+                      x1={cx - holeW / 2 + 5}
+                      y1={(isBottom ? extY + 14 : extY) + (protrusion - 14) * r}
+                      x2={cx + holeW / 2 - 5}
+                      y2={(isBottom ? extY + 14 : extY) + (protrusion - 14) * r}
+                      stroke="#67e8f9"
+                      strokeWidth={0.7}
+                      strokeOpacity={0.6}
+                    />
+                  ))}
+                  <text
+                    x={cx}
+                    y={isBottom ? extY + 9.5 : extY + protrusion - 4}
+                    textAnchor="middle"
+                    fontSize={5.5}
+                    fill="#ecfeff"
+                    fontWeight={700}
+                  >
+                    {item.code} • PG36 ODB-42
+                  </text>
+                  <text
+                    x={cx}
+                    y={isBottom ? extY + 31 : extY + 16}
+                    textAnchor="middle"
+                    fontSize={5.2}
+                    fill="#cffafe"
+                  >
+                    Ø{holeW} mm ↔ X={Math.round(cx)}
                   </text>
                 </g>
               );
@@ -731,7 +752,7 @@ export default function PanelCanvas({
             {showWindowOverlay && (
               <g pointerEvents="none">
                 <rect
-                  x={railStartX}
+                  x={topRailStartX}
                   y={enclosure.windowTopMm}
                   width={enclosure.windowWidthMm}
                   height={enclosure.windowHeightMm}
@@ -742,7 +763,7 @@ export default function PanelCanvas({
                   strokeDasharray="6 3"
                 />
                 <text
-                  x={railStartX + enclosure.windowWidthMm - 3}
+                  x={topRailStartX + enclosure.windowWidthMm - 3}
                   y={enclosure.windowTopMm + 7}
                   textAnchor="end"
                   fontSize={4.8}
@@ -753,18 +774,16 @@ export default function PanelCanvas({
               </g>
             )}
 
-            {/* Ölçülendirme Çizgileri (mm) */}
+            {/* Ölçülendirme Çizgileri */}
             {showDimensions && (
               <g pointerEvents="none">
-                {/* Üst toplam genişlik 245 mm */}
-                <line x1={0} y1={-18} x2={enclosure.outerWidthMm} y2={-18} stroke="#94a3b8" strokeWidth={0.8} />
-                <line x1={0} y1={-23} x2={0} y2={-4} stroke="#64748b" strokeWidth={0.6} />
-                <line x1={enclosure.outerWidthMm} y1={-23} x2={enclosure.outerWidthMm} y2={-4} stroke="#64748b" strokeWidth={0.6} />
-                <text x={enclosure.outerWidthMm / 2} y={-22} textAnchor="middle" fontSize={8} fill="#e2e8f0" fontWeight={600}>
+                <line x1={0} y1={-16} x2={enclosure.outerWidthMm} y2={-16} stroke="#94a3b8" strokeWidth={0.8} />
+                <line x1={0} y1={-21} x2={0} y2={-4} stroke="#64748b" strokeWidth={0.6} />
+                <line x1={enclosure.outerWidthMm} y1={-21} x2={enclosure.outerWidthMm} y2={-4} stroke="#64748b" strokeWidth={0.6} />
+                <text x={enclosure.outerWidthMm / 2} y={-20} textAnchor="middle" fontSize={8} fill="#e2e8f0" fontWeight={600}>
                   {enclosure.outerWidthMm} mm (İç: {enclosure.innerWidthMm} mm)
                 </text>
 
-                {/* Sol toplam yükseklik 325 mm */}
                 <line x1={-28} y1={0} x2={-28} y2={enclosure.outerHeightMm} stroke="#94a3b8" strokeWidth={0.8} />
                 <line x1={-33} y1={0} x2={-4} y2={0} stroke="#64748b" strokeWidth={0.6} />
                 <line x1={-33} y1={enclosure.outerHeightMm} x2={-4} y2={enclosure.outerHeightMm} stroke="#64748b" strokeWidth={0.6} />
@@ -780,12 +799,11 @@ export default function PanelCanvas({
                   {enclosure.outerHeightMm} mm (İç: {enclosure.innerHeightMm} mm)
                 </text>
 
-                {/* Üst / Alt ray kullanım etiketi */}
                 <text
                   x={enclosure.outerWidthMm / 2}
-                  y={rails['top-rail'].centerYMm - 48}
+                  y={rails['top-rail'].centerYMm - 46}
                   textAnchor="middle"
-                  fontSize={5.5}
+                  fontSize={5.4}
                   fill={analysis.topRail.overflow ? '#f87171' : '#94a3b8'}
                 >
                   Üst Ray: {analysis.topRail.usedWidthMm} / {analysis.topRail.usableWidthMm} mm (Kalan: {analysis.topRail.remainingMm} mm)
@@ -795,44 +813,42 @@ export default function PanelCanvas({
                   x={enclosure.outerWidthMm / 2}
                   y={rails['bottom-rail'].centerYMm + 37}
                   textAnchor="middle"
-                  fontSize={5.5}
-                  fill={analysis.bottomRail.overflow ? '#f87171' : '#94a3b8'}
+                  fontSize={5.4}
+                  fill={analysis.bottomRail.overflow ? '#f87171' : analysis.bottomRail.remainingMm < 5 ? '#fbbf24' : '#94a3b8'}
                 >
                   Alt Ray: {analysis.bottomRail.usedWidthMm} / {analysis.bottomRail.usableWidthMm} mm (Kalan: {analysis.bottomRail.remainingMm} mm)
                 </text>
 
-                {/* İki ray arası kablo boşluğu */}
                 <text
                   x={enclosure.outerWidthMm / 2}
                   y={(rails['top-rail'].centerYMm + rails['bottom-rail'].centerYMm) / 2 + 8}
                   textAnchor="middle"
-                  fontSize={5.6}
+                  fontSize={5.5}
                   fill={analysis.interRailGapMm < 24 ? '#fbbf24' : '#38bdf8'}
                 >
                   ↕ Kablo Geçiş Boşluğu: {analysis.interRailGapMm} mm
                 </text>
 
-                {/* İki yan buton arasındaki orta net açıklık */}
                 {analysis.sideButtonMiddleGapMm !== null && leftSides.length > 0 && rightSides.length > 0 && (
                   <>
                     <line
                       x1={Math.max(...leftSides.map((p) => p.box.x2))}
-                      y1={262}
+                      y1={256}
                       x2={Math.min(...rightSides.map((p) => p.box.x1))}
-                      y2={262}
+                      y2={256}
                       stroke="#34d399"
                       strokeWidth={0.8}
                       strokeDasharray="3 2"
                     />
                     <text
                       x={enclosure.outerWidthMm / 2}
-                      y={257}
+                      y={251}
                       textAnchor="middle"
-                      fontSize={6}
+                      fontSize={5.8}
                       fill="#6ee7b7"
                       fontWeight={600}
                     >
-                      ↔ Net Orta Boşluk: {analysis.sideButtonMiddleGapMm} mm
+                      ↔ Orta Koridor: {analysis.sideButtonMiddleGapMm} mm
                     </text>
                   </>
                 )}
@@ -842,7 +858,7 @@ export default function PanelCanvas({
         </div>
       )}
 
-      {/* YAN GÖRÜNÜŞLER VE ÜST KESİT */}
+      {/* YAN GÖRÜNÜŞLER VE ALT DUVAR RAKOR DELME ŞABLONU */}
       {(viewMode === 'all' || viewMode === 'sides') && (
         <div className="secondary-views">
           <div className="side-pair">
@@ -850,16 +866,15 @@ export default function PanelCanvas({
             {renderSideElevation('right-wall', 'Sağ Yan Görünüş (S2)')}
           </div>
 
-          {/* ÜSTTEN KESİT (DERİNLİK ANALİZİ) */}
+          {/* ALT DUVAR DELME ŞABLONU + DERİNLİK KESİTİ */}
           <div className="cad-card">
             <div className="cad-card-header">
-              <span>Üstten Kesit — Derinlik (Z) Analizi</span>
+              <span>Alt Duvar Delme Şablonu (Rakor) & Derinlik Kesiti</span>
               <span className="cad-meta">
-                {enclosure.outerWidthMm} × {enclosure.outerDepthMm} mm (İç Derinlik: {enclosure.innerDepthMm} mm)
+                {enclosure.outerWidthMm} × {enclosure.outerDepthMm} mm • PG 36 Panç: Ø47,5 mm
               </span>
             </div>
-            <svg viewBox={topViewBox} className="cad-svg top-svg">
-              {/* Dış kasa üst kesiti */}
+            <svg viewBox={bottomViewBox} className="cad-svg top-svg">
               <rect
                 x={0}
                 y={0}
@@ -870,7 +885,6 @@ export default function PanelCanvas({
                 stroke="#475569"
                 strokeWidth={1.5}
               />
-              {/* İç derinlik */}
               <rect
                 x={walls.innerX1}
                 y={walls.innerZ1}
@@ -880,7 +894,7 @@ export default function PanelCanvas({
                 stroke="#334155"
                 strokeWidth={0.8}
               />
-              {/* Kapak birleşim çizgisi */}
+              {/* Gövde / Kapak birleşimi */}
               <line
                 x1={0}
                 y1={enclosure.baseDepthMm}
@@ -891,32 +905,16 @@ export default function PanelCanvas({
                 strokeDasharray="4 3"
               />
               <text x={enclosure.outerWidthMm + 4} y={enclosure.baseDepthMm + 2} fontSize={6} fill="#fbbf24">
-                Kapak ({enclosure.baseDepthMm}mm)
+                Kapak ({enclosure.baseDepthMm} mm)
               </text>
               <text x={enclosure.outerWidthMm / 2} y={-8} textAnchor="middle" fontSize={7} fill="#94a3b8">
-                Arka Duvar (Z=0) — DIN Ray Elemanları (Üst + Alt İzdüşüm)
+                Arka Duvar (Z=0) — Alt Gövde Yüzeyi ({enclosure.baseDepthMm} mm)
               </text>
               <text x={enclosure.outerWidthMm / 2} y={enclosure.outerDepthMm + 16} textAnchor="middle" fontSize={7} fill="#94a3b8">
                 Ön Kapak (Z={enclosure.outerDepthMm} mm)
               </text>
 
-              {/* Üst ray elemanları (derinlik) */}
-              {railPlaced.map((p) => (
-                <rect
-                  key={p.item.id}
-                  x={p.box.x1 + 0.5}
-                  y={p.box.z1}
-                  width={Math.max(1, p.box.x2 - p.box.x1 - 1)}
-                  height={p.box.z2 - p.box.z1}
-                  fill={p.item.mount === 'top-rail' ? 'rgba(56, 189, 248, 0.22)' : 'rgba(245, 158, 11, 0.22)'}
-                  stroke={selectedId === p.item.id ? '#38bdf8' : p.item.color}
-                  strokeWidth={selectedId === p.item.id ? 1.5 : 0.7}
-                  onClick={() => onSelect(p.item.id)}
-                  style={{ cursor: 'pointer' }}
-                />
-              ))}
-
-              {/* Yan butonların üstten kesit derinlikleri */}
+              {/* Yan butonların kesitteki derinlik izdüşümleri */}
               {sidePlaced.map((p) => {
                 const isLeft = p.item.mount === 'left-wall';
                 const prot = p.item.protrusionMm ?? 16;
@@ -928,9 +926,9 @@ export default function PanelCanvas({
                       y={p.box.z1}
                       width={p.box.x2 - p.box.x1}
                       height={p.box.z2 - p.box.z1}
-                      fill={isColliding ? 'rgba(239,68,68,0.4)' : 'rgba(16,185,129,0.35)'}
+                      fill={isColliding ? 'rgba(239,68,68,0.4)' : 'rgba(16,185,129,0.28)'}
                       stroke={isColliding ? '#ef4444' : '#10b981'}
-                      strokeWidth={1.1}
+                      strokeWidth={1}
                     />
                     <rect
                       x={isLeft ? -prot : enclosure.outerWidthMm}
@@ -946,11 +944,55 @@ export default function PanelCanvas({
                       x={(p.box.x1 + p.box.x2) / 2}
                       y={(p.box.z1 + p.box.z2) / 2 + 2.5}
                       textAnchor="middle"
-                      fontSize={6.5}
+                      fontSize={6.2}
                       fill="#ecfdf5"
                       fontWeight={700}
                     >
                       {p.item.code} ({p.item.depthMm}mm)
+                    </text>
+                  </g>
+                );
+              })}
+
+              {/* Alt duvardaki rakorların Ø47,5 mm delik ve Ø58 mm somun izdüşümü */}
+              {bottomGlands.map((p) => {
+                const { item } = p;
+                const cx = item.posXMm ?? enclosure.outerWidthMm / 2;
+                const cz = item.posZMm ?? 48;
+                const rOuter = item.widthMm / 2;
+                const rHole = (item.holeDiameterMm ?? 47.5) / 2;
+                const isSelected = selectedId === item.id;
+                const isColliding = analysis.collidingItemIds.has(item.id);
+
+                return (
+                  <g key={item.id} onClick={() => onSelect(item.id)} style={{ cursor: 'pointer' }}>
+                    {/* Dış flanş / somun */}
+                    <circle
+                      cx={cx}
+                      cy={cz}
+                      r={rOuter}
+                      fill={isColliding ? 'rgba(239,68,68,0.3)' : 'rgba(6, 182, 212, 0.22)'}
+                      stroke={isColliding ? '#ef4444' : isSelected ? '#38bdf8' : '#06b6d4'}
+                      strokeWidth={isSelected ? 1.8 : 1.1}
+                    />
+                    {/* Delik / panç dairesi Ø47,5 mm */}
+                    <circle
+                      cx={cx}
+                      cy={cz}
+                      r={rHole}
+                      fill="#0f172a"
+                      fillOpacity={0.65}
+                      stroke="#fbbf24"
+                      strokeWidth={0.9}
+                      strokeDasharray="3 2"
+                    />
+                    <line x1={cx - 6} y1={cz} x2={cx + 6} y2={cz} stroke="#fbbf24" strokeWidth={0.8} />
+                    <line x1={cx} y1={cz - 6} x2={cx} y2={cz + 6} stroke="#fbbf24" strokeWidth={0.8} />
+                    <text x={cx} y={cz - 9} textAnchor="middle" fontSize={6.5} fill="#ecfeff" fontWeight={700}>
+                      {item.code} (PG36)
+                    </text>
+                    <text x={cx} y={cz + 14} textAnchor="middle" fontSize={5.5} fill="#fde68a">
+                      Ø{item.holeDiameterMm} • X={Math.round(cx)} Z={Math.round(cz)}
                     </text>
                   </g>
                 );
