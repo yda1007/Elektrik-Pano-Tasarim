@@ -19,6 +19,28 @@ TABLES
 0
 TABLE
 2
+LTYPE
+70
+1
+0
+LTYPE
+2
+CONTINUOUS
+70
+0
+3
+Solid line
+72
+65
+73
+0
+40
+0.0
+0
+ENDTAB
+0
+TABLE
+2
 LAYER
 70
 11
@@ -2987,7 +3009,7 @@ ANTET
 40
 9.00
 1
-SAYFA 1 - 3 FAZ GÜÇ ŞEMASI (Bemis BH6-6000-0000)
+SAYFA 1 - 3 FAZ GUC SEMASI (Bemis BH6-6000-0000)
 0
 LINE
 8
@@ -6211,7 +6233,7 @@ ELEMANLAR
 40
 5.50
 1
-PANO NÖTR (N)
+PANO NOTR (N)
 0
 CIRCLE
 8
@@ -6507,7 +6529,7 @@ ELEMANLAR
 40
 5.50
 1
-ÜST KLEMENS (X1-X3)
+UST KLEMENS (X1-X3)
 0
 CIRCLE
 8
@@ -6775,7 +6797,7 @@ ELEMANLAR
 40
 5.50
 1
-Q1 - MKŞ (1-1,6A)
+Q1 - MKS (1-1,6A)
 0
 CIRCLE
 8
@@ -7043,7 +7065,7 @@ ELEMANLAR
 40
 5.50
 1
-Q2 - MKŞ (1-1,6A)
+Q2 - MKS (1-1,6A)
 0
 CIRCLE
 8
@@ -8383,7 +8405,7 @@ ELEMANLAR
 40
 5.50
 1
-MOTOR 1 (M1 - Güç)
+MOTOR 1 (M1 - Guc)
 0
 CIRCLE
 8
@@ -8591,7 +8613,7 @@ ELEMANLAR
 40
 5.50
 1
-MOTOR 2 (M2 - Güç)
+MOTOR 2 (M2 - Guc)
 0
 CIRCLE
 8
@@ -8789,7 +8811,7 @@ ANTET
 40
 9.00
 1
-SAYFA 2 - KUMANDA & OTOMASYON ŞEMASI (Bemis BH6-6000-0000)
+SAYFA 2 - KUMANDA & OTOMASYON SEMASI (Bemis BH6-6000-0000)
 0
 LINE
 8
@@ -11951,7 +11973,7 @@ ELEMANLAR
 40
 5.50
 1
-SEKTÖR KUMANDA 1 (5x1 mm2)
+SEKTOR KUMANDA 1 (5x1 mm2)
 0
 CIRCLE
 8
@@ -12189,7 +12211,7 @@ ELEMANLAR
 40
 5.50
 1
-SEKTÖR KUMANDA 2 (5x1 mm2)
+SEKTOR KUMANDA 2 (5x1 mm2)
 0
 CIRCLE
 8
@@ -12427,7 +12449,7 @@ ELEMANLAR
 40
 5.50
 1
-Q1 ÇIKIŞ (Sayfa 1)
+Q1 CIKIS (Sayfa 1)
 0
 CIRCLE
 8
@@ -12545,7 +12567,7 @@ ELEMANLAR
 40
 5.50
 1
-Q2 ÇIKIŞ (Sayfa 1)
+Q2 CIKIS (Sayfa 1)
 0
 CIRCLE
 8
@@ -12663,7 +12685,7 @@ ELEMANLAR
 40
 5.50
 1
-PANO NÖTR (N)
+PANO NOTR (N)
 0
 CIRCLE
 8
@@ -13259,7 +13281,7 @@ ELEMANLAR
 40
 3.80
 1
-▲13
+^13
 0
 CIRCLE
 8
@@ -13289,7 +13311,7 @@ ELEMANLAR
 40
 3.80
 1
-▼23
+v23
 0
 CIRCLE
 8
@@ -13319,7 +13341,7 @@ ELEMANLAR
 40
 3.80
 1
-▲14
+^14
 0
 CIRCLE
 8
@@ -13349,7 +13371,7 @@ ELEMANLAR
 40
 3.80
 1
-▼24
+v24
 0
 LINE
 8
@@ -13437,7 +13459,7 @@ ELEMANLAR
 40
 5.50
 1
-S2 (Sağ Yan Buton)
+S2 (Sag Yan Buton)
 0
 CIRCLE
 8
@@ -13467,7 +13489,7 @@ ELEMANLAR
 40
 3.80
 1
-▲13
+^13
 0
 CIRCLE
 8
@@ -13497,7 +13519,7 @@ ELEMANLAR
 40
 3.80
 1
-▼23
+v23
 0
 CIRCLE
 8
@@ -13527,7 +13549,7 @@ ELEMANLAR
 40
 3.80
 1
-▲14
+^14
 0
 CIRCLE
 8
@@ -13557,7 +13579,7 @@ ELEMANLAR
 40
 3.80
 1
-▼24
+v24
 0
 LINE
 8
@@ -13645,7 +13667,7 @@ ELEMANLAR
 40
 5.50
 1
-R1 - 14 PİN MİNİ RÖLE (OTO / MANUEL SEÇİCİ)
+R1 - 14 PIN MINI ROLE (OTO / MANUEL SECICI)
 0
 CIRCLE
 8
@@ -15761,7 +15783,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-01. 1x | PANO | Bemis BH6-6000-0000 - V12 Boş Kombinasyon Kutusu (12 Modül + Dahili N/PE Klemens Yeri) | Ana Gövde | 245x325x138 mm
+01. 1x | PANO | Bemis BH6-6000-0000 - V12 Bos Kombinasyon Kutusu (12 Modul + Dahili N/PE Klemens Yeri) | Ana Govde | 245x325x138 mm
 0
 TEXT
 8
@@ -15775,7 +15797,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-02. 1x | DIN-2 | 35 mm Ek DIN Rayı (Alt Ray, Tam Kesim) | Alt DIN Rayı | 226x35x7,5 mm
+02. 1x | DIN-2 | 35 mm Ek DIN Rayi (Alt Ray, Tam Kesim) | Alt DIN Rayi | 226x35x7,5 mm
 0
 TEXT
 8
@@ -15789,7 +15811,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-03. 2x | Q1, Q2 | 1-1,6A Termik Manyetik MKŞ | Üst DIN Rayı | 45x89x78 mm
+03. 2x | Q1, Q2 | 1-1,6A Termik Manyetik MKS | Ust DIN Rayi | 45x89x78 mm
 0
 TEXT
 8
@@ -15803,7 +15825,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-04. 1x | R1 | 14 Pin Mini Röle + DIN Soket | Üst DIN Rayı | 27x74x66 mm
+04. 1x | R1 | 14 Pin Mini Role + DIN Soket | Ust DIN Rayi | 27x74x66 mm
 0
 TEXT
 8
@@ -15817,7 +15839,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-05. 3x | X1, X2, X3 | 2,5 mm2 Ray Klemensi (5 mm kalınlık) | Üst DIN Rayı | 5x46x42 mm
+05. 3x | X1, X2, X3 | 2,5 mm2 Ray Klemensi (5 mm kalinlik) | Ust DIN Rayi | 5x46x42 mm
 0
 TEXT
 8
@@ -15831,7 +15853,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-06. 4x | KM1, KM2, KM3, KM4 | Mini Kontaktör (45 mm) | Alt DIN Rayı | 45x58x57 mm
+06. 4x | KM1, KM2, KM3, KM4 | Mini Kontaktor (45 mm) | Alt DIN Rayi | 45x58x57 mm
 0
 TEXT
 8
@@ -15845,7 +15867,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-07. 9x | X4, X5, X6, X7 | 2,5 mm2 Ray Klemensi (5 mm kalınlık) | Alt DIN Rayı | 5x46x42 mm
+07. 9x | X4, X5, X6, X7 | 2,5 mm2 Ray Klemensi (5 mm kalinlik) | Alt DIN Rayi | 5x46x42 mm
 0
 TEXT
 8
@@ -15859,7 +15881,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-08. 1x | N-BARA | Bemis Dahili Nötr Barası (6 Vidalı, Mavi) | Pano İçi Yuva | 74x14x18 mm
+08. 1x | N-BARA | Bemis Dahili Notr Barasi (6 Vidali, Mavi) | Pano Ici Yuva | 74x14x18 mm
 0
 TEXT
 8
@@ -15873,7 +15895,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-09. 1x | PE-BARA | Bemis Dahili Toprak Barası (6 Vidalı, Yeşil) | Pano İçi Yuva | 74x14x18 mm
+09. 1x | PE-BARA | Bemis Dahili Toprak Barasi (6 Vidali, Yesil) | Pano Ici Yuva | 74x14x18 mm
 0
 TEXT
 8
@@ -15901,7 +15923,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-11. 1x | S2 | Mutlusan SW-BL4252 (010 104 000081) | Sağ Yan Duvar | 30x55x54 mm
+11. 1x | S2 | Mutlusan SW-BL4252 (010 104 000081) | Sag Yan Duvar | 30x55x54 mm
 0
 TEXT
 8
@@ -15915,7 +15937,7 @@ MALZEME_LISTESI
 40
 4.80
 1
-12. 1x | RK1 | Ortaç ODB-42 PG 36 Geçmeli Tip Polyamid Spiral Rakoru | Alt Duvar | 58x58x16 mm
+12. 1x | RK1 | Ortac ODB-42 PG 36 Gecmeli Tip Polyamid Spiral Rakoru | Alt Duvar | 58x58x16 mm
 0
 TEXT
 8
@@ -15945,7 +15967,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#1 [Güç] Kahverengi 2,5mm2: Besleme 5x2,5 : L1 -> Üst Klemens : X1b
+#1 [Guc] Kahverengi 2,5mm2: Besleme 5x2,5 : L1 -> Ust Klemens : X1b
 0
 TEXT
 8
@@ -15961,7 +15983,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#2 [Güç] Siyah 2,5mm2: Besleme 5x2,5 : L2 -> Üst Klemens : X2b
+#2 [Guc] Siyah 2,5mm2: Besleme 5x2,5 : L2 -> Ust Klemens : X2b
 0
 TEXT
 8
@@ -15977,7 +15999,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#3 [Güç] Gri 2,5mm2: Besleme 5x2,5 : L3 -> Üst Klemens : X3b
+#3 [Guc] Gri 2,5mm2: Besleme 5x2,5 : L3 -> Ust Klemens : X3b
 0
 TEXT
 8
@@ -15993,7 +16015,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#4 [Güç] Koyu Mavi 2,5mm2: Besleme 5x2,5 : N -> Pano N Barası : N1
+#4 [Guc] Koyu Mavi 2,5mm2: Besleme 5x2,5 : N -> Pano N Barasi : N1
 0
 TEXT
 8
@@ -16009,7 +16031,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#5 [Güç] Sarı-Yeşil (PE) 2,5mm2: Besleme 5x2,5 : PE -> Pano PE Barası : PE1
+#5 [Guc] Sari-Yesil (PE) 2,5mm2: Besleme 5x2,5 : PE -> Pano PE Barasi : PE1
 0
 TEXT
 8
@@ -16025,7 +16047,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#6 [Güç] Kahverengi 1,5mm2: Üst Klemens : X1a -> Q1 (MKŞ 1) : 1
+#6 [Guc] Kahverengi 1,5mm2: Ust Klemens : X1a -> Q1 (MKS 1) : 1
 0
 TEXT
 8
@@ -16041,7 +16063,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#7 [Güç] Siyah 1,5mm2: Üst Klemens : X2a -> Q1 (MKŞ 1) : 3
+#7 [Guc] Siyah 1,5mm2: Ust Klemens : X2a -> Q1 (MKS 1) : 3
 0
 TEXT
 8
@@ -16057,7 +16079,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#8 [Güç] Gri 1,5mm2: Üst Klemens : X3a -> Q1 (MKŞ 1) : 5
+#8 [Guc] Gri 1,5mm2: Ust Klemens : X3a -> Q1 (MKS 1) : 5
 0
 TEXT
 8
@@ -16073,7 +16095,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#9 [Güç] Kahverengi 1,5mm2: Q1 (MKŞ 1) : 1 -> Q2 (MKŞ 2) : 1
+#9 [Guc] Kahverengi 1,5mm2: Q1 (MKS 1) : 1 -> Q2 (MKS 2) : 1
 0
 TEXT
 8
@@ -16089,7 +16111,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#10 [Güç] Siyah 1,5mm2: Q1 (MKŞ 1) : 3 -> Q2 (MKŞ 2) : 3
+#10 [Guc] Siyah 1,5mm2: Q1 (MKS 1) : 3 -> Q2 (MKS 2) : 3
 0
 TEXT
 8
@@ -16105,7 +16127,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#11 [Güç] Gri 1,5mm2: Q1 (MKŞ 1) : 5 -> Q2 (MKŞ 2) : 5
+#11 [Guc] Gri 1,5mm2: Q1 (MKS 1) : 5 -> Q2 (MKS 2) : 5
 0
 TEXT
 8
@@ -16153,7 +16175,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#14 [Kumanda] Açık Yeşil 1,0mm2: KM1 (M1(YUKARI)) : A1 -> KM2 (M1(ASAGI)) : 21
+#14 [Kumanda] Acik Yesil 1,0mm2: KM1 (M1(YUKARI)) : A1 -> KM2 (M1(ASAGI)) : 21
 0
 TEXT
 8
@@ -16169,7 +16191,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#15 [Kumanda] Açık Yeşil 1,0mm2: KM3 (M2(YUKARI)) : A1 -> KM4 (M2(ASAGI)) : 21
+#15 [Kumanda] Acik Yesil 1,0mm2: KM3 (M2(YUKARI)) : A1 -> KM4 (M2(ASAGI)) : 21
 0
 TEXT
 8
@@ -16185,7 +16207,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#16 [Güç] Kahverengi 1,0mm2: Q1 (MKŞ 1) : 2 -> KM1 (M1(YUKARI)) : 1
+#16 [Guc] Kahverengi 1,0mm2: Q1 (MKS 1) : 2 -> KM1 (M1(YUKARI)) : 1
 0
 TEXT
 8
@@ -16201,7 +16223,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#17 [Güç] Siyah 1,0mm2: Q1 (MKŞ 1) : 4 -> KM1 (M1(YUKARI)) : 3
+#17 [Guc] Siyah 1,0mm2: Q1 (MKS 1) : 4 -> KM1 (M1(YUKARI)) : 3
 0
 TEXT
 8
@@ -16217,7 +16239,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#18 [Güç] Gri 1,0mm2: Q1 (MKŞ 1) : 6 -> KM1 (M1(YUKARI)) : 5
+#18 [Guc] Gri 1,0mm2: Q1 (MKS 1) : 6 -> KM1 (M1(YUKARI)) : 5
 0
 TEXT
 8
@@ -16233,7 +16255,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#19 [Güç] Kahverengi 1,0mm2: KM1 (M1(YUKARI)) : 1 -> KM2 (M1(ASAGI)) : 1
+#19 [Guc] Kahverengi 1,0mm2: KM1 (M1(YUKARI)) : 1 -> KM2 (M1(ASAGI)) : 1
 0
 TEXT
 8
@@ -16249,7 +16271,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#20 [Güç] Siyah 1,0mm2: KM1 (M1(YUKARI)) : 3 -> KM2 (M1(ASAGI)) : 3
+#20 [Guc] Siyah 1,0mm2: KM1 (M1(YUKARI)) : 3 -> KM2 (M1(ASAGI)) : 3
 0
 TEXT
 8
@@ -16265,7 +16287,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#21 [Güç] Gri 1,0mm2: KM1 (M1(YUKARI)) : 5 -> KM2 (M1(ASAGI)) : 5
+#21 [Guc] Gri 1,0mm2: KM1 (M1(YUKARI)) : 5 -> KM2 (M1(ASAGI)) : 5
 0
 TEXT
 8
@@ -16281,7 +16303,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#22 [Güç] Kahverengi 1,0mm2: Q2 (MKŞ 2) : 2 -> KM3 (M2(YUKARI)) : 1
+#22 [Guc] Kahverengi 1,0mm2: Q2 (MKS 2) : 2 -> KM3 (M2(YUKARI)) : 1
 0
 TEXT
 8
@@ -16297,7 +16319,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#23 [Güç] Siyah 1,0mm2: Q2 (MKŞ 2) : 4 -> KM3 (M2(YUKARI)) : 3
+#23 [Guc] Siyah 1,0mm2: Q2 (MKS 2) : 4 -> KM3 (M2(YUKARI)) : 3
 0
 TEXT
 8
@@ -16313,7 +16335,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#24 [Güç] Gri 1,0mm2: Q2 (MKŞ 2) : 6 -> KM3 (M2(YUKARI)) : 5
+#24 [Guc] Gri 1,0mm2: Q2 (MKS 2) : 6 -> KM3 (M2(YUKARI)) : 5
 0
 TEXT
 8
@@ -16329,7 +16351,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#25 [Güç] Kahverengi 1,0mm2: KM3 (M2(YUKARI)) : 1 -> KM4 (M2(ASAGI)) : 1
+#25 [Guc] Kahverengi 1,0mm2: KM3 (M2(YUKARI)) : 1 -> KM4 (M2(ASAGI)) : 1
 0
 TEXT
 8
@@ -16345,7 +16367,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#26 [Güç] Siyah 1,0mm2: KM3 (M2(YUKARI)) : 3 -> KM4 (M2(ASAGI)) : 3
+#26 [Guc] Siyah 1,0mm2: KM3 (M2(YUKARI)) : 3 -> KM4 (M2(ASAGI)) : 3
 0
 TEXT
 8
@@ -16361,7 +16383,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#27 [Güç] Gri 1,0mm2: KM3 (M2(YUKARI)) : 5 -> KM4 (M2(ASAGI)) : 5
+#27 [Guc] Gri 1,0mm2: KM3 (M2(YUKARI)) : 5 -> KM4 (M2(ASAGI)) : 5
 0
 TEXT
 8
@@ -16377,7 +16399,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#28 [Güç] Kahverengi 1,0mm2: KM1 (M1(YUKARI)) : 2 -> KM2 (M1(ASAGI)) : 4
+#28 [Guc] Kahverengi 1,0mm2: KM1 (M1(YUKARI)) : 2 -> KM2 (M1(ASAGI)) : 4
 0
 TEXT
 8
@@ -16393,7 +16415,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#29 [Güç] Siyah 1,0mm2: KM1 (M1(YUKARI)) : 4 -> KM2 (M1(ASAGI)) : 2
+#29 [Guc] Siyah 1,0mm2: KM1 (M1(YUKARI)) : 4 -> KM2 (M1(ASAGI)) : 2
 0
 TEXT
 8
@@ -16409,7 +16431,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#30 [Güç] Gri 1,0mm2: KM1 (M1(YUKARI)) : 6 -> KM2 (M1(ASAGI)) : 6
+#30 [Guc] Gri 1,0mm2: KM1 (M1(YUKARI)) : 6 -> KM2 (M1(ASAGI)) : 6
 0
 TEXT
 8
@@ -16425,7 +16447,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#31 [Güç] Kahverengi 1,0mm2: KM3 (M2(YUKARI)) : 2 -> KM4 (M2(ASAGI)) : 4
+#31 [Guc] Kahverengi 1,0mm2: KM3 (M2(YUKARI)) : 2 -> KM4 (M2(ASAGI)) : 4
 0
 TEXT
 8
@@ -16441,7 +16463,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#32 [Güç] Siyah 1,0mm2: KM3 (M2(YUKARI)) : 4 -> KM4 (M2(ASAGI)) : 2
+#32 [Guc] Siyah 1,0mm2: KM3 (M2(YUKARI)) : 4 -> KM4 (M2(ASAGI)) : 2
 0
 TEXT
 8
@@ -16457,7 +16479,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#33 [Güç] Gri 1,0mm2: KM3 (M2(YUKARI)) : 6 -> KM4 (M2(ASAGI)) : 6
+#33 [Guc] Gri 1,0mm2: KM3 (M2(YUKARI)) : 6 -> KM4 (M2(ASAGI)) : 6
 0
 TEXT
 8
@@ -16473,7 +16495,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#34 [Güç] Kahverengi 1,0mm2: KM1 (M1(YUKARI)) : 2 -> Motor 1 (M1) : 1
+#34 [Guc] Kahverengi 1,0mm2: KM1 (M1(YUKARI)) : 2 -> Motor 1 (M1) : 1
 0
 TEXT
 8
@@ -16489,7 +16511,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#35 [Güç] Siyah 1,0mm2: KM1 (M1(YUKARI)) : 4 -> Motor 1 (M1) : 2
+#35 [Guc] Siyah 1,0mm2: KM1 (M1(YUKARI)) : 4 -> Motor 1 (M1) : 2
 0
 TEXT
 8
@@ -16505,7 +16527,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#36 [Güç] Gri 1,0mm2: KM1 (M1(YUKARI)) : 6 -> Motor 1 (M1) : 3
+#36 [Guc] Gri 1,0mm2: KM1 (M1(YUKARI)) : 6 -> Motor 1 (M1) : 3
 0
 TEXT
 8
@@ -16521,7 +16543,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#37 [Güç] Kahverengi 1,0mm2: KM3 (M2(YUKARI)) : 2 -> Motor 2 (M2) : 1
+#37 [Guc] Kahverengi 1,0mm2: KM3 (M2(YUKARI)) : 2 -> Motor 2 (M2) : 1
 0
 TEXT
 8
@@ -16537,7 +16559,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#38 [Güç] Siyah 1,0mm2: KM3 (M2(YUKARI)) : 4 -> Motor 2 (M2) : 2
+#38 [Guc] Siyah 1,0mm2: KM3 (M2(YUKARI)) : 4 -> Motor 2 (M2) : 2
 0
 TEXT
 8
@@ -16553,7 +16575,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#39 [Güç] Gri 1,0mm2: KM3 (M2(YUKARI)) : 6 -> Motor 2 (M2) : 3
+#39 [Guc] Gri 1,0mm2: KM3 (M2(YUKARI)) : 6 -> Motor 2 (M2) : 3
 0
 TEXT
 8
@@ -16569,7 +16591,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#40 [Kumanda] Kahverengi 1,0mm2: Sektör Kumanda 1 : 1 -> Alt Klemens : X6b
+#40 [Kumanda] Kahverengi 1,0mm2: Sektor Kumanda 1 : 1 -> Alt Klemens : X6b
 0
 TEXT
 8
@@ -16585,7 +16607,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#41 [Kumanda] Siyah 1,0mm2: Sektör Kumanda 1 : 2 -> Alt Klemens : X7b
+#41 [Kumanda] Siyah 1,0mm2: Sektor Kumanda 1 : 2 -> Alt Klemens : X7b
 0
 TEXT
 8
@@ -16601,7 +16623,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#42 [Kumanda] Gri 1,0mm2: Sektör Kumanda 1 : 3 -> Alt Klemens : X8b
+#42 [Kumanda] Gri 1,0mm2: Sektor Kumanda 1 : 3 -> Alt Klemens : X8b
 0
 TEXT
 8
@@ -16617,7 +16639,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#43 [Kumanda] Mavi (N) 1,0mm2: Sektör Kumanda 1 : 4 -> Alt Klemens : X9b
+#43 [Kumanda] Mavi (N) 1,0mm2: Sektor Kumanda 1 : 4 -> Alt Klemens : X9b
 0
 TEXT
 8
@@ -16633,7 +16655,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#44 [Kumanda] Sarı-Yeşil (PE) 1,0mm2: Sektör Kumanda 1 : 5 -> Alt Klemens : X10b
+#44 [Kumanda] Sari-Yesil (PE) 1,0mm2: Sektor Kumanda 1 : 5 -> Alt Klemens : X10b
 0
 TEXT
 8
@@ -16649,7 +16671,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#45 [Kumanda] Kahverengi 1,0mm2: Sektör Kumanda 2 : 1 -> Alt Klemens : X6b
+#45 [Kumanda] Kahverengi 1,0mm2: Sektor Kumanda 2 : 1 -> Alt Klemens : X6b
 0
 TEXT
 8
@@ -16665,7 +16687,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#46 [Kumanda] Siyah 1,0mm2: Sektör Kumanda 2 : 2 -> Alt Klemens : X7b
+#46 [Kumanda] Siyah 1,0mm2: Sektor Kumanda 2 : 2 -> Alt Klemens : X7b
 0
 TEXT
 8
@@ -16681,7 +16703,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#47 [Kumanda] Gri 1,0mm2: Sektör Kumanda 2 : 3 -> Alt Klemens : X8b
+#47 [Kumanda] Gri 1,0mm2: Sektor Kumanda 2 : 3 -> Alt Klemens : X8b
 0
 TEXT
 8
@@ -16697,7 +16719,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#48 [Kumanda] Mavi (N) 1,0mm2: Sektör Kumanda 2 : 4 -> Alt Klemens : X9b
+#48 [Kumanda] Mavi (N) 1,0mm2: Sektor Kumanda 2 : 4 -> Alt Klemens : X9b
 0
 TEXT
 8
@@ -16713,7 +16735,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#49 [Kumanda] Sarı-Yeşil (PE) 1,0mm2: Sektör Kumanda 2 : 5 -> Alt Klemens : X10b
+#49 [Kumanda] Sari-Yesil (PE) 1,0mm2: Sektor Kumanda 2 : 5 -> Alt Klemens : X10b
 0
 TEXT
 8
@@ -16729,7 +16751,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#50 [Güç] Kırmızı 1,0mm2: Motor 2 (M2) : 4 -> Motor 1 (M1) : 4
+#50 [Guc] Kirmizi 1,0mm2: Motor 2 (M2) : 4 -> Motor 1 (M1) : 4
 0
 TEXT
 8
@@ -16745,7 +16767,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#51 [Güç] Sarı-Yeşil (PE) 1,0mm2: Pano PE Barası : PE2 -> Motor 1 (M1) : 4
+#51 [Guc] Sari-Yesil (PE) 1,0mm2: Pano PE Barasi : PE2 -> Motor 1 (M1) : 4
 0
 TEXT
 8
@@ -16761,7 +16783,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#52 [Güç] Sarı-Yeşil (PE) 1,0mm2: Motor 2 (M2) : 4 -> Pano PE Barası : PE3
+#52 [Guc] Sari-Yesil (PE) 1,0mm2: Motor 2 (M2) : 4 -> Pano PE Barasi : PE3
 0
 TEXT
 8
@@ -16777,7 +16799,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#53 [Kumanda] Mavi (N) 1,0mm2: Motor 1 (M1) : 5 -> Pano N Barası : N2
+#53 [Kumanda] Mavi (N) 1,0mm2: Motor 1 (M1) : 5 -> Pano N Barasi : N2
 0
 TEXT
 8
@@ -16793,7 +16815,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#54 [Kumanda] Mavi (N) 1,0mm2: Motor 2 (M2) : 5 -> Pano N Barası : N3
+#54 [Kumanda] Mavi (N) 1,0mm2: Motor 2 (M2) : 5 -> Pano N Barasi : N3
 0
 TEXT
 8
@@ -16809,7 +16831,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#55 [Kumanda] Yeşil 1,0mm2: Motor 1 (M1) : 6 -> Alt Klemens : X4b
+#55 [Kumanda] Yesil 1,0mm2: Motor 1 (M1) : 6 -> Alt Klemens : X4b
 0
 TEXT
 8
@@ -16857,7 +16879,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#58 [Kumanda] Yeşil 1,0mm2: Motor 2 (M2) : 6 -> Alt Klemens : X11b
+#58 [Kumanda] Yesil 1,0mm2: Motor 2 (M2) : 6 -> Alt Klemens : X11b
 0
 TEXT
 8
@@ -16873,7 +16895,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#59 [Kumanda] Yeşil 1,0mm2: Alt Klemens : X4a -> KM1 (M1(YUKARI)) : A2
+#59 [Kumanda] Yesil 1,0mm2: Alt Klemens : X4a -> KM1 (M1(YUKARI)) : A2
 0
 TEXT
 8
@@ -16889,7 +16911,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#60 [Kumanda] Yeşil 1,0mm2: Alt Klemens : X11a -> KM3 (M2(YUKARI)) : A2
+#60 [Kumanda] Yesil 1,0mm2: Alt Klemens : X11a -> KM3 (M2(YUKARI)) : A2
 0
 TEXT
 8
@@ -16937,7 +16959,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#63 [Kumanda] Kahverengi 1,0mm2: Alt Klemens : X6a -> R1 (14P Röle) : 1
+#63 [Kumanda] Kahverengi 1,0mm2: Alt Klemens : X6a -> R1 (14P Role) : 1
 0
 TEXT
 8
@@ -16953,7 +16975,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#64 [Kumanda] Kahverengi 1,0mm2: R1 (14P Röle) : 9 -> KM2 (M1(ASAGI)) : 22
+#64 [Kumanda] Kahverengi 1,0mm2: R1 (14P Role) : 9 -> KM2 (M1(ASAGI)) : 22
 0
 TEXT
 8
@@ -16969,7 +16991,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#65 [Kumanda] Siyah 1,0mm2: Alt Klemens : X7a -> R1 (14P Röle) : 2
+#65 [Kumanda] Siyah 1,0mm2: Alt Klemens : X7a -> R1 (14P Role) : 2
 0
 TEXT
 8
@@ -16985,7 +17007,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#66 [Kumanda] Siyah 1,0mm2: R1 (14P Röle) : 10 -> KM1 (M1(YUKARI)) : 22
+#66 [Kumanda] Siyah 1,0mm2: R1 (14P Role) : 10 -> KM1 (M1(YUKARI)) : 22
 0
 TEXT
 8
@@ -17001,7 +17023,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#67 [Kumanda] Gri 1,0mm2: Alt Klemens : X8a -> R1 (14P Röle) : 3
+#67 [Kumanda] Gri 1,0mm2: Alt Klemens : X8a -> R1 (14P Role) : 3
 0
 TEXT
 8
@@ -17017,7 +17039,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#68 [Kumanda] Mavi (N) 1,0mm2: Alt Klemens : X9a -> R1 (14P Röle) : 4
+#68 [Kumanda] Mavi (N) 1,0mm2: Alt Klemens : X9a -> R1 (14P Role) : 4
 0
 TEXT
 8
@@ -17033,7 +17055,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#69 [Kumanda] Mavi (N) 1,0mm2: R1 (14P Röle) : 12 -> KM3 (M2(YUKARI)) : 22
+#69 [Kumanda] Mavi (N) 1,0mm2: R1 (14P Role) : 12 -> KM3 (M2(YUKARI)) : 22
 0
 TEXT
 8
@@ -17049,7 +17071,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#70 [Kumanda] Sarı-Yeşil (PE) 1,0mm2: Alt Klemens : X10a -> R1 (14P Röle) : 13
+#70 [Kumanda] Sari-Yesil (PE) 1,0mm2: Alt Klemens : X10a -> R1 (14P Role) : 13
 0
 TEXT
 8
@@ -17065,7 +17087,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#71 [Kumanda] Mavi (N) 1,0mm2: R1 (14P Röle) : 14 -> Pano N Barası : N4
+#71 [Kumanda] Mavi (N) 1,0mm2: R1 (14P Role) : 14 -> Pano N Barasi : N4
 0
 TEXT
 8
@@ -17081,7 +17103,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#72 [Kumanda] Kahverengi 1,0mm2: Q1 (MKŞ 1) : 2 -> S1 (Sol Buton) : 13
+#72 [Kumanda] Kahverengi 1,0mm2: Q1 (MKS 1) : 2 -> S1 (Sol Buton) : 13
 0
 TEXT
 8
@@ -17113,7 +17135,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#74 [Kumanda] Kahverengi 1,0mm2: Q2 (MKŞ 2) : 2 -> S2 (Sağ Buton) : 13
+#74 [Kumanda] Kahverengi 1,0mm2: Q2 (MKS 2) : 2 -> S2 (Sag Buton) : 13
 0
 TEXT
 8
@@ -17129,7 +17151,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#75 [Kumanda] Kahverengi 1,0mm2: S2 (Sağ Buton) : 13 -> S2 (Sağ Buton) : 23
+#75 [Kumanda] Kahverengi 1,0mm2: S2 (Sag Buton) : 13 -> S2 (Sag Buton) : 23
 0
 TEXT
 8
@@ -17145,7 +17167,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#76 [Kumanda] Kahverengi 1,0mm2: S1 (Sol Buton) : 14 -> R1 (14P Röle) : 5
+#76 [Kumanda] Kahverengi 1,0mm2: S1 (Sol Buton) : 14 -> R1 (14P Role) : 5
 0
 TEXT
 8
@@ -17161,7 +17183,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#77 [Kumanda] Siyah 1,0mm2: S1 (Sol Buton) : 24 -> R1 (14P Röle) : 6
+#77 [Kumanda] Siyah 1,0mm2: S1 (Sol Buton) : 24 -> R1 (14P Role) : 6
 0
 TEXT
 8
@@ -17177,7 +17199,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#78 [Kumanda] Gri 1,0mm2: S2 (Sağ Buton) : 14 -> R1 (14P Röle) : 7
+#78 [Kumanda] Gri 1,0mm2: S2 (Sag Buton) : 14 -> R1 (14P Role) : 7
 0
 TEXT
 8
@@ -17193,7 +17215,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#79 [Kumanda] Mavi (N) 1,0mm2: S2 (Sağ Buton) : 24 -> R1 (14P Röle) : 8
+#79 [Kumanda] Mavi (N) 1,0mm2: S2 (Sag Buton) : 24 -> R1 (14P Role) : 8
 0
 TEXT
 8
@@ -17209,7 +17231,7 @@ KABLO_TABLOSU
 40
 4.20
 1
-#80 [Kumanda] Gri 1,0mm2: R1 (14P Röle) : 11 -> KM4 (M2(ASAGI)) : 22
+#80 [Kumanda] Gri 1,0mm2: R1 (14P Role) : 11 -> KM4 (M2(ASAGI)) : 22
 0
 ENDSEC
 0

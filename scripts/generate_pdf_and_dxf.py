@@ -825,18 +825,26 @@ class DxfWriter:
         return HEX_TO_ACI.get(hex_str.lower(), 7)
 
     def _clean(self, txt: str) -> str:
-        # AutoCAD R12 uyumluluğu için ASCII+Latin-1 güvenli karakter temizliği (Türkçe harfleri okunaklı koru)
+        # AutoCAD R12/R2000 (txt.shx / CP1252) uyumlulugu icin saf ASCII temizligi (garbled/\\U+XXXX onleme)
         repl = {
             "→": "->",
             "↔": "<->",
             "↑": "(YUKARI)",
             "↓": "(ASAGI)",
+            "▲": "^",
+            "▼": "v",
             "×": "x",
             "•": "-",
             "—": "-",
             "–": "-",
             "²": "2",
             "Ø": "%%C",
+            "ç": "c", "Ç": "C",
+            "ğ": "g", "Ğ": "G",
+            "ı": "i", "İ": "I",
+            "ö": "o", "Ö": "O",
+            "ş": "s", "Ş": "S",
+            "ü": "u", "Ü": "U",
         }
         out = txt
         for k, v in repl.items():
@@ -893,6 +901,15 @@ class DxfWriter:
             "9", "$INSUNITS", "70", "4",  # 4 = Millimeters
             "0", "ENDSEC",
             "0", "SECTION", "2", "TABLES",
+            "0", "TABLE", "2", "LTYPE", "70", "1",
+            "0", "LTYPE",
+            "2", "CONTINUOUS",
+            "70", "0",
+            "3", "Solid line",
+            "72", "65",
+            "73", "0",
+            "40", "0.0",
+            "0", "ENDTAB",
             "0", "TABLE", "2", "LAYER", "70", str(len(self.layers)),
         ]
         for lname, aci in self.layers:
