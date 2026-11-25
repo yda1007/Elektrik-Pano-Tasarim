@@ -805,6 +805,17 @@ body {
   background: rgba(56, 189, 248, 0.14);
 }
 
+.wire-num-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
 @media (max-width: 1180px) {
   .workspace,
   .schematic-workspace {

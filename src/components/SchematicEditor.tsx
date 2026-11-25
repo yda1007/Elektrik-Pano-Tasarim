@@ -74,9 +74,31 @@ function getWireColorSpec(hex: string): StandardWireColor {
   );
 }
 
-const CANVAS_W = 1480;
-const CANVAS_H = 940;
+const CANVAS_W = 1520;
+const CANVAS_H = 1040;
 const GRID = 10;
+
+function isLightHex(hex: string): boolean {
+  const clean = hex.replace('#', '');
+  if (clean.length !== 6) return false;
+  const r = parseInt(clean.slice(0, 2), 16);
+  const g = parseInt(clean.slice(2, 4), 16);
+  const b = parseInt(clean.slice(4, 6), 16);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 155;
+}
+
+function shortNodeCode(node: SchematicNode): string {
+  if (node.id === 'sys-supply') return 'BES';
+  if (node.id === 'sys-neutral') return 'N';
+  if (node.id === 'sys-pe') return 'PE';
+  if (node.id === 'sys-m1') return 'M1';
+  if (node.id === 'sys-m2') return 'M2';
+  if (node.id === 'sys-sector-1') return 'SK1';
+  if (node.id === 'sys-sector-2') return 'SK2';
+  if (node.id === 'blk-top-terminals') return 'ÜST';
+  if (node.id === 'blk-bottom-terminals') return 'ALT';
+  return node.title.split(' ')[0];
+}
 
 function snap(val: number): number {
   return Math.round(val / GRID) * GRID;
@@ -177,7 +199,7 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     ),
   });
 
-  // 2. MKŞ'ler (Üst sıra)
+  // 2. MKŞ'ler (2. Satır — üstten ferah boşluk)
   const mksItems = items.filter((i) => i.category === 'mks').sort((a, b) => a.order - b.order);
   mksItems.forEach((item, idx) => {
     nodes.push({
@@ -188,7 +210,7 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
       height: 80,
       accent: item.color,
       defaultX: 50 + idx * 190,
-      defaultY: 150,
+      defaultY: 200,
       pins: makeTopBottomPins(
         140,
         80,
@@ -216,8 +238,8 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
       width: 360,
       height: 112,
       accent: item.color,
-      defaultX: 460 + idx * 380,
-      defaultY: 136,
+      defaultX: 470 + idx * 390,
+      defaultY: 184,
       pins: makeTopBottomPins(
         360,
         112,
@@ -252,13 +274,13 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
       id: item.id,
       title: item.code,
       subtitle: `${item.rating ?? 'Mini Kontaktör'} • 3P+1NC`,
-      width: 196,
+      width: 204,
       height: 98,
       accent: item.color,
-      defaultX: 40 + idx * 220,
-      defaultY: 356,
+      defaultX: 40 + idx * 230,
+      defaultY: 430,
       pins: makeTopBottomPins(
-        196,
+        204,
         98,
         [
           { id: '1', label: '1', subLabel: 'L1', title: `${item.code} Güç 1/L1` },
@@ -288,8 +310,8 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
       width: 170,
       height: 84,
       accent: item.color,
-      defaultX: 1020,
-      defaultY: 340 + idx * 140,
+      defaultX: 1020 + idx * 220,
+      defaultY: 436,
       pins: makeTopBottomPins(
         170,
         84,
@@ -310,7 +332,7 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     .filter((i) => i.category === 'terminal' && i.mount === 'top-rail')
     .sort((a, b) => a.order - b.order);
   if (topTerminals.length > 0) {
-    const w = Math.max(150, topTerminals.length * 46);
+    const w = Math.max(170, topTerminals.length * 52);
     nodes.push({
       id: 'blk-top-terminals',
       title: `ÜST KLEMENS (${topTerminals.length} Adet)`,
@@ -334,7 +356,7 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     .filter((i) => i.category === 'terminal' && i.mount === 'bottom-rail')
     .sort((a, b) => a.order - b.order);
   if (bottomTerminals.length > 0) {
-    const w = Math.max(240, bottomTerminals.length * 46);
+    const w = Math.max(260, bottomTerminals.length * 50);
     nodes.push({
       id: 'blk-bottom-terminals',
       title: `ALT KLEMENS (${bottomTerminals.length} Adet)`,
@@ -343,7 +365,7 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
       height: 70,
       accent: '#64748b',
       defaultX: 40,
-      defaultY: 570,
+      defaultY: 660,
       pins: makeTopBottomPins(
         w,
         70,
@@ -388,13 +410,13 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
       id: `sys-${mCode.toLowerCase()}`,
       title: `MOTOR ${idx + 1} (${mCode} • 7 Damar)`,
       subtitle: '3 Faz + PE + Limit / Sinyal (PG36)',
-      width: 310,
+      width: 320,
       height: 76,
       accent: '#06b6d4',
-      defaultX: 40 + idx * 340,
-      defaultY: 790,
+      defaultX: 40 + idx * 360,
+      defaultY: 890,
       pins: makeTopBottomPins(
-        310,
+        320,
         76,
         [
           { id: '1', label: '1', subLabel: 'U', subColor: '#d97706', title: `${mCode} Damar 1 — Faz U` },
@@ -416,13 +438,13 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
       id: `sys-sector-${secNo}`,
       title: `SEKTÖR ${secNo} SİNYAL (5×1 mm²)`,
       subtitle: `5×1 mm² Kumanda / Sektör Kablosu ${secNo}`,
-      width: 260,
+      width: 270,
       height: 76,
       accent: '#ec4899',
-      defaultX: 740 + idx * 290,
-      defaultY: 790,
+      defaultX: 790 + idx * 310,
+      defaultY: 890,
       pins: makeTopBottomPins(
-        260,
+        270,
         76,
         [
           { id: '1', label: '1', subLabel: 'D1', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 1` },
@@ -453,7 +475,9 @@ export default function SchematicEditor({
   const [wireSection, setWireSection] = useState('1,0');
   const [wireLabel, setWireLabel] = useState('');
   const [selectedWireId, setSelectedWireId] = useState<string | null>(null);
+  const [hoveredWireId, setHoveredWireId] = useState<string | null>(null);
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
+  const [displayMode, setDisplayMode] = useState<'tags' | 'tags-target' | 'lines'>('tags');
   const [wireFilter, setWireFilter] = useState<'all' | 'power' | 'control'>('all');
   const [showWireLabels, setShowWireLabels] = useState(false);
   const [dimOthersOnSelect, setDimOthersOnSelect] = useState(true);
@@ -519,6 +543,16 @@ export default function SchematicEditor({
     onChangeWires(routed);
   };
 
+  const handleRenumberWires = () => {
+    if (wires.length === 0) return;
+    onChangeWires(
+      wires.map((w, idx) => ({
+        ...w,
+        label: String(idx + 1),
+      }))
+    );
+  };
+
   const handleUndoAutoRoute = () => {
     if (!preRouteBackup) return;
     onChangeWires(preRouteBackup);
@@ -530,6 +564,47 @@ export default function SchematicEditor({
     const isPower = w.sectionMm2 === '2,5';
     return wireFilter === 'power' ? isPower : !isPower;
   };
+
+  // Numaralı bayrak (yüksük) görünümü için her pindeki bağlantıları grupla
+  const pinAttachments = useMemo(() => {
+    const nodeById = new Map(nodes.map((n) => [n.id, n]));
+    const map = new Map<
+      string,
+      Array<{
+        wire: SchematicWire;
+        num: number;
+        badgeNumText: string;
+        partnerShort: string;
+      }>
+    >();
+
+    const addEntry = (
+      nodeId: string,
+      pinId: string,
+      wire: SchematicWire,
+      num: number,
+      otherNodeId: string,
+      otherPinId: string
+    ) => {
+      const otherNode = nodeById.get(otherNodeId);
+      const otherPin = otherNode?.pins.find((p) => p.id === otherPinId);
+      const partnerShort = `${otherNode ? shortNodeCode(otherNode) : otherNodeId}:${otherPin?.label ?? otherPinId}`;
+      const badgeNumText = wire.label && !/^K\d+$/.test(wire.label) ? wire.label : String(num);
+      const key = `${nodeId}::${pinId}`;
+      const list = map.get(key) ?? [];
+      list.push({ wire, num, badgeNumText, partnerShort });
+      map.set(key, list);
+    };
+
+    wires.forEach((w, idx) => {
+      if (!isWireVisibleByFilter(w)) return;
+      const num = idx + 1;
+      addEntry(w.fromNodeId, w.fromPinId, w, num, w.toNodeId, w.toPinId);
+      addEntry(w.toNodeId, w.toPinId, w, num, w.fromNodeId, w.fromPinId);
+    });
+
+    return map;
+  }, [wires, nodes, wireFilter]);
 
   const toSvgCoords = (clientX: number, clientY: number): SchematicPoint | null => {
     if (!svgRef.current) return null;
@@ -815,9 +890,17 @@ export default function SchematicEditor({
               type="button"
               className="btn-primary"
               disabled={wires.length === 0}
+              onClick={handleRenumberWires}
+            >
+              1-2-3 Otomatik Numaralandır
+            </button>
+            <button
+              type="button"
+              className="btn-sm"
+              disabled={wires.length === 0}
               onClick={handleAutoRoute}
             >
-              ✦ Kabloları Otomatik Düzenle
+              ✦ Kablo Yollarını Düzenle
             </button>
             {preRouteBackup && (
               <button type="button" className="btn-sm" onClick={handleUndoAutoRoute}>
@@ -845,7 +928,7 @@ export default function SchematicEditor({
               className="btn-sm"
               onClick={() => onChangeNodePositions({})}
             >
-              Eleman Konumlarını Sıfırla
+              Blokları Ferah Diz (Sıfırla)
             </button>
             <button
               type="button"
@@ -869,19 +952,30 @@ export default function SchematicEditor({
         <div className="cad-card">
           <div className="cad-card-header schematic-toolbar">
             <div className="toolbar-group">
-              <button
-                type="button"
-                className="btn-primary"
-                disabled={wires.length === 0}
-                onClick={handleAutoRoute}
-              >
-                ✦ Kabloları Otomatik Düzenle
-              </button>
-              {preRouteBackup && (
-                <button type="button" className="btn-sm" onClick={handleUndoAutoRoute}>
-                  ↶ Geri Al
+              <div className="segmented">
+                <button
+                  type="button"
+                  className={displayMode === 'tags' ? 'active' : ''}
+                  onClick={() => setDisplayMode('tags')}
+                >
+                  🏷 Numaralı Temiz
                 </button>
-              )}
+                <button
+                  type="button"
+                  className={displayMode === 'tags-target' ? 'active' : ''}
+                  onClick={() => setDisplayMode('tags-target')}
+                >
+                  🏷 Numara + Hedef
+                </button>
+                <button
+                  type="button"
+                  className={displayMode === 'lines' ? 'active' : ''}
+                  onClick={() => setDisplayMode('lines')}
+                >
+                  〰 Tüm Hatlar
+                </button>
+              </div>
+
               <div className="segmented">
                 <button
                   type="button"
@@ -895,7 +989,7 @@ export default function SchematicEditor({
                   className={wireFilter === 'power' ? 'active' : ''}
                   onClick={() => setWireFilter('power')}
                 >
-                  Güç (2,5 mm²)
+                  Güç (2,5)
                 </button>
                 <button
                   type="button"
@@ -908,14 +1002,26 @@ export default function SchematicEditor({
             </div>
 
             <div className="toolbar-group">
-              <label className="inline-check">
-                <input
-                  type="checkbox"
-                  checked={showWireLabels}
-                  onChange={(e) => setShowWireLabels(e.target.checked)}
-                />
-                <span>Kablo Etiketleri</span>
-              </label>
+              {displayMode === 'lines' && (
+                <>
+                  <button
+                    type="button"
+                    className="btn-sm"
+                    disabled={wires.length === 0}
+                    onClick={handleAutoRoute}
+                  >
+                    ✦ Hatları Düzenle
+                  </button>
+                  <label className="inline-check">
+                    <input
+                      type="checkbox"
+                      checked={showWireLabels}
+                      onChange={(e) => setShowWireLabels(e.target.checked)}
+                    />
+                    <span>Etiketler</span>
+                  </label>
+                </>
+              )}
               <label className="inline-check">
                 <input
                   type="checkbox"
@@ -969,24 +1075,30 @@ export default function SchematicEditor({
             <rect x={0} y={0} width={CANVAS_W} height={CANVAS_H} fill="#0b1220" />
             <rect x={0} y={0} width={CANVAS_W} height={CANVAS_H} fill="url(#sch-grid)" />
 
-            {/* ÇİZİLMİŞ KABLOLAR */}
+            {/* TAM KABLO HATLARI (Tüm Hatlar modunda hepsi; Numaralı modda sadece seçili/hover/odaklı hatlar!) */}
             {wires.map((w, wireIdx) => {
               if (!isWireVisibleByFilter(w)) return null;
+              const isSelected = selectedWireId === w.id;
+              const isHovered = hoveredWireId === w.id;
+              const isConnectedToFocused =
+                focusedNodeId !== null &&
+                (w.fromNodeId === focusedNodeId || w.toNodeId === focusedNodeId);
+              const isHighlighted = isSelected || isHovered || isConnectedToFocused;
+
+              if (displayMode !== 'lines' && !isHighlighted) return null;
+
               const p1 = getPinAbsPos(w.fromNodeId, w.fromPinId);
               const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
               if (!p1 || !p2) return null;
               const pts = [p1, ...w.waypoints, p2];
               const pathD = buildRoundedWirePath(pts, 7);
-              const isSelected = selectedWireId === w.id;
-              const isConnectedToFocused =
-                focusedNodeId !== null &&
-                (w.fromNodeId === focusedNodeId || w.toNodeId === focusedNodeId);
               const hasSelectionFocus =
-                dimOthersOnSelect && (selectedWireId !== null || focusedNodeId !== null);
-              const isHighlighted = isSelected || isConnectedToFocused;
+                displayMode === 'lines' &&
+                dimOthersOnSelect &&
+                (selectedWireId !== null || focusedNodeId !== null || hoveredWireId !== null);
               const opacity = hasSelectionFocus && !isHighlighted ? 0.14 : 1;
               const labelPt = getBestWireLabelPoint(pts, wireIdx);
-              const strokeWidth = w.sectionMm2 === '2,5' ? 3.2 : 2.3;
+              const strokeWidth = w.sectionMm2 === '2,5' ? 3.2 : 2.4;
 
               return (
                 <g
@@ -999,10 +1111,7 @@ export default function SchematicEditor({
                   }}
                   style={{ cursor: 'pointer', transition: 'opacity 0.15s' }}
                 >
-                  {/* Tıklamayı kolaylaştıran kalın görünmez seçim hattı */}
                   <path d={pathD} fill="none" stroke="transparent" strokeWidth={13} />
-
-                  {/* Çapraz geçişlerde kabloları birbirinden ayıran koyu koruyucu kılıf */}
                   <path
                     d={pathD}
                     fill="none"
@@ -1017,7 +1126,7 @@ export default function SchematicEditor({
                       d={pathD}
                       fill="none"
                       stroke="#38bdf8"
-                      strokeWidth={strokeWidth + 4}
+                      strokeWidth={strokeWidth + 4.2}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeOpacity={0.45}
@@ -1042,11 +1151,9 @@ export default function SchematicEditor({
                       strokeLinejoin="round"
                     />
                   )}
-                  {/* Uç bağlantı noktaları */}
                   <circle cx={p1.x} cy={p1.y} r={3.5} fill={w.color} />
                   <circle cx={p2.x} cy={p2.y} r={3.5} fill={w.color} />
 
-                  {/* Seçili kablonun sürüklenebilir köşe tutamaçları */}
                   {isSelected &&
                     w.waypoints.map((wp, wpIdx) => (
                       <circle
@@ -1065,7 +1172,6 @@ export default function SchematicEditor({
                       />
                     ))}
 
-                  {/* Kablo etiketi (isteğe bağlı veya seçiliyken her zaman görünür) */}
                   {w.label && (showWireLabels || isHighlighted) && (
                     <g pointerEvents="none">
                       <rect
@@ -1231,6 +1337,98 @@ export default function SchematicEditor({
                       </g>
                     );
                   })}
+
+                  {/* NUMARALI YÜKSÜK / BAYRAK ETİKETLERİ (Sıfır karmaşa görünümü) */}
+                  {displayMode !== 'lines' &&
+                    node.pins.map((pin, pinIdx) => {
+                      const entries = pinAttachments.get(`${node.id}::${pin.id}`);
+                      if (!entries || entries.length === 0) return null;
+                      const dir = pin.side === 'top' ? -1 : 1;
+                      const tierBase = pinIdx % 2 === 0 ? 19 : 37;
+                      const maxDist = tierBase + (entries.length - 1) * 18;
+                      const lastEntryColor = entries[entries.length - 1].wire.color;
+
+                      return (
+                        <g key={`flags-${pin.id}`}>
+                          {/* Pin çıkış kısa kablo saplaması */}
+                          <line
+                            x1={pin.dx}
+                            y1={pin.dy + dir * 5}
+                            x2={pin.dx}
+                            y2={pin.dy + dir * maxDist}
+                            stroke={lastEntryColor}
+                            strokeWidth={2.2}
+                          />
+                          {entries.map((entry, subIdx) => {
+                            const dist = tierBase + subIdx * 18;
+                            const fy = pin.dy + dir * dist;
+                            const { wire } = entry;
+                            const isSel = selectedWireId === wire.id;
+                            const isHov = hoveredWireId === wire.id;
+                            const isNodeMatch =
+                              focusedNodeId !== null &&
+                              (wire.fromNodeId === focusedNodeId || wire.toNodeId === focusedNodeId);
+                            const isActive = isSel || isHov || isNodeMatch;
+                            const hasFocus =
+                              dimOthersOnSelect &&
+                              (selectedWireId !== null || focusedNodeId !== null || hoveredWireId !== null);
+                            const badgeOpacity = hasFocus && !isActive ? 0.28 : 1;
+
+                            const text =
+                              displayMode === 'tags-target'
+                                ? `${entry.badgeNumText}→${entry.partnerShort}`
+                                : entry.badgeNumText;
+                            const pillW =
+                              displayMode === 'tags-target'
+                                ? Math.max(54, text.length * 5.2 + 10)
+                                : Math.max(22, text.length * 6.5 + 10);
+                            const pillH = 15;
+                            const textColor = isLightHex(wire.color) ? '#0b1120' : '#ffffff';
+                            const colorSpec = getWireColorSpec(wire.color);
+
+                            return (
+                              <g
+                                key={`${wire.id}-${subIdx}`}
+                                opacity={badgeOpacity}
+                                style={{ cursor: 'pointer' }}
+                                onMouseEnter={() => setHoveredWireId(wire.id)}
+                                onMouseLeave={() => setHoveredWireId(null)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setFocusedNodeId(null);
+                                  setSelectedWireId(isSel ? null : wire.id);
+                                }}
+                              >
+                                <title>
+                                  {`#${entry.num} (${wire.label}) • ${colorSpec.name} • ${wire.sectionMm2} mm² → ${entry.partnerShort}`}
+                                </title>
+                                <rect
+                                  x={pin.dx - pillW / 2}
+                                  y={fy - pillH / 2}
+                                  width={pillW}
+                                  height={pillH}
+                                  rx={4}
+                                  fill={wire.color}
+                                  stroke={isActive ? '#38bdf8' : colorSpec.stripeHex ?? '#0b1120'}
+                                  strokeWidth={isActive ? 2.2 : colorSpec.stripeHex ? 1.5 : 1}
+                                />
+                                <text
+                                  x={pin.dx}
+                                  y={fy + 3.2}
+                                  textAnchor="middle"
+                                  fontSize={displayMode === 'tags-target' ? 7.6 : 8.6}
+                                  fontWeight={800}
+                                  fill={textColor}
+                                  pointerEvents="none"
+                                >
+                                  {text}
+                                </text>
+                              </g>
+                            );
+                          })}
+                        </g>
+                      );
+                    })}
                 </g>
               );
             })}
@@ -1350,28 +1548,41 @@ export default function SchematicEditor({
             <table className="mini-table">
               <thead>
                 <tr>
-                  <th>Etiket</th>
+                  <th>No</th>
                   <th>Bağlantı</th>
                   <th>mm²</th>
                 </tr>
               </thead>
               <tbody>
-                {wires.map((w) => (
+                {wires.map((w, idx) => (
                   <tr
                     key={w.id}
-                    className={selectedWireId === w.id ? 'selected-row' : ''}
-                    onClick={() => setSelectedWireId(w.id)}
+                    className={selectedWireId === w.id || hoveredWireId === w.id ? 'selected-row' : ''}
+                    onMouseEnter={() => setHoveredWireId(w.id)}
+                    onMouseLeave={() => setHoveredWireId(null)}
+                    onClick={() => {
+                      setFocusedNodeId(null);
+                      setSelectedWireId(w.id);
+                    }}
                     style={{ cursor: 'pointer' }}
                   >
                     <td>
-                      <span className="wire-dot" style={{ backgroundColor: w.color, marginRight: 5 }} />
-                      <strong>{w.label}</strong>
+                      <span
+                        className="wire-num-pill"
+                        style={{
+                          backgroundColor: w.color,
+                          color: isLightHex(w.color) ? '#0b1120' : '#ffffff',
+                        }}
+                      >
+                        {w.label && !/^K\d+$/.test(w.label) ? w.label : idx + 1}
+                      </span>
                     </td>
                     <td>
                       <div className="bom-codes" style={{ color: '#e2e8f0' }}>
                         {formatEndpoint(w.fromNodeId, w.fromPinId)} →{' '}
                         {formatEndpoint(w.toNodeId, w.toPinId)}
                       </div>
+                      <div className="bom-codes">{getWireColorSpec(w.color).name}</div>
                     </td>
                     <td>{w.sectionMm2}</td>
                   </tr>
