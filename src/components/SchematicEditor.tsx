@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { PanelItem, SchematicNodePos, SchematicPoint, SchematicWire } from '../types/panel';
+import CleanSchematicView from './CleanSchematicView';
 import {
   autoOptimizeSchematicLayout,
   autoRouteWiresWithMetrics,
@@ -9,6 +10,7 @@ import {
   getBestWireLabelPoint,
   type RouteMetrics,
 } from '../utils/schematicRouter';
+import { buildTwoPageSchematics } from '../utils/twoPageSchematic';
 
 interface PinDef {
   id: string;
@@ -483,12 +485,14 @@ export default function SchematicEditor({
   const [selectedWireId, setSelectedWireId] = useState<string | null>(null);
   const [hoveredWireId, setHoveredWireId] = useState<string | null>(null);
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
-  const [displayMode, setDisplayMode] = useState<'tags' | 'tags-target' | 'lines' | 'cards'>('lines');
-  const [wireFilter, setWireFilter] = useState<'all' | 'power' | 'control'>('all');
+  const [displayMode, setDisplayMode] = useState<
+    'power-page' | 'control-page' | 'cards' | 'lines' | 'tags'
+  >('power-page');
+  const wireFilter: 'all' | 'power' | 'control' = 'all';
   const [showWireLabels, setShowWireLabels] = useState(false);
-  const [dimOthersOnSelect, setDimOthersOnSelect] = useState(true);
+  const dimOthersOnSelect = true;
   const [mergeSameNet, setMergeSameNet] = useState(true);
-  const [autoRerouteOnDrag, setAutoRerouteOnDrag] = useState(true);
+  const [autoRerouteOnDrag, setAutoRerouteOnDrag] = useState(false);
   const [routeMetrics, setRouteMetrics] = useState<RouteMetrics | null>(null);
   const [zoom, setZoom] = useState<number | 'fit'>('fit');
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -496,7 +500,6 @@ export default function SchematicEditor({
     nodePositions: Record<string, SchematicNodePos>;
     wires: SchematicWire[];
   } | null>(null);
-  const autoOptimizedOnceRef = useRef(false);
 
   const [draft, setDraft] = useState<{
     fromNodeId: string;
@@ -598,16 +601,8 @@ export default function SchematicEditor({
     setPreOptimizeBackup(null);
   };
 
-  // Mevcut çizili kablolar varsa 1 kez Proteus A* otorouter ile temiz yerleştir (Geri Al aktif)
-  useEffect(() => {
-    if (autoOptimizedOnceRef.current || wires.length === 0) return;
-    autoOptimizedOnceRef.current = true;
-    setPreOptimizeBackup({ nodePositions, wires });
-    const result = autoOptimizeSchematicLayout(nodes, wires, CANVAS_W, CANVAS_H, true);
-    onChangeNodePositions(result.nodePositions);
-    onChangeWires(result.wires);
-    setRouteMetrics(result.metrics);
-  }, [nodes, wires, nodePositions, onChangeNodePositions, onChangeWires]);
+  // 2 Sayfalık Temiz EPLAN Şeması (Sayfa 1: Güç | Sayfa 2: Kumanda) — mevcut kablolarınızdan canlı üretilir
+  const twoPages = useMemo(() => buildTwoPageSchematics(wires), [wires]);
 
   const isWireVisibleByFilter = (w: SchematicWire): boolean => {
     if (wireFilter === 'all') return true;
@@ -723,22 +718,8 @@ export default function SchematicEditor({
       label: wireLabel.trim() || `K${wires.length + 1}`,
     };
 
-    const updatedWires = [...wires, nextWire];
-    // Proteus tarzı: yeni çizilen kabloda ara nokta konmadıysa A* labirent yönlendirici ile blokların etrafından geçir
-    if (draft.waypoints.length === 0 && orthoMode) {
-      const res = autoRouteWiresWithMetrics(
-        updatedWires,
-        nodes,
-        nodePositions,
-        CANVAS_W,
-        CANVAS_H,
-        mergeSameNet
-      );
-      onChangeWires(res.wires);
-      setRouteMetrics(res.metrics);
-    } else {
-      onChangeWires(updatedWires);
-    }
+    // Yeni çizilen kabloyu diğer kabloları bozmadan doğrudan ekle
+    onChangeWires([...wires, nextWire]);
     setDraft(null);
     setSelectedWireId(nextWire.id);
   };
@@ -1070,17 +1051,17 @@ export default function SchematicEditor({
               <div className="segmented">
                 <button
                   type="button"
-                  className={displayMode === 'tags' ? 'active' : ''}
-                  onClick={() => setDisplayMode('tags')}
+                  className={displayMode === 'power-page' ? 'active' : ''}
+                  onClick={() => setDisplayMode('power-page')}
                 >
-                  🏷 Numaralı
+                  ⚡ Sayfa 1: Güç ({twoPages.power.wires.length})
                 </button>
                 <button
                   type="button"
-                  className={displayMode === 'tags-target' ? 'active' : ''}
-                  onClick={() => setDisplayMode('tags-target')}
+                  className={displayMode === 'control-page' ? 'active' : ''}
+                  onClick={() => setDisplayMode('control-page')}
                 >
-                  🏷 Numara+Hedef
+                  🎛 Sayfa 2: Kumanda ({twoPages.control.wires.length})
                 </button>
                 <button
                   type="button"
@@ -1094,37 +1075,31 @@ export default function SchematicEditor({
                   className={displayMode === 'lines' ? 'active' : ''}
                   onClick={() => setDisplayMode('lines')}
                 >
-                  〰 Tüm Hatlar
-                </button>
-              </div>
-
-              <div className="segmented">
-                <button
-                  type="button"
-                  className={wireFilter === 'all' ? 'active' : ''}
-                  onClick={() => setWireFilter('all')}
-                >
-                  Tümü ({wires.length})
+                  ✎ Manuel Çizim
                 </button>
                 <button
                   type="button"
-                  className={wireFilter === 'power' ? 'active' : ''}
-                  onClick={() => setWireFilter('power')}
+                  className={displayMode === 'tags' ? 'active' : ''}
+                  onClick={() => setDisplayMode('tags')}
                 >
-                  Güç (2,5)
-                </button>
-                <button
-                  type="button"
-                  className={wireFilter === 'control' ? 'active' : ''}
-                  onClick={() => setWireFilter('control')}
-                >
-                  Kumanda
+                  🏷 Numaralı
                 </button>
               </div>
             </div>
 
             <div className="toolbar-group">
-              {displayMode !== 'cards' && (
+              {(displayMode === 'power-page' || displayMode === 'control-page' || displayMode === 'lines') && (
+                <label className="inline-check">
+                  <input
+                    type="checkbox"
+                    checked={showWireLabels}
+                    onChange={(e) => setShowWireLabels(e.target.checked)}
+                  />
+                  <span>Kablo Numaraları</span>
+                </label>
+              )}
+
+              {(displayMode === 'lines' || displayMode === 'tags') && (
                 <div className="segmented">
                   <button
                     type="button"
@@ -1157,43 +1132,6 @@ export default function SchematicEditor({
 
               <button
                 type="button"
-                className="btn-primary"
-                disabled={wires.length === 0}
-                onClick={handleOptimizeAll}
-              >
-                ✦ Çakışmasız Diz
-              </button>
-
-              {preOptimizeBackup && (
-                <button type="button" className="btn-sm" onClick={handleUndoOptimize}>
-                  ↶ Geri Al
-                </button>
-              )}
-
-              {displayMode === 'lines' && (
-                <label className="inline-check">
-                  <input
-                    type="checkbox"
-                    checked={showWireLabels}
-                    onChange={(e) => setShowWireLabels(e.target.checked)}
-                  />
-                  <span>Etiketler</span>
-                </label>
-              )}
-
-              {displayMode !== 'cards' && (
-                <label className="inline-check">
-                  <input
-                    type="checkbox"
-                    checked={dimOthersOnSelect}
-                    onChange={(e) => setDimOthersOnSelect(e.target.checked)}
-                  />
-                  <span>Seçiliyi Vurgula</span>
-                </label>
-              )}
-
-              <button
-                type="button"
                 className={isFullscreen ? 'btn-primary' : 'btn-sm'}
                 onClick={() => setIsFullscreen((f) => !f)}
               >
@@ -1219,7 +1157,21 @@ export default function SchematicEditor({
             </div>
           </div>
 
-          {displayMode === 'cards' ? (
+          {displayMode === 'power-page' ? (
+            <CleanSchematicView
+              page={twoPages.power}
+              selectedWireId={selectedWireId}
+              onSelectWire={setSelectedWireId}
+              showLabels={showWireLabels}
+            />
+          ) : displayMode === 'control-page' ? (
+            <CleanSchematicView
+              page={twoPages.control}
+              selectedWireId={selectedWireId}
+              onSelectWire={setSelectedWireId}
+              showLabels={showWireLabels}
+            />
+          ) : displayMode === 'cards' ? (
             <div className="mounting-cards-wrap">
               {wires.length === 0 ? (
                 <div className="empty-state">
@@ -1559,19 +1511,12 @@ export default function SchematicEditor({
                   })}
 
                   {/* NUMARALI YÜKSÜK / BAYRAK ETİKETLERİ (Büyük, okunaklı, çakışmasız) */}
-                  {(displayMode === 'tags' || displayMode === 'tags-target') &&
+                  {displayMode === 'tags' &&
                     node.pins.map((pin, pinIdx) => {
                       const entries = pinAttachments.get(`${node.id}::${pin.id}`);
                       if (!entries || entries.length === 0) return null;
                       const dir = pin.side === 'top' ? -1 : 1;
-                      const tierBase =
-                        displayMode === 'tags-target'
-                          ? pinIdx % 2 === 0
-                            ? 24
-                            : 48
-                          : pinIdx % 2 === 0
-                            ? 22
-                            : 44;
+                      const tierBase = pinIdx % 2 === 0 ? 22 : 44;
                       const stepGap = 23;
                       const maxDist = tierBase + (entries.length - 1) * stepGap;
                       const lastEntryColor = entries[entries.length - 1].wire.color;
@@ -1601,14 +1546,8 @@ export default function SchematicEditor({
                               (selectedWireId !== null || focusedNodeId !== null || hoveredWireId !== null);
                             const badgeOpacity = hasFocus && !isActive ? 0.25 : 1;
 
-                            const text =
-                              displayMode === 'tags-target'
-                                ? `${entry.badgeNumText}→${entry.partnerShort}`
-                                : entry.badgeNumText;
-                            const pillW =
-                              displayMode === 'tags-target'
-                                ? Math.max(72, text.length * 6.4 + 14)
-                                : Math.max(28, text.length * 8 + 14);
+                            const text = entry.badgeNumText;
+                            const pillW = Math.max(28, text.length * 8 + 14);
                             const pillH = 20;
                             const textColor = isLightHex(wire.color) ? '#0b1120' : '#ffffff';
                             const colorSpec = getWireColorSpec(wire.color);
@@ -1643,7 +1582,7 @@ export default function SchematicEditor({
                                   x={pin.dx}
                                   y={fy + 4}
                                   textAnchor="middle"
-                                  fontSize={displayMode === 'tags-target' ? 9.8 : 11.5}
+                                  fontSize={11.5}
                                   fontWeight={800}
                                   fill={textColor}
                                   pointerEvents="none"

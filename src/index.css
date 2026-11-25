@@ -684,6 +684,17 @@ body {
   background: #0b1220;
 }
 
+.clean-page-subbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: #0f172a;
+  border-bottom: 1px solid #1e293b;
+  font-size: 0.78rem;
+  color: #cbd5e1;
+}
+
 .schematic-svg {
   height: auto;
   max-height: none;
