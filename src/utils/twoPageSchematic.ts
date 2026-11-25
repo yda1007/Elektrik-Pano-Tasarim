@@ -1091,30 +1091,63 @@ function routeCleanPage(
     .filter((v) => v.count >= 2)
     .map(({ x, y, color }) => ({ x, y, color }));
 
-  const routedWires: CleanRoutedWire[] = rawRouted.map((r, i) => {
-    // En uzun segmentte kademeli etiket noktası
-    let bestIdx = 0;
-    let bestLen = -1;
-    for (let k = 0; k < r.points.length - 1; k++) {
-      const len = Math.hypot(r.points[k + 1].x - r.points[k].x, r.points[k + 1].y - r.points[k].y);
-      if (len > bestLen) {
-        bestLen = len;
-        bestIdx = k;
+  // Kablo numaralarının üst üste binmemesi ve bloklara değmemesi için akıllı konumlandırma
+  const placedLabels: Array<{ x: number; y: number }> = [];
+  const labelCollides = (x: number, y: number): boolean => {
+    for (const b of blocks) {
+      if (x > b.x - 16 && x < b.x + b.width + 16 && y > b.y - 10 && y < b.y + b.height + 10) {
+        return true;
       }
     }
-    const a = r.points[bestIdx];
-    const b = r.points[bestIdx + 1];
-    const slots = [0.5, 0.35, 0.65, 0.42, 0.58];
-    const t = slots[i % slots.length];
-    return {
-      wire: r.wire,
-      index: r.index,
-      points: r.points,
-      pathD: buildPath(r.wire.id, r.points),
-      labelPoint: { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t },
-      stripeHex: r.wire.color.toLowerCase() === PE_HEX ? PE_STRIPE : undefined,
-    };
-  });
+    for (const p of placedLabels) {
+      if (Math.abs(p.x - x) < 29 && Math.abs(p.y - y) < 17) return true;
+    }
+    return false;
+  };
+
+  const pickCleanLabelPoint = (pts: SchematicPoint[], seedIdx: number): SchematicPoint => {
+    // Segmentleri uzunluk sırasına diz (en uzun segmentten başlayarak temiz yer ara)
+    const segs = [];
+    for (let k = 0; k < pts.length - 1; k++) {
+      const len = Math.hypot(pts[k + 1].x - pts[k].x, pts[k + 1].y - pts[k].y);
+      segs.push({ a: pts[k], b: pts[k + 1], len });
+    }
+    segs.sort((u, v) => v.len - u.len);
+
+    const tCandidates = [0.5, 0.35, 0.65, 0.24, 0.76, 0.43, 0.57, 0.16, 0.84];
+    const rotatedTs = [
+      ...tCandidates.slice(seedIdx % 3),
+      ...tCandidates.slice(0, seedIdx % 3),
+    ];
+
+    for (const seg of segs) {
+      if (seg.len < 22) continue;
+      for (const t of rotatedTs) {
+        const cx = seg.a.x + (seg.b.x - seg.a.x) * t;
+        const cy = seg.a.y + (seg.b.y - seg.a.y) * t;
+        if (!labelCollides(cx, cy)) {
+          placedLabels.push({ x: cx, y: cy });
+          return { x: Math.round(cx), y: Math.round(cy) };
+        }
+      }
+    }
+
+    // Yedek: en uzun segmentin ortası
+    const fallbackSeg = segs[0] ?? { a: pts[0], b: pts[pts.length - 1] };
+    const fx = Math.round((fallbackSeg.a.x + fallbackSeg.b.x) / 2);
+    const fy = Math.round((fallbackSeg.a.y + fallbackSeg.b.y) / 2);
+    placedLabels.push({ x: fx, y: fy });
+    return { x: fx, y: fy };
+  };
+
+  const routedWires: CleanRoutedWire[] = rawRouted.map((r, i) => ({
+    wire: r.wire,
+    index: r.index,
+    points: r.points,
+    pathD: buildPath(r.wire.id, r.points),
+    labelPoint: pickCleanLabelPoint(r.points, i),
+    stripeHex: r.wire.color.toLowerCase() === PE_HEX ? PE_STRIPE : undefined,
+  }));
 
   const notes =
     kind === 'power'

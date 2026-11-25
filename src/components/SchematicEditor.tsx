@@ -489,7 +489,7 @@ export default function SchematicEditor({
     'power-page' | 'control-page' | 'cards' | 'lines' | 'tags'
   >('power-page');
   const wireFilter: 'all' | 'power' | 'control' = 'all';
-  const [showWireLabels, setShowWireLabels] = useState(false);
+  const [showWireLabels, setShowWireLabels] = useState(true);
   const dimOthersOnSelect = true;
   const [mergeSameNet, setMergeSameNet] = useState(true);
   const [autoRerouteOnDrag, setAutoRerouteOnDrag] = useState(false);
