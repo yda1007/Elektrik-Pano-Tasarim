@@ -68,7 +68,7 @@ export const COMPONENT_CATALOG: CatalogTemplate[] = [
   {
     key: 'mini-contactor',
     name: 'Mini Kontaktör',
-    model: '3P+1NO Mini Kontaktör (45 mm)',
+    model: '3P+1NC Mini Kontaktör (45 mm)',
     category: 'contactor',
     defaultMount: 'bottom-rail',
     codePrefix: 'KM',

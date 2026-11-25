@@ -4,6 +4,8 @@ import type { PanelItem, SchematicNodePos, SchematicPoint, SchematicWire } from 
 interface PinDef {
   id: string;
   label: string;
+  subLabel?: string;
+  subColor?: string;
   title: string;
   dx: number;
   dy: number;
@@ -53,12 +55,12 @@ function snap(val: number): number {
 function makeTopBottomPins(
   width: number,
   height: number,
-  topPins: Array<{ id: string; label: string; title: string }>,
-  bottomPins: Array<{ id: string; label: string; title: string }>
+  topPins: Array<{ id: string; label: string; subLabel?: string; subColor?: string; title: string }>,
+  bottomPins: Array<{ id: string; label: string; subLabel?: string; subColor?: string; title: string }>
 ): PinDef[] {
   const result: PinDef[] = [];
   const placeRow = (
-    list: Array<{ id: string; label: string; title: string }>,
+    list: Array<{ id: string; label: string; subLabel?: string; subColor?: string; title: string }>,
     side: 'top' | 'bottom'
   ) => {
     const step = width / (list.length + 1);
@@ -172,44 +174,44 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     });
   });
 
-  // 3. 14 Pin Mini Röleler
+  // 3. 14 Pin Mini Röleler (Üst: 1–4 NC, 5–8 NO | Alt: 9–12 COM, 13–14 Bobin A1/A2)
   const relays = items.filter((i) => i.category === 'relay').sort((a, b) => a.order - b.order);
   relays.forEach((item, idx) => {
     nodes.push({
       id: item.id,
       title: item.code,
-      subtitle: '14 Pin Röle (4CO)',
-      width: 240,
-      height: 92,
+      subtitle: '14 Pin Mini Röle (4× NC / NO / COM + Bobin)',
+      width: 360,
+      height: 112,
       accent: item.color,
-      defaultX: 460 + idx * 270,
-      defaultY: 144,
+      defaultX: 460 + idx * 380,
+      defaultY: 136,
       pins: makeTopBottomPins(
-        240,
-        92,
+        360,
+        112,
         [
-          { id: '13', label: '13', title: '13: Bobin A1 (+)' },
-          { id: '9', label: '9', title: '9: COM 1' },
-          { id: '5', label: '5', title: '5: NO 1' },
-          { id: '1', label: '1', title: '1: NC 1' },
-          { id: '10', label: '10', title: '10: COM 2' },
-          { id: '6', label: '6', title: '6: NO 2' },
-          { id: '2', label: '2', title: '2: NC 2' },
+          { id: '1', label: '1', subLabel: 'NC1', subColor: '#fbbf24', title: '1: Normalde Kapalı (NC1 ↔ COM 9)' },
+          { id: '2', label: '2', subLabel: 'NC2', subColor: '#fbbf24', title: '2: Normalde Kapalı (NC2 ↔ COM 10)' },
+          { id: '3', label: '3', subLabel: 'NC3', subColor: '#fbbf24', title: '3: Normalde Kapalı (NC3 ↔ COM 11)' },
+          { id: '4', label: '4', subLabel: 'NC4', subColor: '#fbbf24', title: '4: Normalde Kapalı (NC4 ↔ COM 12)' },
+          { id: '5', label: '5', subLabel: 'NO1', subColor: '#34d399', title: '5: Normalde Açık (NO1 ↔ COM 9)' },
+          { id: '6', label: '6', subLabel: 'NO2', subColor: '#34d399', title: '6: Normalde Açık (NO2 ↔ COM 10)' },
+          { id: '7', label: '7', subLabel: 'NO3', subColor: '#34d399', title: '7: Normalde Açık (NO3 ↔ COM 11)' },
+          { id: '8', label: '8', subLabel: 'NO4', subColor: '#34d399', title: '8: Normalde Açık (NO4 ↔ COM 12)' },
         ],
         [
-          { id: '14', label: '14', title: '14: Bobin A2 (-)' },
-          { id: '11', label: '11', title: '11: COM 3' },
-          { id: '7', label: '7', title: '7: NO 3' },
-          { id: '3', label: '3', title: '3: NC 3' },
-          { id: '12', label: '12', title: '12: COM 4' },
-          { id: '8', label: '8', title: '8: NO 4' },
-          { id: '4', label: '4', title: '4: NC 4' },
+          { id: '9', label: '9', subLabel: 'C1', subColor: '#38bdf8', title: '9: Ortak Uç (COM 1 → 1 NC / 5 NO)' },
+          { id: '10', label: '10', subLabel: 'C2', subColor: '#38bdf8', title: '10: Ortak Uç (COM 2 → 2 NC / 6 NO)' },
+          { id: '11', label: '11', subLabel: 'C3', subColor: '#38bdf8', title: '11: Ortak Uç (COM 3 → 3 NC / 7 NO)' },
+          { id: '12', label: '12', subLabel: 'C4', subColor: '#38bdf8', title: '12: Ortak Uç (COM 4 → 4 NC / 8 NO)' },
+          { id: '13', label: '13', subLabel: 'A1', subColor: '#f87171', title: '13: Röle Bobini A1' },
+          { id: '14', label: '14', subLabel: 'A2', subColor: '#60a5fa', title: '14: Röle Bobini A2' },
         ]
       ),
     });
   });
 
-  // 4. Mini Kontaktörler (3P + 1NO: 1-2, 3-4, 5-6, 13-14, A1-A2)
+  // 4. Mini Kontaktörler (3P + 1NC: 1-2, 3-4, 5-6, 21-22 NC, A1-A2)
   const contactors = items
     .filter((i) => i.category === 'contactor')
     .sort((a, b) => a.order - b.order);
@@ -217,28 +219,28 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     nodes.push({
       id: item.id,
       title: item.code,
-      subtitle: item.rating ?? 'Mini Kontaktör (3P+1NO)',
-      width: 190,
-      height: 86,
+      subtitle: `${item.rating ?? 'Mini Kontaktör'} • 3P+1NC`,
+      width: 196,
+      height: 98,
       accent: item.color,
-      defaultX: 40 + idx * 215,
-      defaultY: 360,
+      defaultX: 40 + idx * 220,
+      defaultY: 356,
       pins: makeTopBottomPins(
-        190,
-        86,
+        196,
+        98,
         [
-          { id: '1', label: '1', title: `${item.code} Güç 1/L1` },
-          { id: '3', label: '3', title: `${item.code} Güç 3/L2` },
-          { id: '5', label: '5', title: `${item.code} Güç 5/L3` },
-          { id: '13', label: '13', title: `${item.code} Yardımcı NO 13` },
-          { id: 'A1', label: 'A1', title: `${item.code} Bobin A1` },
+          { id: '1', label: '1', subLabel: 'L1', title: `${item.code} Güç 1/L1` },
+          { id: '3', label: '3', subLabel: 'L2', title: `${item.code} Güç 3/L2` },
+          { id: '5', label: '5', subLabel: 'L3', title: `${item.code} Güç 5/L3` },
+          { id: '21', label: '21', subLabel: 'NC', subColor: '#fbbf24', title: `${item.code} Yardımcı NC 21 (Kilitleme)` },
+          { id: 'A1', label: 'A1', subLabel: 'Bobin', subColor: '#f87171', title: `${item.code} Bobin A1` },
         ],
         [
-          { id: '2', label: '2', title: `${item.code} Güç 2/T1` },
-          { id: '4', label: '4', title: `${item.code} Güç 4/T2` },
-          { id: '6', label: '6', title: `${item.code} Güç 6/T3` },
-          { id: '14', label: '14', title: `${item.code} Yardımcı NO 14` },
-          { id: 'A2', label: 'A2', title: `${item.code} Bobin A2` },
+          { id: '2', label: '2', subLabel: 'T1', title: `${item.code} Güç 2/T1` },
+          { id: '4', label: '4', subLabel: 'T2', title: `${item.code} Güç 4/T2` },
+          { id: '6', label: '6', subLabel: 'T3', title: `${item.code} Güç 6/T3` },
+          { id: '22', label: '22', subLabel: 'NC', subColor: '#fbbf24', title: `${item.code} Yardımcı NC 22 (Kilitleme)` },
+          { id: 'A2', label: 'A2', subLabel: 'Bobin', subColor: '#60a5fa', title: `${item.code} Bobin A2` },
         ]
       ),
     });
@@ -947,15 +949,28 @@ export default function SchematicEditor({
                         />
                         <text
                           x={pin.dx}
-                          y={pin.side === 'top' ? 16 : node.height - 9}
+                          y={pin.side === 'top' ? 15 : node.height - (pin.subLabel ? 16 : 9)}
                           textAnchor="middle"
                           fontSize={8.5}
-                          fontWeight={600}
-                          fill="#cbd5e1"
+                          fontWeight={700}
+                          fill="#f1f5f9"
                           pointerEvents="none"
                         >
                           {pin.label}
                         </text>
+                        {pin.subLabel && (
+                          <text
+                            x={pin.dx}
+                            y={pin.side === 'top' ? 25 : node.height - 6}
+                            textAnchor="middle"
+                            fontSize={7.2}
+                            fontWeight={600}
+                            fill={pin.subColor ?? '#94a3b8'}
+                            pointerEvents="none"
+                          >
+                            {pin.subLabel}
+                          </text>
+                        )}
                       </g>
                     );
                   })}
