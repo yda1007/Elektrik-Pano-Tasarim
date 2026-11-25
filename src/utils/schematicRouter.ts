@@ -29,6 +29,65 @@ export interface RouteMetrics {
   timeMs: number;
 }
 
+export interface DynamicBounds {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Tüm düğüm (ve isteğe bağlı kablo ara noktası) konumlarına göre
+ * tuvalin 4 kenarında ferah kablo koridoru bırakacak dinamik sınırları hesaplar.
+ */
+export function computeDynamicSchematicBounds(
+  nodes: RouterNode[],
+  nodePositions: Record<string, SchematicNodePos>,
+  wires: SchematicWire[] = [],
+  baseW = 1720,
+  baseH = 1100
+): DynamicBounds {
+  let minX = 0;
+  let minY = 0;
+  let maxX = baseW;
+  let maxY = baseH;
+
+  for (const n of nodes) {
+    const pos = nodePositions[n.id] ?? { x: n.defaultX, y: n.defaultY };
+    if (pos.x < minX) minX = pos.x;
+    if (pos.y < minY) minY = pos.y;
+    if (pos.x + n.width > maxX) maxX = pos.x + n.width;
+    if (pos.y + n.height > maxY) maxY = pos.y + n.height;
+  }
+
+  for (const w of wires) {
+    for (const pt of w.waypoints) {
+      if (pt.x < minX) minX = pt.x;
+      if (pt.y < minY) minY = pt.y;
+      if (pt.x > maxX) maxX = pt.x;
+      if (pt.y > maxY) maxY = pt.y;
+    }
+  }
+
+  const padX = 130;
+  const padY = 120;
+  const bMinX = Math.floor((minX - padX) / 10) * 10;
+  const bMinY = Math.floor((minY - padY) / 10) * 10;
+  const bMaxX = Math.ceil((maxX + padX) / 10) * 10;
+  const bMaxY = Math.ceil((maxY + padY) / 10) * 10;
+
+  return {
+    minX: bMinX,
+    minY: bMinY,
+    maxX: bMaxX,
+    maxY: bMaxY,
+    width: bMaxX - bMinX,
+    height: bMaxY - bMinY,
+  };
+}
+
 // ---------- Yardımcı Binary Min-Heap (A* için yüksek hız) ----------
 class MinHeap {
   private keys: number[] = [];
@@ -114,7 +173,6 @@ function assignNetIds(wires: SchematicWire[], mergeSameNet: boolean): Map<string
     if (ra !== rb) parent.set(ra, rb);
   };
 
-  // Aynı pin ve aynı renkteki kablolar ortak elektrik hattı (net) oluşturur
   for (const w of wires) {
     const k1 = `${w.fromNodeId}::${w.fromPinId}::${w.color}`;
     const k2 = `${w.toNodeId}::${w.toPinId}::${w.color}`;
@@ -331,7 +389,6 @@ export function autoOptimizeSchematicLayout(
       }
     }
 
-    // İkili komşu takası (crossings azalt)
     for (let pass = 0; pass < 3; pass++) {
       let improved = false;
       for (let rIdx = 0; rIdx < rows.length; rIdx++) {
@@ -372,7 +429,7 @@ export function autoOptimizeSchematicLayout(
   return { nodePositions: positions, wires: routed.wires, metrics: routed.metrics };
 }
 
-// ---------- GERÇEK PROTEUS TARZI 10px IZGARALI A* LABİRENT OTOROUTER ----------
+// ---------- GELİŞMİŞ 3-GEÇİŞLİ PATHFINDER / PROTEUS A* OTOROUTER (PARÇALAR SABİT) ----------
 
 function simplifyPolyline(pts: SchematicPoint[]): SchematicPoint[] {
   const dedup: SchematicPoint[] = [];
@@ -425,10 +482,11 @@ export function autoRouteWiresWithMetrics(
   }
 
   const STEP = 10;
-  const MIN_X = -80;
-  const MIN_Y = -70;
-  const MAX_X = canvasW + 80;
-  const MAX_Y = canvasH + 70;
+  const bounds = computeDynamicSchematicBounds(nodes, nodePositions, [], canvasW, canvasH);
+  const MIN_X = bounds.minX;
+  const MIN_Y = bounds.minY;
+  const MAX_X = bounds.maxX;
+  const MAX_Y = bounds.maxY;
   const cols = Math.floor((MAX_X - MIN_X) / STEP) + 1;
   const rows = Math.floor((MAX_Y - MIN_Y) / STEP) + 1;
   const cellCount = cols * rows;
@@ -439,9 +497,10 @@ export function autoRouteWiresWithMetrics(
   const fromGY = (gy: number) => MIN_Y + gy * STEP;
   const cellIdx = (gx: number, gy: number) => gy * cols + gx;
 
-  // 1. Engel Haritası (Komponent blokları geçilmez duvar + 1 hücre dış duvar yakınlık cezası)
+  // 1. Engel Haritası: Komponent gövdeleri + 10px yan koruma (pin etiketleri asla ezilmesin)
   const blocked = new Uint8Array(cellCount);
   const nearWall = new Uint8Array(cellCount);
+  const pinZone = new Uint8Array(cellCount);
 
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
   const rects: Array<{ id: string; x1: number; y1: number; x2: number; y2: number }> = [];
@@ -454,37 +513,44 @@ export function autoRouteWiresWithMetrics(
     const y2 = pos.y + n.height;
     rects.push({ id: n.id, x1, y1, x2, y2 });
 
-    // Blok içini (sol/sağ 6px pay dahil) tamamen kapat
-    const gx1 = toGX(x1 - 4);
-    const gx2 = toGX(x2 + 4);
-    const gy1 = toGY(y1);
-    const gy2 = toGY(y2);
+    const gx1 = toGX(x1 - 8);
+    const gx2 = toGX(x2 + 8);
+    const gy1 = toGY(y1 - 4);
+    const gy2 = toGY(y2 + 4);
     for (let gy = gy1; gy <= gy2; gy++) {
       for (let gx = gx1; gx <= gx2; gx++) {
         blocked[cellIdx(gx, gy)] = 1;
       }
     }
 
-    // Duvar etrafındaki 1 hücreye yumuşak uzak durma maliyeti ekle (kablolar blok kenarına yapışmasın)
-    for (let gy = Math.max(0, gy1 - 1); gy <= Math.min(rows - 1, gy2 + 1); gy++) {
-      for (let gx = Math.max(0, gx1 - 1); gx <= Math.min(cols - 1, gx2 + 1); gx++) {
+    // Duvar etrafında 2 hücre (20px) yumuşak koruma bandı — yatay kablolar bloklara ve pin etiketlerine yapışmaz
+    for (let gy = Math.max(0, gy1 - 2); gy <= Math.min(rows - 1, gy2 + 2); gy++) {
+      for (let gx = Math.max(0, gx1 - 2); gx <= Math.min(cols - 1, gx2 + 2); gx++) {
         nearWall[cellIdx(gx, gy)] = 1;
       }
     }
+
+    // Her pinin 10px çıkış koridorunu (dikey saplama bölgesi) işaretle
+    for (const pin of n.pins) {
+      const px = pos.x + pin.dx;
+      const py = pos.y + pin.dy;
+      const pgx = toGX(px);
+      const pgy = toGY(pin.side === 'top' ? py - 10 : py + 10);
+      pinZone[cellIdx(pgx, pgy)] = 1;
+    }
   }
 
-  // Kenar sahipleri (edgeH: (gx,gy)->(gx+1,gy), edgeV: (gx,gy)->(gx,gy+1))
-  // 0 = boş, >0 = netId
   const edgeHOwner = new Int32Array(cellCount);
   const edgeVOwner = new Int32Array(cellCount);
   const edgeHCount = new Uint16Array(cellCount);
   const edgeVCount = new Uint16Array(cellCount);
   const cornerOwner = new Int32Array(cellCount);
   const cornerCount = new Uint16Array(cellCount);
+  // PathFinder tıkanıklık geçmişi (çok sıkışan hücrelere sonraki geçişte ek maliyet)
+  const historyCost = new Float32Array(cellCount);
 
   const netIdByWire = assignNetIds(wires, mergeSameNet);
 
-  // Her kablonun başlangıç / bitiş pin portunu hesapla (kutunun tam 10px dışında açık hücre)
   interface RoutableWire {
     wire: SchematicWire;
     netId: number;
@@ -497,6 +563,7 @@ export function autoRouteWiresWithMetrics(
     manhattan: number;
     gridPath: Array<{ gx: number; gy: number }>;
     crossingScore: number;
+    bends: number;
   }
 
   const routables: RoutableWire[] = [];
@@ -516,14 +583,15 @@ export function autoRouteWiresWithMetrics(
     const p1 = { x: pos1.x + pin1.dx, y: pos1.y + pin1.dy };
     const p2 = { x: pos2.x + pin2.dx, y: pos2.y + pin2.dy };
 
+    // 20px temiz pin çıkış saplaması (yatay hatlar pin halkasından temiz ayrılır)
     const sGX = toGX(p1.x);
-    let sGY = toGY(pin1.side === 'top' ? p1.y - 10 : p1.y + 10);
+    let sGY = toGY(pin1.side === 'top' ? p1.y - 20 : p1.y + 20);
     while (blocked[cellIdx(sGX, sGY)] && sGY > 1 && sGY < rows - 2) {
       sGY += pin1.side === 'top' ? -1 : 1;
     }
 
     const eGX = toGX(p2.x);
-    let eGY = toGY(pin2.side === 'top' ? p2.y - 10 : p2.y + 10);
+    let eGY = toGY(pin2.side === 'top' ? p2.y - 20 : p2.y + 20);
     while (blocked[cellIdx(eGX, eGY)] && eGY > 1 && eGY < rows - 2) {
       eGY += pin2.side === 'top' ? -1 : 1;
     }
@@ -540,10 +608,10 @@ export function autoRouteWiresWithMetrics(
       manhattan: Math.abs(eGX - sGX) + Math.abs(eGY - sGY),
       gridPath: [],
       crossingScore: 0,
+      bends: 0,
     });
   }
 
-  // Izgara kenarlarına kablo yaz / sil (Rip-Up & Reroute desteği)
   const stampWire = (rw: RoutableWire, delta: 1 | -1) => {
     const path = rw.gridPath;
     if (path.length < 2) return;
@@ -572,7 +640,6 @@ export function autoRouteWiresWithMetrics(
         }
       }
 
-      // Köşe noktalarını işaretle (başka net köşeden geçip sahte T-bağlantı yapmasın)
       if (i > 0) {
         const prev = path[i - 1];
         const turned = (prev.gx === a.gx) !== (a.gx === b.gx);
@@ -590,14 +657,12 @@ export function autoRouteWiresWithMetrics(
     }
   };
 
-  // A* için yeniden kullanılabilir tamponlar (GC sıfır, çok hızlı)
-  const stateCount = cellCount * 2; // 0 = H ile geldi, 1 = V ile geldi
+  const stateCount = cellCount * 2;
   const gScore = new Float32Array(stateCount);
   const parentState = new Int32Array(stateCount);
   const visitedStamp = new Uint32Array(stateCount);
   let currentStamp = 0;
 
-  // Dirs: 0=Sağ(+x,H), 1=Sol(-x,H), 2=Aşağı(+y,V), 3=Yukarı(-y,V)
   const DX = [1, -1, 0, 0];
   const DY = [0, 0, 1, -1];
   const ORIENT = [0, 0, 1, 1];
@@ -605,18 +670,17 @@ export function autoRouteWiresWithMetrics(
   const runAStar = (
     rw: RoutableWire,
     strictNoOverlap: boolean
-  ): { path: Array<{ gx: number; gy: number }>; crossings: number } | null => {
+  ): { path: Array<{ gx: number; gy: number }>; crossings: number; bends: number } | null => {
     currentStamp += 1;
     const stamp = currentStamp;
     const heap = new MinHeap();
     const { sGX, sGY, eGX, eGY, netId } = rw;
 
     if (sGX === eGX && sGY === eGY) {
-      return { path: [{ gx: sGX, gy: sGY }], crossings: 0 };
+      return { path: [{ gx: sGX, gy: sGY }], crossings: 0, bends: 0 };
     }
 
     const startCell = cellIdx(sGX, sGY);
-    // Başlangıç pini dikey çıkış yaptığı için başlangıç yönü V (1)
     const startState = (startCell << 1) | 1;
     visitedStamp[startState] = stamp;
     gScore[startState] = 0;
@@ -625,7 +689,8 @@ export function autoRouteWiresWithMetrics(
 
     let foundState = -1;
     let expanded = 0;
-    const MAX_EXPAND = 36000;
+    const MAX_EXPAND = strictNoOverlap ? 85000 : 140000;
+    const hWeight = strictNoOverlap ? 1.22 : 1.45;
 
     while (heap.size > 0 && expanded < MAX_EXPAND) {
       const state = heap.pop();
@@ -650,7 +715,6 @@ export function autoRouteWiresWithMetrics(
         const nextCell = ngy * cols + ngx;
         const isGoal = ngx === eGX && ngy === eGY;
 
-        // Komponent gövdesi kesinlikle geçilmez!
         if (blocked[nextCell] && !isGoal) continue;
 
         const nextOrient = ORIENT[d];
@@ -658,28 +722,24 @@ export function autoRouteWiresWithMetrics(
           nextOrient === 0 ? cellIdx(Math.min(gx, ngx), gy) : cellIdx(gx, Math.min(gy, ngy));
         const owner = nextOrient === 0 ? edgeHOwner[edgeCell] : edgeVOwner[edgeCell];
 
-        let stepCost = 1.0;
+        let stepCost = 1.0 + historyCost[nextCell];
 
         if (owner !== 0 && owner !== netId) {
-          // Başka bir kablonun üstüne paralel binme!
           if (strictNoOverlap) continue;
-          stepCost += 450;
+          stepCost += 500;
         } else if (owner === netId) {
-          // Aynı elektrik hattı (Proteus ortak hat paylaşımı)
-          stepCost = 0.35;
+          // Aynı elektrik hattı paylaşımı (ortak faz/nötr/toprak barası gibi temiz toplanır)
+          stepCost = 0.28;
         } else {
-          // Kesişim kontrolü: hedef hücrede dikey/yatay farklı bir kablo geçiyor mu?
           let crossesOther = false;
           if (!isGoal) {
             if (nextOrient === 0) {
-              // Yatay hareket ederken dikey başka kablo geçiyor mu?
               const vUp = ngy > 0 ? edgeVOwner[cellIdx(ngx, ngy - 1)] : 0;
               const vDown = edgeVOwner[nextCell];
               if ((vUp !== 0 && vUp !== netId) || (vDown !== 0 && vDown !== netId)) {
                 crossesOther = true;
               }
             } else {
-              // Dikey hareket ederken yatay başka kablo geçiyor mu?
               const hLeft = ngx > 0 ? edgeHOwner[cellIdx(ngx - 1, ngy)] : 0;
               const hRight = edgeHOwner[nextCell];
               if ((hLeft !== 0 && hLeft !== netId) || (hRight !== 0 && hRight !== netId)) {
@@ -688,37 +748,40 @@ export function autoRouteWiresWithMetrics(
             }
           }
 
-          // Başka bir kablonun köşe noktasına dokunma (sahte T-bağlantıyı önle)
           const cOwner = cornerOwner[nextCell];
           if (cOwner !== 0 && cOwner !== netId && !isGoal) {
             if (strictNoOverlap) continue;
-            stepCost += 250;
+            stepCost += 260;
           }
 
+          // Dengeli kesişim maliyeti: gereksiz 700px alt turlar yerine temiz, doğrudan hatlar
           if (crossesOther) {
-            stepCost += 72; // Kesişimden kaçınmak için yüksek maliyet
+            stepCost += 42;
           }
 
-          // Komşu paralel hatlara çok yapışmayı hafifçe cezalandır (ferah aralık)
-          if (nearWall[nextCell]) stepCost += 2.5;
+          // Blok etrafına yapışmayı ve pin çıkış koridorlarından yatay geçmeyi önle
+          if (nearWall[nextCell] && !isGoal) stepCost += 5.5;
+          if (pinZone[nextCell] && !isGoal) stepCost += 12;
+
+          // 20px tercihli paralel hat aralığı (kablolar birbirine yapışmadan ferah sıralanır)
           if (nextOrient === 0) {
             const adjUp = ngy > 0 ? edgeHOwner[cellIdx(Math.min(gx, ngx), ngy - 1)] : 0;
             const adjDn = ngy < rows - 1 ? edgeHOwner[cellIdx(Math.min(gx, ngx), ngy + 1)] : 0;
             if ((adjUp !== 0 && adjUp !== netId) || (adjDn !== 0 && adjDn !== netId)) {
-              stepCost += 1.4;
+              stepCost += 4.2;
             }
           } else {
             const adjL = ngx > 0 ? edgeVOwner[cellIdx(ngx - 1, Math.min(gy, ngy))] : 0;
             const adjR = ngx < cols - 1 ? edgeVOwner[cellIdx(ngx + 1, Math.min(gy, ngy))] : 0;
             if ((adjL !== 0 && adjL !== netId) || (adjR !== 0 && adjR !== netId)) {
-              stepCost += 1.4;
+              stepCost += 4.2;
             }
           }
         }
 
-        // 90° yön değişimi cezası (gereksiz merdiven/zikzak önleme)
+        // Daha yüksek dönüş cezası: zikzak ve merdiven bükümlerini keskin biçimde azaltır
         if (curOrient !== nextOrient) {
-          stepCost += 9.5;
+          stepCost += 14.0;
         }
 
         const nextState = (nextCell << 1) | nextOrient;
@@ -729,14 +792,13 @@ export function autoRouteWiresWithMetrics(
           gScore[nextState] = nextG;
           parentState[nextState] = state;
           const h = Math.abs(eGX - ngx) + Math.abs(eGY - ngy);
-          heap.push(nextG + h * 1.15, nextState);
+          heap.push(nextG + h * hWeight, nextState);
         }
       }
     }
 
     if (foundState === -1) return null;
 
-    // Yolu geriye doğru çıkar
     const rev: Array<{ gx: number; gy: number }> = [];
     let cur = foundState;
     while (cur !== -1) {
@@ -748,11 +810,13 @@ export function autoRouteWiresWithMetrics(
     }
     rev.reverse();
 
-    // Kesişim sayısını yaklaşıkla
     let crossings = 0;
+    let bends = 0;
     for (let i = 1; i < rev.length - 1; i++) {
       const p = rev[i];
       const prev = rev[i - 1];
+      const next = rev[i + 1];
+      if ((prev.gx === p.gx) !== (p.gx === next.gx)) bends += 1;
       const cIdx = cellIdx(p.gx, p.gy);
       if (prev.gy === p.gy) {
         const vUp = p.gy > 0 ? edgeVOwner[cellIdx(p.gx, p.gy - 1)] : 0;
@@ -764,41 +828,53 @@ export function autoRouteWiresWithMetrics(
       if (blocked[cIdx]) crossings += 10;
     }
 
-    return { path: rev, crossings };
+    return { path: rev, crossings, bends };
   };
 
-  // Geçiş 1: Kısa bağlantılardan uzuna doğru yönlendir (yerel bağlantılar düz, uzunlar etraftan dolaşır)
+  // Geçiş 1: Kısa bağlantılardan uzuna doğru yönlendir (aynı neti gruplayarak ortak baraları topla)
   const order = [...routables].sort((a, b) => a.manhattan - b.manhattan);
   for (const rw of order) {
     const res = runAStar(rw, true) ?? runAStar(rw, false);
     if (res) {
       rw.gridPath = res.path;
       rw.crossingScore = res.crossings;
+      rw.bends = res.bends;
       stampWire(rw, 1);
     }
   }
 
-  // Geçiş 2 (Rip-Up & Reroute): En çok kesişen hatları söküp güncel haritada daha temiz yoldan yeniden çiz
-  const highCross = [...order]
-    .filter((rw) => rw.crossingScore > 0)
-    .sort((a, b) => b.crossingScore - a.crossingScore)
-    .slice(0, 12);
+  // Geçiş 2 & 3 (PathFinder Rip-Up & Reroute): En çok kesişen veya çok bükümlü hatları söküp temiz yoldan yeniden çiz
+  for (let pass = 0; pass < 2; pass++) {
+    const candidates = [...order]
+      .filter((rw) => rw.crossingScore > 0 || rw.bends > 5)
+      .sort((a, b) => b.crossingScore * 4 + b.bends - (a.crossingScore * 4 + a.bends))
+      .slice(0, 28);
 
-  for (const rw of highCross) {
-    const oldPath = rw.gridPath;
-    const oldScore = rw.crossingScore;
-    stampWire(rw, -1);
-    const retry = runAStar(rw, true);
-    if (retry && retry.crossings <= oldScore) {
-      rw.gridPath = retry.path;
-      rw.crossingScore = retry.crossings;
-    } else {
-      rw.gridPath = oldPath;
+    for (const rw of candidates) {
+      const oldPath = rw.gridPath;
+      const oldQuality = rw.crossingScore * 4 + rw.bends + oldPath.length * 0.05;
+      // Eski dar boğaz hücrelerine hafif geçmiş cezası yaz
+      for (const pt of oldPath) {
+        historyCost[cellIdx(pt.gx, pt.gy)] += 0.35;
+      }
+      stampWire(rw, -1);
+      const retry = runAStar(rw, true);
+      if (retry) {
+        const newQuality = retry.crossings * 4 + retry.bends + retry.path.length * 0.05;
+        if (newQuality <= oldQuality + 0.5) {
+          rw.gridPath = retry.path;
+          rw.crossingScore = retry.crossings;
+          rw.bends = retry.bends;
+        } else {
+          rw.gridPath = oldPath;
+        }
+      } else {
+        rw.gridPath = oldPath;
+      }
+      stampWire(rw, 1);
     }
-    stampWire(rw, 1);
   }
 
-  // Grid yollarını temiz SVG köşe noktalarına dönüştür
   const routedById = new Map<string, SchematicWire>();
   let totalCrossings = 0;
   let boxCollisions = 0;
@@ -818,7 +894,6 @@ export function autoRouteWiresWithMetrics(
     ];
     const simplified = simplifyPolyline(worldPts);
 
-    // Kutu içi ihlal kontrolü (doğrulama metriği)
     for (let i = 1; i < simplified.length - 2; i++) {
       const a = simplified[i];
       const b = simplified[i + 1];
@@ -865,7 +940,6 @@ export function computeNetJunctions(
     true
   );
 
-  // Her (netId, gridNokta) için çıkan benzersiz 10px komşu yönlerini say
   const neighbors = new Map<string, { x: number; y: number; color: string; dirs: Set<string> }>();
 
   const addDir = (netId: number, x: number, y: number, color: string, dirKey: string) => {
@@ -966,7 +1040,7 @@ export function buildRoundedWirePath(
   if (points.length === 0) return '';
   if (points.length === 1) return `M ${points[0].x} ${points[0].y}`;
 
-  const hopR = 5;
+  const hopR = 5.5;
 
   const appendSegmentWithHops = (a: SchematicPoint, b: SchematicPoint): string => {
     const isHoriz = Math.abs(a.y - b.y) < 0.8 && Math.abs(a.x - b.x) > hopR * 3;
@@ -1059,6 +1133,112 @@ export function buildRoundedWirePath(
   const last = points[points.length - 1];
   d += appendSegmentWithHops(curStart, last);
   return d;
+}
+
+/**
+ * Çakışmasız Akıllı Kablo Numara Etiketi Yerleştirici:
+ * Her kablo için kutulardan, köşelerden, kesişimlerden ve diğer etiketlerden uzak en temiz noktayı seçer.
+ */
+export function computeSmartWireLabels(
+  wireEntries: Array<{ wire: SchematicWire; points: SchematicPoint[] }>,
+  nodes: RouterNode[],
+  nodePositions: Record<string, SchematicNodePos>
+): Map<string, SchematicPoint> {
+  const placedLabels: Array<{ x: number; y: number }> = [];
+  const result = new Map<string, SchematicPoint>();
+
+  const nodeBoxes = nodes.map((n) => {
+    const pos = nodePositions[n.id] ?? { x: n.defaultX, y: n.defaultY };
+    return { x1: pos.x - 16, y1: pos.y - 12, x2: pos.x + n.width + 16, y2: pos.y + n.height + 12 };
+  });
+
+  // Tüm dikey/yatay segmentleri kesişim uzaklığı için topla
+  const allSegs: Array<{ wireId: string; x1: number; y1: number; x2: number; y2: number }> = [];
+  for (const { wire, points } of wireEntries) {
+    for (let i = 0; i < points.length - 1; i++) {
+      allSegs.push({
+        wireId: wire.id,
+        x1: points[i].x,
+        y1: points[i].y,
+        x2: points[i + 1].x,
+        y2: points[i + 1].y,
+      });
+    }
+  }
+
+  for (let idx = 0; idx < wireEntries.length; idx++) {
+    const { wire, points } = wireEntries[idx];
+    if (points.length < 2) {
+      result.set(wire.id, points[0] ?? { x: 0, y: 0 });
+      continue;
+    }
+
+    let bestPt: SchematicPoint = getBestWireLabelPoint(points, idx);
+    let bestPenalty = Infinity;
+
+    for (let i = 0; i < points.length - 1; i++) {
+      const a = points[i];
+      const b = points[i + 1];
+      const len = Math.hypot(b.x - a.x, b.y - a.y);
+      if (len < 36) continue;
+      const isHoriz = Math.abs(a.y - b.y) < 1;
+
+      const tSamples = len > 180 ? [0.22, 0.36, 0.5, 0.64, 0.78] : [0.35, 0.5, 0.65];
+      for (const t of tSamples) {
+        const px = a.x + (b.x - a.x) * t;
+        const py = a.y + (b.y - a.y) * t;
+
+        // Köşeye çok yakınsa atla
+        const distEnd = Math.min(Math.hypot(px - a.x, py - a.y), Math.hypot(px - b.x, py - b.y));
+        if (distEnd < 18) continue;
+
+        let penalty = isHoriz ? 0 : 12; // Yatay segmentler tercih edilir
+        penalty += Math.abs(t - 0.5) * 6;
+        penalty += Math.max(0, 120 - len) * 0.08;
+
+        // Kutu çakışması cezası
+        for (const box of nodeBoxes) {
+          if (px >= box.x1 && px <= box.x2 && py >= box.y1 && py <= box.y2) {
+            penalty += 500;
+            break;
+          }
+        }
+
+        // Başka bir etikete çakışma cezası (etiket boyu ~34×16 px)
+        for (const pl of placedLabels) {
+          const dx = Math.abs(px - pl.x);
+          const dy = Math.abs(py - pl.y);
+          if (dx < 36 && dy < 18) {
+            penalty += 400;
+          } else if (dx < 44 && dy < 22) {
+            penalty += 35;
+          }
+        }
+
+        // Başka bir kablonun üzerinden geçme cezası
+        for (const s of allSegs) {
+          if (s.wireId === wire.id) continue;
+          const minX = Math.min(s.x1, s.x2) - 16;
+          const maxX = Math.max(s.x1, s.x2) + 16;
+          const minY = Math.min(s.y1, s.y2) - 9;
+          const maxY = Math.max(s.y1, s.y2) + 9;
+          if (px >= minX && px <= maxX && py >= minY && py <= maxY) {
+            penalty += 60;
+          }
+        }
+
+        if (penalty < bestPenalty) {
+          bestPenalty = penalty;
+          bestPt = { x: px, y: py };
+        }
+      }
+    }
+
+    placedLabels.push(bestPt);
+    result.set(wire.id, bestPt);
+  }
+
+  return result;
 }
 
 export function getBestWireLabelPoint(points: SchematicPoint[], wireIndex: number): SchematicPoint {

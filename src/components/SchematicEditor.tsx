@@ -5,7 +5,9 @@ import {
   autoOptimizeSchematicLayout,
   autoRouteWiresWithMetrics,
   buildRoundedWirePath,
+  computeDynamicSchematicBounds,
   computeNetJunctions,
+  computeSmartWireLabels,
   extractVerticalSegments,
   getBestWireLabelPoint,
   type RouteMetrics,
@@ -568,7 +570,59 @@ export default function SchematicEditor({
     index: number;
   } | null>(null);
 
-  const nodes = useMemo(() => buildSchematicNodes(items), [items]);
+  const rawNodes = useMemo(() => buildSchematicNodes(items), [items]);
+  const [smartFlipPins, setSmartFlipPins] = useState(true);
+
+  // Tek taraflı sistem bloklarında (Besleme, N, PE, Motor, Sektör) pinleri parça konumunu
+  // HİÇ değiştirmeden bağlı olduğu elemanlara bakan kenara otomatik çevir (alt dönüşleri yok eder)
+  const nodes = useMemo(() => {
+    if (!smartFlipPins || wires.length === 0) return rawNodes;
+    const singleSidedIds = new Set([
+      'sys-supply',
+      'sys-neutral',
+      'sys-pe',
+      'sys-m1',
+      'sys-m2',
+      'sys-sector-1',
+      'sys-sector-2',
+    ]);
+    const posOf = (n: SchematicNode) => nodePositions[n.id] ?? { x: n.defaultX, y: n.defaultY };
+    const rawMap = new Map(rawNodes.map((n) => [n.id, n]));
+
+    return rawNodes.map((node) => {
+      if (!singleSidedIds.has(node.id) || node.pins.length === 0) return node;
+      const myPos = posOf(node);
+      const myCenterY = myPos.y + node.height / 2;
+      let sumOtherY = 0;
+      let count = 0;
+      for (const w of wires) {
+        const otherId =
+          w.fromNodeId === node.id ? w.toNodeId : w.toNodeId === node.id ? w.fromNodeId : null;
+        if (!otherId || otherId === node.id) continue;
+        const other = rawMap.get(otherId);
+        if (!other) continue;
+        const oPos = posOf(other);
+        sumOtherY += oPos.y + other.height / 2;
+        count += 1;
+      }
+      if (count === 0) return node;
+      const desiredSide: 'top' | 'bottom' = sumOtherY / count < myCenterY ? 'top' : 'bottom';
+      if (node.pins[0].side === desiredSide) return node;
+      return {
+        ...node,
+        pins: node.pins.map((pin) => ({
+          ...pin,
+          side: desiredSide,
+          dy: desiredSide === 'top' ? 0 : node.height,
+        })),
+      };
+    });
+  }, [rawNodes, nodePositions, wires, smartFlipPins]);
+
+  const dynamicBounds = useMemo(
+    () => computeDynamicSchematicBounds(nodes, nodePositions, wires, CANVAS_W, CANVAS_H),
+    [nodes, nodePositions, wires]
+  );
 
   // Pano CAD görünümünden "Şema" butonuna basıldığında ilgili bloğa odaklan
   useEffect(() => {
@@ -728,8 +782,8 @@ export default function SchematicEditor({
     if (!ctm) return null;
     const local = pt.matrixTransform(ctm.inverse());
     return {
-      x: snap(Math.max(-60, Math.min(CANVAS_W + 60, local.x))),
-      y: snap(Math.max(-60, Math.min(CANVAS_H + 60, local.y))),
+      x: snap(Math.max(dynamicBounds.minX + 20, Math.min(dynamicBounds.maxX - 20, local.x))),
+      y: snap(Math.max(dynamicBounds.minY + 20, Math.min(dynamicBounds.maxY - 20, local.y))),
     };
   };
 
@@ -851,8 +905,8 @@ export default function SchematicEditor({
 
   const selectedWire = wires.find((w) => w.id === selectedWireId) ?? null;
 
-  // Yatay/dikey kesişimlerde atlama yayı (∩) ve ortak hat ek noktaları (•) için görünür kabloları hazırla
-  const { verticalSegments: allVisibleVerticalSegments, netByWire, junctionDots } = useMemo(() => {
+  // Yatay/dikey kesişimlerde atlama yayı (∩), ortak hat ek noktaları (•) ve çakışmasız kablo etiketleri
+  const { verticalSegments: allVisibleVerticalSegments, netByWire, junctionDots, smartLabelMap } = useMemo(() => {
     const entries: Array<{ wire: SchematicWire; points: SchematicPoint[] }> = [];
     for (const w of wires) {
       if (!isWireVisibleByFilter(w)) continue;
@@ -863,7 +917,8 @@ export default function SchematicEditor({
     }
     const { segments, netByWire: nbw } = extractVerticalSegments(entries);
     const dots = mergeSameNet ? computeNetJunctions(entries) : [];
-    return { verticalSegments: segments, netByWire: nbw, junctionDots: dots };
+    const labels = computeSmartWireLabels(entries, nodes, nodePositions);
+    return { verticalSegments: segments, netByWire: nbw, junctionDots: dots, smartLabelMap: labels };
   }, [wires, nodes, nodePositions, wireFilter, mergeSameNet]);
 
   const formatEndpoint = (nodeId: string, pinId: string): string => {
@@ -1017,7 +1072,15 @@ export default function SchematicEditor({
         </section>
 
         <section className="sidebar-section">
-          <div className="section-title">Proteus A* Otorouter</div>
+          <div className="section-title">Gelişmiş A* Otorouter (Parçalar Sabit)</div>
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={smartFlipPins}
+              onChange={(e) => setSmartFlipPins(e.target.checked)}
+            />
+            <span>Akıllı pin yönü (kutu sabit, pin hedefe bakar)</span>
+          </label>
           <label className="check-row">
             <input
               type="checkbox"
@@ -1045,17 +1108,17 @@ export default function SchematicEditor({
               type="button"
               className="btn-primary"
               disabled={wires.length === 0}
-              onClick={handleOptimizeAll}
+              onClick={() => handleAutoRoute()}
             >
-              ✦ Komponent + Kablo Oto-Diz (A*)
+              ✦ Kabloları Temizle (Parçalar Sabit)
             </button>
             <button
               type="button"
               className="btn-sm"
               disabled={wires.length === 0}
-              onClick={() => handleAutoRoute()}
+              onClick={handleOptimizeAll}
             >
-              Sadece A* Kablo Çizimini Yenile
+              Komponent + Kablo Oto-Diz (Konumu Değiştirir)
             </button>
             <button
               type="button"
@@ -1168,6 +1231,18 @@ export default function SchematicEditor({
                   />
                   <span>Kablo Numaraları</span>
                 </label>
+              )}
+
+              {displayMode === 'lines' && wires.length > 0 && (
+                <button
+                  type="button"
+                  className="btn-primary"
+                  style={{ padding: '4px 10px', fontSize: '0.76rem' }}
+                  onClick={() => handleAutoRoute()}
+                  title="Parçaların yerini hiç değiştirmeden tüm kabloları en temiz 3-geçişli yoldan yeniden çizer"
+                >
+                  ✦ Kabloları Temizle (Parçalar Sabit)
+                </button>
               )}
 
               {(displayMode === 'lines' || displayMode === 'tags') && (
@@ -1315,12 +1390,12 @@ export default function SchematicEditor({
           <div className="schematic-scroll-wrap">
           <svg
             ref={svgRef}
-            viewBox={`-90 -74 ${CANVAS_W + 180} ${CANVAS_H + 150}`}
+            viewBox={`${dynamicBounds.minX} ${dynamicBounds.minY} ${dynamicBounds.width} ${dynamicBounds.height}`}
             className="cad-svg schematic-svg"
             style={
               zoom === 'fit'
                 ? { width: '100%', maxHeight: 'calc(100vh - 126px)' }
-                : { width: `${Math.round((CANVAS_W + 180) * zoom * 0.78)}px`, minWidth: '100%' }
+                : { width: `${Math.round(dynamicBounds.width * zoom * 0.78)}px`, minWidth: '100%' }
             }
             onClick={handleCanvasClick}
             onContextMenu={(e) => {
@@ -1357,8 +1432,8 @@ export default function SchematicEditor({
               </pattern>
             </defs>
 
-            <rect x={-90} y={-74} width={CANVAS_W + 180} height={CANVAS_H + 150} fill="#0b1220" />
-            <rect x={-90} y={-74} width={CANVAS_W + 180} height={CANVAS_H + 150} fill="url(#sch-grid)" />
+            <rect x={dynamicBounds.minX} y={dynamicBounds.minY} width={dynamicBounds.width} height={dynamicBounds.height} fill="#0b1220" />
+            <rect x={dynamicBounds.minX} y={dynamicBounds.minY} width={dynamicBounds.width} height={dynamicBounds.height} fill="url(#sch-grid)" />
 
             {/* KATMAN 1: NORMAL KABLO HATLARI (Sadece 'Tüm Hatlar' modunda, blokların altında değil temiz kanallarda) */}
             {displayMode === 'lines' &&
@@ -1387,7 +1462,7 @@ export default function SchematicEditor({
                   dimOthersOnSelect &&
                   (selectedWireId !== null || focusedNodeId !== null || hoveredWireId !== null);
                 const opacity = hasSelectionFocus ? 0.14 : 0.92;
-                const labelPt = getBestWireLabelPoint(pts, wireIdx);
+                const labelPt = smartLabelMap.get(w.id) ?? getBestWireLabelPoint(pts, wireIdx);
                 const strokeWidth = w.sectionMm2 === '2,5' ? 3.2 : 2.4;
 
                 return (
@@ -1692,7 +1767,7 @@ export default function SchematicEditor({
                 netByWire.get(w.id),
                 allVisibleVerticalSegments
               );
-              const labelPt = getBestWireLabelPoint(pts, wireIdx);
+              const labelPt = smartLabelMap.get(w.id) ?? getBestWireLabelPoint(pts, wireIdx);
               const strokeWidth = w.sectionMm2 === '2,5' ? 3.8 : 3.0;
 
               return (
