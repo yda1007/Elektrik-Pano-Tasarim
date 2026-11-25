@@ -39,9 +39,11 @@ interface SchematicEditorProps {
   items: PanelItem[];
   nodePositions: Record<string, SchematicNodePos>;
   wires: SchematicWire[];
+  externalFocusItemId?: string | null;
   onChangeNodePositions: (next: Record<string, SchematicNodePos>) => void;
   onChangeWires: (next: SchematicWire[]) => void;
   onExportJson: () => void;
+  onSelectInPanel?: (itemId: string) => void;
 }
 
 interface StandardWireColor {
@@ -358,16 +360,16 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     });
   }
 
-  // 7. Alt Ray Klemens Bloğu (X4..X12)
+  // 7. Alt Ray (ve 3./4. Ray) Klemens Bloğu
   const bottomTerminals = items
-    .filter((i) => i.category === 'terminal' && i.mount === 'bottom-rail')
-    .sort((a, b) => a.order - b.order);
+    .filter((i) => i.category === 'terminal' && i.mount !== 'top-rail')
+    .sort((a, b) => (a.mount !== b.mount ? a.mount.localeCompare(b.mount) : a.order - b.order));
   if (bottomTerminals.length > 0) {
     const w = Math.max(260, bottomTerminals.length * 50);
     nodes.push({
       id: 'blk-bottom-terminals',
       title: `ALT KLEMENS (${bottomTerminals.length} Adet)`,
-      subtitle: 'Alt DIN Rayı (PG36 Çıkış)',
+      subtitle: 'Saha / Çıkış Klemens Sırası',
       width: w,
       height: 70,
       accent: '#64748b',
@@ -382,31 +384,76 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     });
   }
 
-  // 8. Diğer özel elemanlar (sigorta, güç kaynağı vb.)
+  // 8. Diğer özel elemanlar (sigorta, güç kaynağı, PLC/ESP32 vb.)
   const others = items.filter(
-    (i) => i.category === 'breaker' || i.category === 'psu'
+    (i) => i.category === 'breaker' || i.category === 'psu' || i.category === 'plc'
   );
   others.forEach((item, idx) => {
+    if (item.category === 'plc') {
+      nodes.push({
+        id: item.id,
+        title: item.code,
+        subtitle: item.name,
+        width: 240,
+        height: 92,
+        accent: item.color,
+        defaultX: 1060 + idx * 260,
+        defaultY: 28,
+        pins: makeTopBottomPins(
+          240,
+          92,
+          [
+            { id: '24V', label: '+24V', subColor: '#ef4444', title: `${item.code} 24V DC +` },
+            { id: 'GND', label: 'GND', subColor: '#3b82f6', title: `${item.code} GND` },
+            { id: 'A+', label: 'A+', subColor: '#f59e0b', title: `${item.code} RS485 A+` },
+            { id: 'B-', label: 'B-', subColor: '#22c55e', title: `${item.code} RS485 B-` },
+          ],
+          [
+            { id: 'DO1', label: 'DO1', title: `${item.code} Röle Çıkış 1` },
+            { id: 'DO2', label: 'DO2', title: `${item.code} Röle Çıkış 2` },
+            { id: 'DO3', label: 'DO3', title: `${item.code} Röle Çıkış 3` },
+            { id: 'DO4', label: 'DO4', title: `${item.code} Röle Çıkış 4` },
+            { id: 'DI1', label: 'DI1', title: `${item.code} Dijital Giriş 1` },
+            { id: 'DI2', label: 'DI2', title: `${item.code} Dijital Giriş 2` },
+          ]
+        ),
+      });
+      return;
+    }
+
+    const is3P = item.widthMm >= 50 && item.category === 'breaker';
     nodes.push({
       id: item.id,
       title: item.code,
       subtitle: item.name,
-      width: 130,
+      width: is3P ? 160 : 130,
       height: 72,
       accent: item.color,
-      defaultX: 1080 + idx * 145,
+      defaultX: 1080 + idx * 165,
       defaultY: 30,
       pins: makeTopBottomPins(
-        130,
+        is3P ? 160 : 130,
         72,
-        [
-          { id: 'IN1', label: 'L/1', title: `${item.code} Giriş 1` },
-          { id: 'IN2', label: 'N/3', title: `${item.code} Giriş 2` },
-        ],
-        [
-          { id: 'OUT1', label: '+/2', title: `${item.code} Çıkış 1` },
-          { id: 'OUT2', label: '-/4', title: `${item.code} Çıkış 2` },
-        ]
+        is3P
+          ? [
+              { id: '1', label: '1/L1', title: `${item.code} Giriş L1` },
+              { id: '3', label: '3/L2', title: `${item.code} Giriş L2` },
+              { id: '5', label: '5/L3', title: `${item.code} Giriş L3` },
+            ]
+          : [
+              { id: 'IN1', label: 'L/1', title: `${item.code} Giriş 1` },
+              { id: 'IN2', label: 'N/3', title: `${item.code} Giriş 2` },
+            ],
+        is3P
+          ? [
+              { id: '2', label: '2/T1', title: `${item.code} Çıkış T1` },
+              { id: '4', label: '4/T2', title: `${item.code} Çıkış T2` },
+              { id: '6', label: '6/T3', title: `${item.code} Çıkış T3` },
+            ]
+          : [
+              { id: 'OUT1', label: '+/2', title: `${item.code} Çıkış 1` },
+              { id: 'OUT2', label: '-/4', title: `${item.code} Çıkış 2` },
+            ]
       ),
     });
   });
@@ -472,9 +519,11 @@ export default function SchematicEditor({
   items,
   nodePositions,
   wires,
+  externalFocusItemId,
   onChangeNodePositions,
   onChangeWires,
   onExportJson,
+  onSelectInPanel,
 }: SchematicEditorProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [tool, setTool] = useState<'wire' | 'move'>('wire');
@@ -520,6 +569,25 @@ export default function SchematicEditor({
   } | null>(null);
 
   const nodes = useMemo(() => buildSchematicNodes(items), [items]);
+
+  // Pano CAD görünümünden "Şema" butonuna basıldığında ilgili bloğa odaklan
+  useEffect(() => {
+    if (!externalFocusItemId) return;
+    const direct = nodes.find((n) => n.id === externalFocusItemId);
+    if (direct) {
+      setFocusedNodeId(direct.id);
+      setDisplayMode('lines');
+      return;
+    }
+    const item = items.find((i) => i.id === externalFocusItemId);
+    if (item?.category === 'terminal') {
+      const targetBlk = item.mount === 'top-rail' ? 'blk-top-terminals' : 'blk-bottom-terminals';
+      if (nodes.some((n) => n.id === targetBlk)) {
+        setFocusedNodeId(targetBlk);
+        setDisplayMode('lines');
+      }
+    }
+  }, [externalFocusItemId, nodes, items]);
 
   const getNodePos = (node: SchematicNode): SchematicNodePos =>
     nodePositions[node.id] ?? { x: node.defaultX, y: node.defaultY };
@@ -1766,6 +1834,19 @@ export default function SchematicEditor({
       {/* SAĞ PANEL: SEÇİLİ KABLO & BAĞLANTI LİSTESİ (NETLIST) */}
       {!isFullscreen && (
       <aside className="inspector-panel">
+        {focusedNodeId && onSelectInPanel && items.some((i) => i.id === focusedNodeId) && (
+          <div className="sidebar-section">
+            <div className="section-title">Odaklı Eleman</div>
+            <button
+              type="button"
+              className="btn-primary"
+              style={{ width: '100%' }}
+              onClick={() => onSelectInPanel(focusedNodeId)}
+            >
+              Pano Yerleşiminde Göster →
+            </button>
+          </div>
+        )}
         <div className="sidebar-section">
           <div className="section-title">Seçili Kablo</div>
           {!selectedWire ? (

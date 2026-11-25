@@ -986,3 +986,423 @@ body {
     color: #000 !important;
   }
 }
+
+/* FAZ 1–4 EKLENTİLERİ: ÇOKLU PROJE, ANTET, MÜHENDİSLİK, ÜRETİM MERKEZİ */
+.project-select,
+.preset-select {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+  border-radius: 7px;
+  padding: 4px 8px;
+  font-size: 0.78rem;
+  max-width: 220px;
+}
+
+.preset-select {
+  border-color: #0284c7;
+  color: #7dd3fc;
+}
+
+.btn-active-sm {
+  background: #0284c7 !important;
+  color: #fff !important;
+  border-color: #38bdf8 !important;
+}
+
+.undo-group {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.undo-group button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.meta-drawer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 10px 16px;
+  background: #0b1326;
+  border-bottom: 1px solid #1e293b;
+  align-items: end;
+}
+
+.meta-drawer-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.btn-xs {
+  background: #1e293b;
+  color: #38bdf8;
+  border: 1px solid #334155;
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-xs:hover {
+  border-color: #38bdf8;
+}
+
+.btn-xs-del {
+  background: transparent;
+  color: #f87171;
+  border: none;
+  cursor: pointer;
+  font-size: 0.78rem;
+  padding: 0 4px;
+}
+
+.rail-config-card {
+  background: #141e33;
+  border: 1px solid #1e293b;
+  border-radius: 7px;
+  padding: 7px 8px;
+  margin-bottom: 6px;
+}
+
+.rail-config-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.74rem;
+  color: #cbd5e1;
+  margin-bottom: 4px;
+}
+
+.rail-config-card input[type='range'] {
+  width: 100%;
+  margin: 2px 0;
+}
+
+.macro-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.macro-btn {
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 7px;
+  padding: 6px 8px;
+  text-align: left;
+  color: #bae6fd;
+  font-size: 0.74rem;
+  cursor: pointer;
+}
+
+.macro-btn:hover {
+  background: rgba(14, 165, 233, 0.2);
+  border-color: #38bdf8;
+}
+
+.cat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.cat-chip {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.cat-chip.active {
+  background: #0ea5e9;
+  color: #0b1120;
+  border-color: #0ea5e9;
+  font-weight: 700;
+}
+
+.dims-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.txt-ok { color: #34d399; }
+.txt-warn { color: #fbbf24; }
+.txt-err { color: #f87171; }
+
+.thermal-card.status-border-ok { border-color: rgba(16, 185, 129, 0.45); }
+.thermal-card.status-border-warning { border-color: rgba(245, 158, 11, 0.55); }
+.thermal-card.status-border-error { border-color: rgba(239, 68, 68, 0.7); }
+
+.thermal-note {
+  font-size: 0.74rem;
+  color: #cbd5e1;
+  margin-top: 6px;
+  line-height: 1.35;
+}
+
+.mini-list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  padding: 4px 0;
+  border-bottom: 1px solid #1e293b;
+  gap: 6px;
+}
+
+.inline-add-box {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.inline-add-box input,
+.search-input {
+  background: #0b1220;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 0.76rem;
+}
+
+.inline-add-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.7fr 0.6fr auto;
+  gap: 4px;
+}
+
+/* ÜRETİM & SAHA MERKEZİ */
+.prod-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: calc(100vh - 56px);
+  background: #0b1120;
+}
+
+.prod-subnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 18px;
+  background: #0f172a;
+  border-bottom: 1px solid #1e293b;
+}
+
+.prod-meta-summary {
+  display: flex;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  flex-wrap: wrap;
+}
+
+.prod-body {
+  padding: 18px;
+  max-width: 1360px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.export-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.export-card {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.export-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #38bdf8;
+}
+
+.export-card h3 {
+  font-size: 1.02rem;
+  color: #f8fafc;
+}
+
+.export-card p {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  flex: 1;
+}
+
+.prod-panel {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.prod-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.prod-panel-head h3 {
+  font-size: 1rem;
+  color: #f8fafc;
+}
+
+.prod-panel-head p {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.prod-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.prod-table th,
+.prod-table td {
+  border-bottom: 1px solid #1e293b;
+  padding: 7px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.prod-table th {
+  color: #94a3b8;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+}
+
+.term-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 5px;
+  border-left: 4px solid #64748b;
+  background: #1e293b;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.wire-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.jumper-pill {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fde68a;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 0.72rem;
+}
+
+.muted {
+  color: #64748b;
+}
+
+.mono-cell {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+}
+
+.section-totals-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.compact-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 170px;
+}
+
+.assembly-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.assembly-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #141e33;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+}
+
+.assembly-row.is-done {
+  opacity: 0.58;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.assembly-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+
+.assembly-route {
+  color: #e2e8f0;
+}
+
+.assembly-pill {
+  background: #1e293b;
+  color: #94a3b8;
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.72rem;
+}

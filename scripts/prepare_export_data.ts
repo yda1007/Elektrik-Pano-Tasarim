@@ -59,7 +59,7 @@ const MOUNT_LABELS: Record<string, string> = {
   'top-wall': 'Üst Duvar',
 };
 
-const outDir = path.resolve('/home/yakup/Projeler/Elektrik-Pano-Tasarim/ciktilar');
+const outDir = path.resolve(process.cwd(), 'ciktilar');
 const defaultProjectJson = path.join(outDir, 'Bemis-BH6-6000-0000-Proje.json');
 const inputPath = process.argv[2] ?? defaultProjectJson;
 fs.mkdirSync(outDir, { recursive: true });
