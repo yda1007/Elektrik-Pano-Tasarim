@@ -18,8 +18,9 @@ import type {
 } from './types/panel';
 import { analyzeLayout } from './utils/geometry';
 
-const STORAGE_KEY = 'elektrik-pano-tasarim:v4:bemis-bh6-6000';
+const STORAGE_KEY = 'elektrik-pano-tasarim:v5:bemis-bh6-6000';
 const PREV_STORAGE_KEYS = [
+  'elektrik-pano-tasarim:v4:bemis-bh6-6000',
   'elektrik-pano-tasarim:v3:bemis-bh6-6000',
   'elektrik-pano-tasarim:v2:bemis-bh6-6000',
 ];

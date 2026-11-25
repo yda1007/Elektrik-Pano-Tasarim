@@ -269,7 +269,7 @@ export function createInitialItems(): PanelItem[] {
       color: '#64748b',
     })),
 
-    // Alt DIN Rayı: 4× Mini Kontaktör (180 mm) + 9× 2,5 mm² (5 mm) klemens (45 mm) = 225 mm (N ve PE panodaki kendi baralarında!)
+    // Alt DIN Rayı: Sol KM1-KM2 (90 mm) + Orta 9× 2,5 mm² klemens (45 mm, PG36 hizasında) + Sağ KM3-KM4 (90 mm) = 225 mm
     {
       id: 'km1',
       code: 'KM1',
@@ -300,6 +300,20 @@ export function createInitialItems(): PanelItem[] {
       color: '#f59e0b',
       notes: 'Motor 1 aşağı yön kontaktörü',
     },
+    ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n, idx): PanelItem => ({
+      id: `xb-${n}`,
+      code: `X${3 + n}`,
+      name: `Alt Ray Klemens ${n}`,
+      model: '2,5 mm² Ray Klemensi (5 mm kalınlık)',
+      category: 'terminal',
+      mount: 'bottom-rail',
+      widthMm: 5,
+      heightMm: 46,
+      depthMm: 42,
+      order: 2 + idx,
+      rating: '2,5 mm² (5 mm)',
+      color: '#64748b',
+    })),
     {
       id: 'km3',
       code: 'KM3',
@@ -310,7 +324,7 @@ export function createInitialItems(): PanelItem[] {
       widthMm: 45,
       heightMm: 58,
       depthMm: 57,
-      order: 2,
+      order: 11,
       rating: 'M2 ↑',
       color: '#f59e0b',
       notes: 'Motor 2 yukarı yön kontaktörü',
@@ -325,25 +339,11 @@ export function createInitialItems(): PanelItem[] {
       widthMm: 45,
       heightMm: 58,
       depthMm: 57,
-      order: 3,
+      order: 12,
       rating: 'M2 ↓',
       color: '#f59e0b',
       notes: 'Motor 2 aşağı yön kontaktörü',
     },
-    ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n, idx): PanelItem => ({
-      id: `xb-${n}`,
-      code: `X${3 + n}`,
-      name: `Alt Ray Klemens ${n}`,
-      model: '2,5 mm² Ray Klemensi (5 mm kalınlık)',
-      category: 'terminal',
-      mount: 'bottom-rail',
-      widthMm: 5,
-      heightMm: 46,
-      depthMm: 42,
-      order: 4 + idx,
-      rating: '2,5 mm² (5 mm)',
-      color: '#64748b',
-    })),
 
     // Bemis Pano İçi Ayrı Nötr (N) ve Toprak (PE) Klemens Baraları (DIN rayından bağımsız, taşınabilir)
     {
