@@ -2,10 +2,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { PanelItem, SchematicNodePos, SchematicPoint, SchematicWire } from '../types/panel';
 import {
   autoOptimizeSchematicLayout,
-  autoRouteWires,
+  autoRouteWiresWithMetrics,
   buildRoundedWirePath,
+  computeNetJunctions,
   extractVerticalSegments,
   getBestWireLabelPoint,
+  type RouteMetrics,
 } from '../utils/schematicRouter';
 
 interface PinDef {
@@ -485,6 +487,9 @@ export default function SchematicEditor({
   const [wireFilter, setWireFilter] = useState<'all' | 'power' | 'control'>('all');
   const [showWireLabels, setShowWireLabels] = useState(false);
   const [dimOthersOnSelect, setDimOthersOnSelect] = useState(true);
+  const [mergeSameNet, setMergeSameNet] = useState(true);
+  const [autoRerouteOnDrag, setAutoRerouteOnDrag] = useState(true);
+  const [routeMetrics, setRouteMetrics] = useState<RouteMetrics | null>(null);
   const [zoom, setZoom] = useState<number | 'fit'>('fit');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [preOptimizeBackup, setPreOptimizeBackup] = useState<{
@@ -549,17 +554,31 @@ export default function SchematicEditor({
   const handleOptimizeAll = () => {
     if (wires.length === 0) return;
     setPreOptimizeBackup({ nodePositions, wires });
-    const result = autoOptimizeSchematicLayout(nodes, wires, CANVAS_W, CANVAS_H);
+    const result = autoOptimizeSchematicLayout(nodes, wires, CANVAS_W, CANVAS_H, mergeSameNet);
     onChangeNodePositions(result.nodePositions);
     onChangeWires(result.wires);
+    setRouteMetrics(result.metrics);
     setZoom('fit');
   };
 
-  const handleAutoRoute = () => {
-    if (wires.length === 0) return;
+  const handleAutoRoute = (
+    overridePositions?: Record<string, SchematicNodePos>,
+    overrideWires?: SchematicWire[]
+  ) => {
+    const targetWires = overrideWires ?? wires;
+    const targetPos = overridePositions ?? nodePositions;
+    if (targetWires.length === 0) return;
     setPreOptimizeBackup({ nodePositions, wires });
-    const routed = autoRouteWires(wires, nodes, nodePositions, CANVAS_W, CANVAS_H);
-    onChangeWires(routed);
+    const res = autoRouteWiresWithMetrics(
+      targetWires,
+      nodes,
+      targetPos,
+      CANVAS_W,
+      CANVAS_H,
+      mergeSameNet
+    );
+    onChangeWires(res.wires);
+    setRouteMetrics(res.metrics);
   };
 
   const handleRenumberWires = () => {
@@ -579,14 +598,15 @@ export default function SchematicEditor({
     setPreOptimizeBackup(null);
   };
 
-  // Mevcut çizili kablolar varsa sayfa açılışında 1 kez otomatik olarak çakışmasız yerleştir (Geri Al aktif)
+  // Mevcut çizili kablolar varsa 1 kez Proteus A* otorouter ile temiz yerleştir (Geri Al aktif)
   useEffect(() => {
     if (autoOptimizedOnceRef.current || wires.length === 0) return;
     autoOptimizedOnceRef.current = true;
     setPreOptimizeBackup({ nodePositions, wires });
-    const result = autoOptimizeSchematicLayout(nodes, wires, CANVAS_W, CANVAS_H);
+    const result = autoOptimizeSchematicLayout(nodes, wires, CANVAS_W, CANVAS_H, true);
     onChangeNodePositions(result.nodePositions);
     onChangeWires(result.wires);
+    setRouteMetrics(result.metrics);
   }, [nodes, wires, nodePositions, onChangeNodePositions, onChangeWires]);
 
   const isWireVisibleByFilter = (w: SchematicWire): boolean => {
@@ -703,7 +723,22 @@ export default function SchematicEditor({
       label: wireLabel.trim() || `K${wires.length + 1}`,
     };
 
-    onChangeWires([...wires, nextWire]);
+    const updatedWires = [...wires, nextWire];
+    // Proteus tarzı: yeni çizilen kabloda ara nokta konmadıysa A* labirent yönlendirici ile blokların etrafından geçir
+    if (draft.waypoints.length === 0 && orthoMode) {
+      const res = autoRouteWiresWithMetrics(
+        updatedWires,
+        nodes,
+        nodePositions,
+        CANVAS_W,
+        CANVAS_H,
+        mergeSameNet
+      );
+      onChangeWires(res.wires);
+      setRouteMetrics(res.metrics);
+    } else {
+      onChangeWires(updatedWires);
+    }
     setDraft(null);
     setSelectedWireId(nextWire.id);
   };
@@ -767,18 +802,20 @@ export default function SchematicEditor({
 
   const selectedWire = wires.find((w) => w.id === selectedWireId) ?? null;
 
-  // Yatay/dikey kesişimlerde EPLAN köprü yayı (∩) için tüm görünür kabloların dikey segmentlerini çıkar
-  const allVisibleVerticalSegments = useMemo(() => {
-    const entries: Array<{ wireId: string; points: SchematicPoint[] }> = [];
+  // Yatay/dikey kesişimlerde atlama yayı (∩) ve ortak hat ek noktaları (•) için görünür kabloları hazırla
+  const { verticalSegments: allVisibleVerticalSegments, netByWire, junctionDots } = useMemo(() => {
+    const entries: Array<{ wire: SchematicWire; points: SchematicPoint[] }> = [];
     for (const w of wires) {
       if (!isWireVisibleByFilter(w)) continue;
       const p1 = getPinAbsPos(w.fromNodeId, w.fromPinId);
       const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
       if (!p1 || !p2) continue;
-      entries.push({ wireId: w.id, points: [p1, ...w.waypoints, p2] });
+      entries.push({ wire: w, points: [p1, ...w.waypoints, p2] });
     }
-    return extractVerticalSegments(entries);
-  }, [wires, nodes, nodePositions, wireFilter]);
+    const { segments, netByWire: nbw } = extractVerticalSegments(entries);
+    const dots = mergeSameNet ? computeNetJunctions(entries) : [];
+    return { verticalSegments: segments, netByWire: nbw, junctionDots: dots };
+  }, [wires, nodes, nodePositions, wireFilter, mergeSameNet]);
 
   const formatEndpoint = (nodeId: string, pinId: string): string => {
     const n = nodes.find((nd) => nd.id === nodeId);
@@ -928,7 +965,29 @@ export default function SchematicEditor({
         </section>
 
         <section className="sidebar-section">
-          <div className="section-title">Şema Düzenleme & Temizlik</div>
+          <div className="section-title">Proteus A* Otorouter</div>
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={mergeSameNet}
+              onChange={(e) => setMergeSameNet(e.target.checked)}
+            />
+            <span>Ortak hatları birleştir (• ek noktası)</span>
+          </label>
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={autoRerouteOnDrag}
+              onChange={(e) => setAutoRerouteOnDrag(e.target.checked)}
+            />
+            <span>Blok taşıyınca kabloları yenile</span>
+          </label>
+          {routeMetrics && (
+            <div className="metric-sub" style={{ marginBottom: 8 }}>
+              Son çizim: <strong>{routeMetrics.boxCollisions} blok ihlali</strong> •{' '}
+              {routeMetrics.crossings} çapraz geçiş ({routeMetrics.timeMs} ms)
+            </div>
+          )}
           <div className="action-stack">
             <button
               type="button"
@@ -936,15 +995,15 @@ export default function SchematicEditor({
               disabled={wires.length === 0}
               onClick={handleOptimizeAll}
             >
-              ✦ Komponent + Kabloları Çakışmasız Diz
+              ✦ Komponent + Kablo Oto-Diz (A*)
             </button>
             <button
               type="button"
               className="btn-sm"
               disabled={wires.length === 0}
-              onClick={handleAutoRoute}
+              onClick={() => handleAutoRoute()}
             >
-              Sadece Kablo Yollarını Düzenle
+              Sadece A* Kablo Çizimini Yenile
             </button>
             <button
               type="button"
@@ -1249,6 +1308,18 @@ export default function SchematicEditor({
             }}
             onPointerMove={handlePointerMove}
             onPointerUp={() => {
+              if (draggingNode && autoRerouteOnDrag && wires.length > 0) {
+                const res = autoRouteWiresWithMetrics(
+                  wires,
+                  nodes,
+                  nodePositions,
+                  CANVAS_W,
+                  CANVAS_H,
+                  mergeSameNet
+                );
+                onChangeWires(res.wires);
+                setRouteMetrics(res.metrics);
+              }
               setDraggingNode(null);
               setDraggingWaypoint(null);
             }}
@@ -1282,7 +1353,13 @@ export default function SchematicEditor({
                 const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
                 if (!p1 || !p2) return null;
                 const pts = [p1, ...w.waypoints, p2];
-                const pathD = buildRoundedWirePath(pts, 7, w.id, allVisibleVerticalSegments);
+                const pathD = buildRoundedWirePath(
+                  pts,
+                  5,
+                  w.id,
+                  netByWire.get(w.id),
+                  allVisibleVerticalSegments
+                );
                 const hasSelectionFocus =
                   dimOthersOnSelect &&
                   (selectedWireId !== null || focusedNodeId !== null || hoveredWireId !== null);
@@ -1598,7 +1675,13 @@ export default function SchematicEditor({
               const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
               if (!p1 || !p2) return null;
               const pts = [p1, ...w.waypoints, p2];
-              const pathD = buildRoundedWirePath(pts, 7, w.id, allVisibleVerticalSegments);
+              const pathD = buildRoundedWirePath(
+                pts,
+                5,
+                w.id,
+                netByWire.get(w.id),
+                allVisibleVerticalSegments
+              );
               const labelPt = getBestWireLabelPoint(pts, wireIdx);
               const strokeWidth = w.sectionMm2 === '2,5' ? 3.8 : 3.0;
 
@@ -1697,6 +1780,21 @@ export default function SchematicEditor({
                 </g>
               );
             })}
+
+            {/* PROTEUS ORTAK HAT EK NOKTALARI (•) */}
+            {displayMode === 'lines' &&
+              junctionDots.map((dot, idx) => (
+                <circle
+                  key={`junc-${idx}`}
+                  cx={dot.x}
+                  cy={dot.y}
+                  r={4.2}
+                  fill={dot.color}
+                  stroke="#0b1220"
+                  strokeWidth={1.3}
+                  pointerEvents="none"
+                />
+              ))}
 
             {/* AKTİF KABLO ÇİZİM ÖNİZLEMESİ (EN ÜSTTE) */}
             {draft &&
