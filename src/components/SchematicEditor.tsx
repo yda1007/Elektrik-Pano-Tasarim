@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { PanelItem, SchematicNodePos, SchematicPoint, SchematicWire } from '../types/panel';
 import {
+  autoOptimizeSchematicLayout,
   autoRouteWires,
   buildRoundedWirePath,
+  extractVerticalSegments,
   getBestWireLabelPoint,
 } from '../utils/schematicRouter';
 
@@ -75,8 +77,8 @@ function getWireColorSpec(hex: string): StandardWireColor {
   );
 }
 
-const CANVAS_W = 1520;
-const CANVAS_H = 1040;
+const CANVAS_W = 1720;
+const CANVAS_H = 1100;
 const GRID = 10;
 
 function isLightHex(hex: string): boolean {
@@ -479,13 +481,17 @@ export default function SchematicEditor({
   const [selectedWireId, setSelectedWireId] = useState<string | null>(null);
   const [hoveredWireId, setHoveredWireId] = useState<string | null>(null);
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
-  const [displayMode, setDisplayMode] = useState<'tags' | 'tags-target' | 'lines' | 'cards'>('tags');
+  const [displayMode, setDisplayMode] = useState<'tags' | 'tags-target' | 'lines' | 'cards'>('lines');
   const [wireFilter, setWireFilter] = useState<'all' | 'power' | 'control'>('all');
   const [showWireLabels, setShowWireLabels] = useState(false);
   const [dimOthersOnSelect, setDimOthersOnSelect] = useState(true);
   const [zoom, setZoom] = useState<number | 'fit'>('fit');
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [preRouteBackup, setPreRouteBackup] = useState<SchematicWire[] | null>(null);
+  const [preOptimizeBackup, setPreOptimizeBackup] = useState<{
+    nodePositions: Record<string, SchematicNodePos>;
+    wires: SchematicWire[];
+  } | null>(null);
+  const autoOptimizedOnceRef = useRef(false);
 
   const [draft, setDraft] = useState<{
     fromNodeId: string;
@@ -540,9 +546,18 @@ export default function SchematicEditor({
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [selectedWireId, wires, onChangeWires]);
 
+  const handleOptimizeAll = () => {
+    if (wires.length === 0) return;
+    setPreOptimizeBackup({ nodePositions, wires });
+    const result = autoOptimizeSchematicLayout(nodes, wires, CANVAS_W, CANVAS_H);
+    onChangeNodePositions(result.nodePositions);
+    onChangeWires(result.wires);
+    setZoom('fit');
+  };
+
   const handleAutoRoute = () => {
     if (wires.length === 0) return;
-    setPreRouteBackup(wires);
+    setPreOptimizeBackup({ nodePositions, wires });
     const routed = autoRouteWires(wires, nodes, nodePositions, CANVAS_W, CANVAS_H);
     onChangeWires(routed);
   };
@@ -557,11 +572,22 @@ export default function SchematicEditor({
     );
   };
 
-  const handleUndoAutoRoute = () => {
-    if (!preRouteBackup) return;
-    onChangeWires(preRouteBackup);
-    setPreRouteBackup(null);
+  const handleUndoOptimize = () => {
+    if (!preOptimizeBackup) return;
+    onChangeNodePositions(preOptimizeBackup.nodePositions);
+    onChangeWires(preOptimizeBackup.wires);
+    setPreOptimizeBackup(null);
   };
+
+  // Mevcut çizili kablolar varsa sayfa açılışında 1 kez otomatik olarak çakışmasız yerleştir (Geri Al aktif)
+  useEffect(() => {
+    if (autoOptimizedOnceRef.current || wires.length === 0) return;
+    autoOptimizedOnceRef.current = true;
+    setPreOptimizeBackup({ nodePositions, wires });
+    const result = autoOptimizeSchematicLayout(nodes, wires, CANVAS_W, CANVAS_H);
+    onChangeNodePositions(result.nodePositions);
+    onChangeWires(result.wires);
+  }, [nodes, wires, nodePositions, onChangeNodePositions, onChangeWires]);
 
   const isWireVisibleByFilter = (w: SchematicWire): boolean => {
     if (wireFilter === 'all') return true;
@@ -741,6 +767,19 @@ export default function SchematicEditor({
 
   const selectedWire = wires.find((w) => w.id === selectedWireId) ?? null;
 
+  // Yatay/dikey kesişimlerde EPLAN köprü yayı (∩) için tüm görünür kabloların dikey segmentlerini çıkar
+  const allVisibleVerticalSegments = useMemo(() => {
+    const entries: Array<{ wireId: string; points: SchematicPoint[] }> = [];
+    for (const w of wires) {
+      if (!isWireVisibleByFilter(w)) continue;
+      const p1 = getPinAbsPos(w.fromNodeId, w.fromPinId);
+      const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
+      if (!p1 || !p2) continue;
+      entries.push({ wireId: w.id, points: [p1, ...w.waypoints, p2] });
+    }
+    return extractVerticalSegments(entries);
+  }, [wires, nodes, nodePositions, wireFilter]);
+
   const formatEndpoint = (nodeId: string, pinId: string): string => {
     const n = nodes.find((nd) => nd.id === nodeId);
     const p = n?.pins.find((pn) => pn.id === pinId);
@@ -895,9 +934,9 @@ export default function SchematicEditor({
               type="button"
               className="btn-primary"
               disabled={wires.length === 0}
-              onClick={handleRenumberWires}
+              onClick={handleOptimizeAll}
             >
-              1-2-3 Otomatik Numaralandır
+              ✦ Komponent + Kabloları Çakışmasız Diz
             </button>
             <button
               type="button"
@@ -905,11 +944,19 @@ export default function SchematicEditor({
               disabled={wires.length === 0}
               onClick={handleAutoRoute}
             >
-              ✦ Kablo Yollarını Düzenle
+              Sadece Kablo Yollarını Düzenle
             </button>
-            {preRouteBackup && (
-              <button type="button" className="btn-sm" onClick={handleUndoAutoRoute}>
-                ↶ Otomatik Düzenlemeyi Geri Al
+            <button
+              type="button"
+              className="btn-sm"
+              disabled={wires.length === 0}
+              onClick={handleRenumberWires}
+            >
+              1-2-3 Otomatik Numaralandır
+            </button>
+            {preOptimizeBackup && (
+              <button type="button" className="btn-sm" onClick={handleUndoOptimize}>
+                ↶ Önceki Yerleşime Geri Dön
               </button>
             )}
             {draft && (
@@ -1049,25 +1096,30 @@ export default function SchematicEditor({
                 </div>
               )}
 
+              <button
+                type="button"
+                className="btn-primary"
+                disabled={wires.length === 0}
+                onClick={handleOptimizeAll}
+              >
+                ✦ Çakışmasız Diz
+              </button>
+
+              {preOptimizeBackup && (
+                <button type="button" className="btn-sm" onClick={handleUndoOptimize}>
+                  ↶ Geri Al
+                </button>
+              )}
+
               {displayMode === 'lines' && (
-                <>
-                  <button
-                    type="button"
-                    className="btn-sm"
-                    disabled={wires.length === 0}
-                    onClick={handleAutoRoute}
-                  >
-                    ✦ Hatları Düzenle
-                  </button>
-                  <label className="inline-check">
-                    <input
-                      type="checkbox"
-                      checked={showWireLabels}
-                      onChange={(e) => setShowWireLabels(e.target.checked)}
-                    />
-                    <span>Etiketler</span>
-                  </label>
-                </>
+                <label className="inline-check">
+                  <input
+                    type="checkbox"
+                    checked={showWireLabels}
+                    onChange={(e) => setShowWireLabels(e.target.checked)}
+                  />
+                  <span>Etiketler</span>
+                </label>
               )}
 
               {displayMode !== 'cards' && (
@@ -1181,12 +1233,12 @@ export default function SchematicEditor({
           <div className="schematic-scroll-wrap">
           <svg
             ref={svgRef}
-            viewBox={`-72 -70 ${CANVAS_W + 144} ${CANVAS_H + 140}`}
+            viewBox={`-90 -74 ${CANVAS_W + 180} ${CANVAS_H + 150}`}
             className="cad-svg schematic-svg"
             style={
               zoom === 'fit'
                 ? { width: '100%', maxHeight: 'calc(100vh - 126px)' }
-                : { width: `${Math.round((CANVAS_W + 144) * zoom * 0.8)}px`, minWidth: '100%' }
+                : { width: `${Math.round((CANVAS_W + 180) * zoom * 0.78)}px`, minWidth: '100%' }
             }
             onClick={handleCanvasClick}
             onContextMenu={(e) => {
@@ -1211,8 +1263,8 @@ export default function SchematicEditor({
               </pattern>
             </defs>
 
-            <rect x={-72} y={-70} width={CANVAS_W + 144} height={CANVAS_H + 140} fill="#0b1220" />
-            <rect x={-72} y={-70} width={CANVAS_W + 144} height={CANVAS_H + 140} fill="url(#sch-grid)" />
+            <rect x={-90} y={-74} width={CANVAS_W + 180} height={CANVAS_H + 150} fill="#0b1220" />
+            <rect x={-90} y={-74} width={CANVAS_W + 180} height={CANVAS_H + 150} fill="url(#sch-grid)" />
 
             {/* KATMAN 1: NORMAL KABLO HATLARI (Sadece 'Tüm Hatlar' modunda, blokların altında değil temiz kanallarda) */}
             {displayMode === 'lines' &&
@@ -1230,7 +1282,7 @@ export default function SchematicEditor({
                 const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
                 if (!p1 || !p2) return null;
                 const pts = [p1, ...w.waypoints, p2];
-                const pathD = buildRoundedWirePath(pts, 7);
+                const pathD = buildRoundedWirePath(pts, 7, w.id, allVisibleVerticalSegments);
                 const hasSelectionFocus =
                   dimOthersOnSelect &&
                   (selectedWireId !== null || focusedNodeId !== null || hoveredWireId !== null);
@@ -1546,7 +1598,7 @@ export default function SchematicEditor({
               const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
               if (!p1 || !p2) return null;
               const pts = [p1, ...w.waypoints, p2];
-              const pathD = buildRoundedWirePath(pts, 7);
+              const pathD = buildRoundedWirePath(pts, 7, w.id, allVisibleVerticalSegments);
               const labelPt = getBestWireLabelPoint(pts, wireIdx);
               const strokeWidth = w.sectionMm2 === '2,5' ? 3.8 : 3.0;
 
