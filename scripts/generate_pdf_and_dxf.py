@@ -820,6 +820,20 @@ class DxfWriter:
             ("ANTET", 5),
         ]
         self.entities = []
+        self.min_x = float("inf")
+        self.min_y = float("inf")
+        self.max_x = float("-inf")
+        self.max_y = float("-inf")
+
+    def _track(self, x: float, y: float):
+        if x < self.min_x:
+            self.min_x = x
+        if y < self.min_y:
+            self.min_y = y
+        if x > self.max_x:
+            self.max_x = x
+        if y > self.max_y:
+            self.max_y = y
 
     def _aci(self, hex_str: str) -> int:
         return HEX_TO_ACI.get(hex_str.lower(), 7)
@@ -831,8 +845,8 @@ class DxfWriter:
             "↔": "<->",
             "↑": "(YUKARI)",
             "↓": "(ASAGI)",
-            "▲": "^",
-            "▼": "v",
+            "▲": "Y",
+            "▼": "A",
             "×": "x",
             "•": "-",
             "—": "-",
@@ -852,6 +866,8 @@ class DxfWriter:
         return out
 
     def add_line(self, layer: str, x1: float, y1: float, x2: float, y2: float, color: int | None = None):
+        self._track(x1, y1)
+        self._track(x2, y2)
         e = [
             "0", "LINE",
             "8", layer,
@@ -871,6 +887,8 @@ class DxfWriter:
         self.add_line(layer, x, y + h, x, y, color)
 
     def add_circle(self, layer: str, cx: float, cy: float, r: float, color: int | None = None):
+        self._track(cx - r, cy - r)
+        self._track(cx + r, cy + r)
         e = ["0", "CIRCLE", "8", layer]
         if color is not None:
             e += ["62", str(color)]
@@ -878,6 +896,8 @@ class DxfWriter:
         self.entities.extend(e)
 
     def add_text(self, layer: str, x: float, y: float, height: float, text: str, color: int | None = None, rot: float = 0.0):
+        self._track(x, y)
+        self._track(x, y + height)
         e = ["0", "TEXT", "8", layer]
         if color is not None:
             e += ["62", str(color)]
@@ -895,10 +915,19 @@ class DxfWriter:
             self.add_line(layer, pts[i][0], pts[i][1], pts[i + 1][0], pts[i + 1][1], color)
 
     def save(self, path: Path):
+        min_x = self.min_x if self.min_x < self.max_x else 0.0
+        min_y = self.min_y if self.min_y < self.max_y else 0.0
+        max_x = self.max_x if self.min_x < self.max_x else 1000.0
+        max_y = self.max_y if self.min_y < self.max_y else 1000.0
         lines = [
             "0", "SECTION", "2", "HEADER",
             "9", "$ACADVER", "1", "AC1009",
             "9", "$INSUNITS", "70", "4",  # 4 = Millimeters
+            "9", "$MEASUREMENT", "70", "1",  # 1 = Metric
+            "9", "$EXTMIN", "10", f"{min_x:.2f}", "20", f"{min_y:.2f}", "30", "0.0",
+            "9", "$EXTMAX", "10", f"{max_x:.2f}", "20", f"{max_y:.2f}", "30", "0.0",
+            "9", "$LIMMIN", "10", f"{min_x:.2f}", "20", f"{min_y:.2f}",
+            "9", "$LIMMAX", "10", f"{max_x:.2f}", "20", f"{max_y:.2f}",
             "0", "ENDSEC",
             "0", "SECTION", "2", "TABLES",
             "0", "TABLE", "2", "LTYPE", "70", "1",
