@@ -483,7 +483,7 @@ export default function SchematicEditor({
   const [wireFilter, setWireFilter] = useState<'all' | 'power' | 'control'>('all');
   const [showWireLabels, setShowWireLabels] = useState(false);
   const [dimOthersOnSelect, setDimOthersOnSelect] = useState(true);
-  const [zoom, setZoom] = useState(1.15);
+  const [zoom, setZoom] = useState<number | 'fit'>('fit');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [preRouteBackup, setPreRouteBackup] = useState<SchematicWire[] | null>(null);
 
@@ -619,8 +619,8 @@ export default function SchematicEditor({
     if (!ctm) return null;
     const local = pt.matrixTransform(ctm.inverse());
     return {
-      x: snap(Math.max(10, Math.min(CANVAS_W - 10, local.x))),
-      y: snap(Math.max(10, Math.min(CANVAS_H - 10, local.y))),
+      x: snap(Math.max(-60, Math.min(CANVAS_W + 60, local.x))),
+      y: snap(Math.max(-60, Math.min(CANVAS_H + 60, local.y))),
     };
   };
 
@@ -1023,21 +1023,26 @@ export default function SchematicEditor({
                   <button
                     type="button"
                     title="Küçült"
-                    onClick={() => setZoom((z) => Math.max(0.7, Number((z - 0.15).toFixed(2))))}
+                    onClick={() =>
+                      setZoom((z) => Math.max(0.7, Number(((z === 'fit' ? 1 : z) - 0.15).toFixed(2))))
+                    }
                   >
                     −
                   </button>
                   <button
                     type="button"
-                    title="Sıfırla"
-                    onClick={() => setZoom(1.15)}
+                    className={zoom === 'fit' ? 'active' : ''}
+                    title="Ekrana Sığdır"
+                    onClick={() => setZoom('fit')}
                   >
-                    {Math.round(zoom * 100)}%
+                    {zoom === 'fit' ? 'Sığdır' : `${Math.round(zoom * 100)}%`}
                   </button>
                   <button
                     type="button"
                     title="Büyüt"
-                    onClick={() => setZoom((z) => Math.min(2.4, Number((z + 0.15).toFixed(2))))}
+                    onClick={() =>
+                      setZoom((z) => Math.min(2.4, Number(((z === 'fit' ? 1 : z) + 0.15).toFixed(2))))
+                    }
                   >
                     +
                   </button>
@@ -1176,9 +1181,13 @@ export default function SchematicEditor({
           <div className="schematic-scroll-wrap">
           <svg
             ref={svgRef}
-            viewBox={`-24 -70 ${CANVAS_W + 48} ${CANVAS_H + 140}`}
+            viewBox={`-72 -70 ${CANVAS_W + 144} ${CANVAS_H + 140}`}
             className="cad-svg schematic-svg"
-            style={{ width: `${Math.round(CANVAS_W * zoom * 0.82)}px`, minWidth: '100%' }}
+            style={
+              zoom === 'fit'
+                ? { width: '100%', maxHeight: 'calc(100vh - 126px)' }
+                : { width: `${Math.round((CANVAS_W + 144) * zoom * 0.8)}px`, minWidth: '100%' }
+            }
             onClick={handleCanvasClick}
             onContextMenu={(e) => {
               if (draft) {
@@ -1202,155 +1211,106 @@ export default function SchematicEditor({
               </pattern>
             </defs>
 
-            <rect x={-24} y={-70} width={CANVAS_W + 48} height={CANVAS_H + 140} fill="#0b1220" />
-            <rect x={-24} y={-70} width={CANVAS_W + 48} height={CANVAS_H + 140} fill="url(#sch-grid)" />
+            <rect x={-72} y={-70} width={CANVAS_W + 144} height={CANVAS_H + 140} fill="#0b1220" />
+            <rect x={-72} y={-70} width={CANVAS_W + 144} height={CANVAS_H + 140} fill="url(#sch-grid)" />
 
-            {/* TAM KABLO HATLARI (Tüm Hatlar modunda hepsi; Numaralı modda sadece seçili/hover/odaklı hatlar!) */}
-            {wires.map((w, wireIdx) => {
-              if (!isWireVisibleByFilter(w)) return null;
-              const isSelected = selectedWireId === w.id;
-              const isHovered = hoveredWireId === w.id;
-              const isConnectedToFocused =
-                focusedNodeId !== null &&
-                (w.fromNodeId === focusedNodeId || w.toNodeId === focusedNodeId);
-              const isHighlighted = isSelected || isHovered || isConnectedToFocused;
+            {/* KATMAN 1: NORMAL KABLO HATLARI (Sadece 'Tüm Hatlar' modunda, blokların altında değil temiz kanallarda) */}
+            {displayMode === 'lines' &&
+              wires.map((w, wireIdx) => {
+                if (!isWireVisibleByFilter(w)) return null;
+                const isSelected = selectedWireId === w.id;
+                const isHovered = hoveredWireId === w.id;
+                const isConnectedToFocused =
+                  focusedNodeId !== null &&
+                  (w.fromNodeId === focusedNodeId || w.toNodeId === focusedNodeId);
+                const isHighlighted = isSelected || isHovered || isConnectedToFocused;
+                if (isHighlighted) return null; // Vurgulanan hatlar Katman 3'te en üstte çizilir!
 
-              if (displayMode !== 'lines' && !isHighlighted) return null;
+                const p1 = getPinAbsPos(w.fromNodeId, w.fromPinId);
+                const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
+                if (!p1 || !p2) return null;
+                const pts = [p1, ...w.waypoints, p2];
+                const pathD = buildRoundedWirePath(pts, 7);
+                const hasSelectionFocus =
+                  dimOthersOnSelect &&
+                  (selectedWireId !== null || focusedNodeId !== null || hoveredWireId !== null);
+                const opacity = hasSelectionFocus ? 0.14 : 0.92;
+                const labelPt = getBestWireLabelPoint(pts, wireIdx);
+                const strokeWidth = w.sectionMm2 === '2,5' ? 3.2 : 2.4;
 
-              const p1 = getPinAbsPos(w.fromNodeId, w.fromPinId);
-              const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
-              if (!p1 || !p2) return null;
-              const pts = [p1, ...w.waypoints, p2];
-              const pathD = buildRoundedWirePath(pts, 7);
-              const hasSelectionFocus =
-                displayMode === 'lines' &&
-                dimOthersOnSelect &&
-                (selectedWireId !== null || focusedNodeId !== null || hoveredWireId !== null);
-              const opacity = hasSelectionFocus && !isHighlighted ? 0.14 : 1;
-              const labelPt = getBestWireLabelPoint(pts, wireIdx);
-              const strokeWidth = w.sectionMm2 === '2,5' ? 3.2 : 2.4;
-
-              return (
-                <g
-                  key={w.id}
-                  opacity={opacity}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setFocusedNodeId(null);
-                    setSelectedWireId(w.id);
-                  }}
-                  style={{ cursor: 'pointer', transition: 'opacity 0.15s' }}
-                >
-                  <path d={pathD} fill="none" stroke="transparent" strokeWidth={13} />
-                  <path
-                    d={pathD}
-                    fill="none"
-                    stroke="#0b1220"
-                    strokeWidth={strokeWidth + 3.4}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-
-                  {isHighlighted && (
+                return (
+                  <g
+                    key={w.id}
+                    opacity={opacity}
+                    onMouseEnter={() => setHoveredWireId(w.id)}
+                    onMouseLeave={() => setHoveredWireId(null)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFocusedNodeId(null);
+                      setSelectedWireId(w.id);
+                    }}
+                    style={{ cursor: 'pointer', transition: 'opacity 0.15s' }}
+                  >
+                    <path d={pathD} fill="none" stroke="transparent" strokeWidth={13} />
                     <path
                       d={pathD}
                       fill="none"
-                      stroke="#38bdf8"
-                      strokeWidth={strokeWidth + 4.2}
+                      stroke="#0b1220"
+                      strokeWidth={strokeWidth + 3.4}
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeOpacity={0.45}
                     />
-                  )}
-                  <path
-                    d={pathD}
-                    fill="none"
-                    stroke={w.color}
-                    strokeWidth={strokeWidth}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  {getWireColorSpec(w.color).stripeHex && (
                     <path
                       d={pathD}
                       fill="none"
-                      stroke={getWireColorSpec(w.color).stripeHex}
+                      stroke={w.color}
                       strokeWidth={strokeWidth}
-                      strokeDasharray="6 6"
-                      strokeLinecap="butt"
+                      strokeLinecap="round"
                       strokeLinejoin="round"
                     />
-                  )}
-                  <circle cx={p1.x} cy={p1.y} r={3.5} fill={w.color} />
-                  <circle cx={p2.x} cy={p2.y} r={3.5} fill={w.color} />
-
-                  {isSelected &&
-                    w.waypoints.map((wp, wpIdx) => (
-                      <circle
-                        key={wpIdx}
-                        cx={wp.x}
-                        cy={wp.y}
-                        r={5.5}
-                        fill="#38bdf8"
-                        stroke="#0b1220"
-                        strokeWidth={1.6}
-                        style={{ cursor: 'move' }}
-                        onPointerDown={(e) => {
-                          e.stopPropagation();
-                          setDraggingWaypoint({ wireId: w.id, index: wpIdx });
-                        }}
+                    {getWireColorSpec(w.color).stripeHex && (
+                      <path
+                        d={pathD}
+                        fill="none"
+                        stroke={getWireColorSpec(w.color).stripeHex}
+                        strokeWidth={strokeWidth}
+                        strokeDasharray="6 6"
+                        strokeLinecap="butt"
+                        strokeLinejoin="round"
                       />
-                    ))}
+                    )}
+                    <circle cx={p1.x} cy={p1.y} r={3.5} fill={w.color} />
+                    <circle cx={p2.x} cy={p2.y} r={3.5} fill={w.color} />
 
-                  {w.label && (showWireLabels || isHighlighted) && (
-                    <g pointerEvents="none">
-                      <rect
-                        x={labelPt.x - 16}
-                        y={labelPt.y - 8}
-                        width={32}
-                        height={14}
-                        rx={3}
-                        fill="#0f172a"
-                        stroke={isSelected ? '#38bdf8' : w.color}
-                        strokeWidth={0.9}
-                      />
-                      <text
-                        x={labelPt.x}
-                        y={labelPt.y + 2}
-                        textAnchor="middle"
-                        fontSize={8.5}
-                        fill="#f8fafc"
-                        fontWeight={700}
-                      >
-                        {w.label}
-                      </text>
-                    </g>
-                  )}
-                </g>
-              );
-            })}
-
-            {/* AKTİF KABLO ÖNİZLEMESİ */}
-            {draft &&
-              (() => {
-                const startPt = getPinAbsPos(draft.fromNodeId, draft.fromPinId);
-                if (!startPt) return null;
-                const pts = cursorPt
-                  ? [startPt, ...draft.waypoints, cursorPt]
-                  : [startPt, ...draft.waypoints];
-                return (
-                  <polyline
-                    points={buildPolyline(pts)}
-                    fill="none"
-                    stroke={wireColor}
-                    strokeWidth={2.5}
-                    strokeDasharray="6 4"
-                    pointerEvents="none"
-                  />
+                    {w.label && showWireLabels && (
+                      <g pointerEvents="none">
+                        <rect
+                          x={labelPt.x - 16}
+                          y={labelPt.y - 8}
+                          width={32}
+                          height={14}
+                          rx={3}
+                          fill="#0f172a"
+                          stroke={w.color}
+                          strokeWidth={0.9}
+                        />
+                        <text
+                          x={labelPt.x}
+                          y={labelPt.y + 2}
+                          textAnchor="middle"
+                          fontSize={8.5}
+                          fill="#f8fafc"
+                          fontWeight={700}
+                        >
+                          {w.label}
+                        </text>
+                      </g>
+                    )}
+                  </g>
                 );
-              })()}
+              })}
 
-            {/* ELEMAN BLOKLARI VE PİNLERİ */}
+            {/* KATMAN 2: ELEMAN BLOKLARI, PİNLER VE NUMARALI BAYRAKLAR */}
             {nodes.map((node) => {
               const pos = getNodePos(node);
               const isNodeFocused = focusedNodeId === node.id;
@@ -1385,6 +1345,7 @@ export default function SchematicEditor({
                     height={node.height}
                     rx={6}
                     fill="#131e33"
+                    fillOpacity={displayMode === 'lines' ? 0.88 : 0.96}
                     stroke={isNodeFocused ? '#38bdf8' : node.accent}
                     strokeWidth={isNodeFocused ? 2.5 : 1.5}
                   />
@@ -1569,6 +1530,141 @@ export default function SchematicEditor({
                 </g>
               );
             })}
+
+            {/* KATMAN 3 (EN ÜST): VURGULANAN / SEÇİLİ / ÜZERİNE GELİNEN KABLOLAR + AKTİF ÇİZİM (ASLA BLOK ARKASINDA KALMAZ!) */}
+            {wires.map((w, wireIdx) => {
+              if (!isWireVisibleByFilter(w)) return null;
+              const isSelected = selectedWireId === w.id;
+              const isHovered = hoveredWireId === w.id;
+              const isConnectedToFocused =
+                focusedNodeId !== null &&
+                (w.fromNodeId === focusedNodeId || w.toNodeId === focusedNodeId);
+              const isHighlighted = isSelected || isHovered || isConnectedToFocused;
+              if (!isHighlighted) return null;
+
+              const p1 = getPinAbsPos(w.fromNodeId, w.fromPinId);
+              const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
+              if (!p1 || !p2) return null;
+              const pts = [p1, ...w.waypoints, p2];
+              const pathD = buildRoundedWirePath(pts, 7);
+              const labelPt = getBestWireLabelPoint(pts, wireIdx);
+              const strokeWidth = w.sectionMm2 === '2,5' ? 3.8 : 3.0;
+
+              return (
+                <g
+                  key={`top-${w.id}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFocusedNodeId(null);
+                    setSelectedWireId(w.id);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <path d={pathD} fill="none" stroke="transparent" strokeWidth={14} />
+                  <path
+                    d={pathD}
+                    fill="none"
+                    stroke="#0b1220"
+                    strokeWidth={strokeWidth + 4.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d={pathD}
+                    fill="none"
+                    stroke="#38bdf8"
+                    strokeWidth={strokeWidth + 3.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeOpacity={0.55}
+                  />
+                  <path
+                    d={pathD}
+                    fill="none"
+                    stroke={w.color}
+                    strokeWidth={strokeWidth}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  {getWireColorSpec(w.color).stripeHex && (
+                    <path
+                      d={pathD}
+                      fill="none"
+                      stroke={getWireColorSpec(w.color).stripeHex}
+                      strokeWidth={strokeWidth}
+                      strokeDasharray="6 6"
+                      strokeLinecap="butt"
+                      strokeLinejoin="round"
+                    />
+                  )}
+                  <circle cx={p1.x} cy={p1.y} r={5} fill={w.color} stroke="#ffffff" strokeWidth={1.5} />
+                  <circle cx={p2.x} cy={p2.y} r={5} fill={w.color} stroke="#ffffff" strokeWidth={1.5} />
+
+                  {isSelected &&
+                    w.waypoints.map((wp, wpIdx) => (
+                      <circle
+                        key={wpIdx}
+                        cx={wp.x}
+                        cy={wp.y}
+                        r={6}
+                        fill="#38bdf8"
+                        stroke="#0b1220"
+                        strokeWidth={1.8}
+                        style={{ cursor: 'move' }}
+                        onPointerDown={(e) => {
+                          e.stopPropagation();
+                          setDraggingWaypoint({ wireId: w.id, index: wpIdx });
+                        }}
+                      />
+                    ))}
+
+                  {w.label && (
+                    <g pointerEvents="none">
+                      <rect
+                        x={labelPt.x - 18}
+                        y={labelPt.y - 10}
+                        width={36}
+                        height={18}
+                        rx={4}
+                        fill="#0f172a"
+                        stroke="#38bdf8"
+                        strokeWidth={1.4}
+                      />
+                      <text
+                        x={labelPt.x}
+                        y={labelPt.y + 3}
+                        textAnchor="middle"
+                        fontSize={10.5}
+                        fill="#f8fafc"
+                        fontWeight={800}
+                      >
+                        {w.label}
+                      </text>
+                    </g>
+                  )}
+                </g>
+              );
+            })}
+
+            {/* AKTİF KABLO ÇİZİM ÖNİZLEMESİ (EN ÜSTTE) */}
+            {draft &&
+              (() => {
+                const startPt = getPinAbsPos(draft.fromNodeId, draft.fromPinId);
+                if (!startPt) return null;
+                const pts = cursorPt
+                  ? [startPt, ...draft.waypoints, cursorPt]
+                  : [startPt, ...draft.waypoints];
+                return (
+                  <polyline
+                    points={buildPolyline(pts)}
+                    fill="none"
+                    stroke={wireColor}
+                    strokeWidth={3}
+                    strokeDasharray="7 5"
+                    pointerEvents="none"
+                  />
+                );
+              })()}
           </svg>
           </div>
           )}
