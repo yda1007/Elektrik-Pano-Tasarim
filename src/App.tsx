@@ -18,8 +18,11 @@ import type {
 } from './types/panel';
 import { analyzeLayout } from './utils/geometry';
 
-const STORAGE_KEY = 'elektrik-pano-tasarim:v3:bemis-bh6-6000';
-const PREV_STORAGE_KEY = 'elektrik-pano-tasarim:v2:bemis-bh6-6000';
+const STORAGE_KEY = 'elektrik-pano-tasarim:v4:bemis-bh6-6000';
+const PREV_STORAGE_KEYS = [
+  'elektrik-pano-tasarim:v3:bemis-bh6-6000',
+  'elektrik-pano-tasarim:v2:bemis-bh6-6000',
+];
 
 type AppTab = 'layout' | 'schematic';
 
@@ -34,9 +37,14 @@ function loadSavedState(): SavedState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      // Önceki sürümde çizilen manuel kablolar varsa koru
-      const prevRaw = localStorage.getItem(PREV_STORAGE_KEY);
-      const prev = prevRaw ? (JSON.parse(prevRaw) as Partial<SavedState>) : null;
+      let prev: Partial<SavedState> | null = null;
+      for (const k of PREV_STORAGE_KEYS) {
+        const prevRaw = localStorage.getItem(k);
+        if (prevRaw) {
+          prev = JSON.parse(prevRaw) as Partial<SavedState>;
+          break;
+        }
+      }
       return {
         items: createInitialItems(),
         rails: DEFAULT_RAILS,
@@ -112,12 +120,22 @@ export default function App() {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, posXMm: nextXMm } : item)));
   };
 
+  const handleUpdateBackplatePos = (id: string, nextXMm: number, nextYMm: number) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, posXMm: nextXMm, posYMm: nextYMm } : item
+      )
+    );
+  };
+
   const handleAddFromCatalog = (tpl: CatalogTemplate) => {
     let mount: MountLocation = tpl.defaultMount;
     if (tpl.category === 'button') {
       mount = addTarget === 'right-wall' ? 'right-wall' : 'left-wall';
     } else if (tpl.category === 'gland') {
       mount = addTarget === 'top-wall' ? 'top-wall' : 'bottom-wall';
+    } else if (tpl.category === 'busbar') {
+      mount = 'backplate';
     } else if (addTarget === 'top-rail' || addTarget === 'bottom-rail') {
       mount = addTarget;
     }
@@ -140,8 +158,16 @@ export default function App() {
       holeDiameterMm: tpl.holeDiameterMm,
       wireClearanceMm: tpl.wireClearanceMm,
       order: sameMount.length,
-      posXMm: mount === 'bottom-wall' || mount === 'top-wall' ? 122.5 : undefined,
-      posYMm: mount === 'left-wall' || mount === 'right-wall' ? 262 : undefined,
+      posXMm:
+        mount === 'bottom-wall' || mount === 'top-wall' || mount === 'backplate'
+          ? 122.5
+          : undefined,
+      posYMm:
+        mount === 'left-wall' || mount === 'right-wall'
+          ? 264
+          : mount === 'backplate'
+            ? 232
+            : undefined,
       posZMm:
         mount === 'left-wall' ||
         mount === 'right-wall' ||
@@ -411,6 +437,7 @@ export default function App() {
                 >
                   <option value="top-rail">Üst DIN Rayı</option>
                   <option value="bottom-rail">Alt DIN Rayı</option>
+                  <option value="backplate">Pano İçi (Taban / Yuva)</option>
                   <option value="left-wall">Sol Yan Duvar</option>
                   <option value="right-wall">Sağ Yan Duvar</option>
                   <option value="bottom-wall">Alt Duvar (Rakor)</option>
@@ -454,6 +481,7 @@ export default function App() {
               onSelect={setSelectedId}
               onUpdateSidePosY={handleUpdateSidePosY}
               onUpdateHorizPosX={handleUpdateHorizPosX}
+              onUpdateBackplatePos={handleUpdateBackplatePos}
             />
           </main>
 

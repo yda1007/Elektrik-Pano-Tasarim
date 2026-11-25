@@ -3,6 +3,7 @@ export type ComponentCategory =
   | 'relay'
   | 'contactor'
   | 'terminal'
+  | 'busbar'
   | 'button'
   | 'gland'
   | 'breaker'
@@ -12,6 +13,7 @@ export type ComponentCategory =
 export type MountLocation =
   | 'top-rail'
   | 'bottom-rail'
+  | 'backplate'
   | 'left-wall'
   | 'right-wall'
   | 'bottom-wall'

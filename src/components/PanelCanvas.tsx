@@ -16,6 +16,7 @@ interface PanelCanvasProps {
   onSelect: (id: string) => void;
   onUpdateSidePosY: (id: string, nextYMm: number) => void;
   onUpdateHorizPosX: (id: string, nextXMm: number) => void;
+  onUpdateBackplatePos: (id: string, nextXMm: number, nextYMm: number) => void;
 }
 
 function renderRailComponentGraphic(
@@ -222,9 +223,10 @@ export default function PanelCanvas({
   onSelect,
   onUpdateSidePosY,
   onUpdateHorizPosX,
+  onUpdateBackplatePos,
 }: PanelCanvasProps) {
   const frontSvgRef = useRef<SVGSVGElement | null>(null);
-  const [dragState, setDragState] = useState<{ id: string; axis: 'y' | 'x' } | null>(null);
+  const [dragState, setDragState] = useState<{ id: string; axis: 'y' | 'x' | 'xy' } | null>(null);
 
   const walls = getWallOffsets(enclosure);
   const topRailStartX = (enclosure.outerWidthMm - rails['top-rail'].usableWidthMm) / 2;
@@ -232,6 +234,7 @@ export default function PanelCanvas({
   const railPlaced = analysis.placed.filter(
     (p) => p.item.mount === 'top-rail' || p.item.mount === 'bottom-rail'
   );
+  const backplatePlaced = analysis.placed.filter((p) => p.item.mount === 'backplate');
   const sidePlaced = analysis.placed.filter(
     (p) => p.item.mount === 'left-wall' || p.item.mount === 'right-wall'
   );
@@ -261,9 +264,13 @@ export default function PanelCanvas({
     if (dragState.axis === 'y') {
       const clampedY = Math.round(Math.max(40, Math.min(enclosure.outerHeightMm - 40, local.y)));
       onUpdateSidePosY(dragState.id, clampedY);
-    } else {
+    } else if (dragState.axis === 'x') {
       const clampedX = Math.round(Math.max(36, Math.min(enclosure.outerWidthMm - 36, local.x)));
       onUpdateHorizPosX(dragState.id, clampedX);
+    } else {
+      const clampedX = Math.round(Math.max(45, Math.min(enclosure.outerWidthMm - 45, local.x)));
+      const clampedY = Math.round(Math.max(20, Math.min(enclosure.outerHeightMm - 22, local.y)));
+      onUpdateBackplatePos(dragState.id, clampedX, clampedY);
     }
   };
 
@@ -483,17 +490,86 @@ export default function PanelCanvas({
               </g>
             ))}
 
-            {/* Bemis Dahili Nötr ve Toprak Klemens Baraları (Panoda ayrı yeri) */}
-            <g>
-              <rect x={36} y={14} width={76} height={7} rx={1.5} fill="#1d4ed8" fillOpacity={0.45} stroke="#3b82f6" strokeWidth={0.8} />
-              <text x={74} y={19.2} textAnchor="middle" fontSize={4.4} fill="#bfdbfe" fontWeight={700}>
-                Pano Nötr Barası (N)
-              </text>
-              <rect x={133} y={14} width={76} height={7} rx={1.5} fill="#15803d" fillOpacity={0.45} stroke="#22c55e" strokeWidth={0.8} />
-              <text x={171} y={19.2} textAnchor="middle" fontSize={4.4} fill="#bbf7d0" fontWeight={700}>
-                Pano Toprak Barası (PE)
-              </text>
-            </g>
+            {/* Bemis Pano İçi Nötr (N) ve Toprak (PE) Klemens Baraları (Seçilebilir & Sürüklenebilir) */}
+            {backplatePlaced.map((p) => {
+              const { item, box } = p;
+              const w = box.x2 - box.x1;
+              const h = box.y2 - box.y1;
+              const cx = box.x1 + w / 2;
+              const cy = box.y1 + h / 2;
+              const isSelected = selectedId === item.id;
+              const isColliding = analysis.collidingItemIds.has(item.id);
+              const isNeutral = item.color === '#3b82f6' || item.code.startsWith('N');
+
+              return (
+                <g
+                  key={item.id}
+                  onPointerDown={(e) => {
+                    e.stopPropagation();
+                    onSelect(item.id);
+                    setDragState({ id: item.id, axis: 'xy' });
+                  }}
+                  style={{ cursor: 'move' }}
+                >
+                  {/* İzolatör gövde */}
+                  <rect
+                    x={box.x1}
+                    y={box.y1}
+                    width={w}
+                    height={h}
+                    rx={3}
+                    fill={
+                      isColliding
+                        ? 'rgba(239, 68, 68, 0.35)'
+                        : isNeutral
+                          ? 'rgba(37, 99, 235, 0.42)'
+                          : 'rgba(22, 163, 74, 0.42)'
+                    }
+                    stroke={
+                      isColliding ? '#ef4444' : isSelected ? '#38bdf8' : item.color
+                    }
+                    strokeWidth={isSelected || isColliding ? 1.8 : 1.1}
+                  />
+                  {/* İç pirinç iletken bara şeridi */}
+                  <rect
+                    x={box.x1 + 5}
+                    y={box.y1 + 2}
+                    width={Math.max(10, w - 10)}
+                    height={5}
+                    rx={1}
+                    fill="#d97706"
+                    fillOpacity={0.85}
+                    stroke="#fbbf24"
+                    strokeWidth={0.4}
+                  />
+                  {/* 6 adet pirinç bağlantı vidası */}
+                  {[0.14, 0.28, 0.42, 0.58, 0.72, 0.86].map((ratio, idx) => (
+                    <g key={idx}>
+                      <circle cx={box.x1 + w * ratio} cy={box.y1 + 4.5} r={1.8} fill="#fef08a" stroke="#78350f" strokeWidth={0.4} />
+                      <line
+                        x1={box.x1 + w * ratio - 1.1}
+                        y1={box.y1 + 4.5}
+                        x2={box.x1 + w * ratio + 1.1}
+                        y2={box.y1 + 4.5}
+                        stroke="#78350f"
+                        strokeWidth={0.45}
+                      />
+                    </g>
+                  ))}
+                  {/* Etiket */}
+                  <text
+                    x={cx}
+                    y={cy + 5.2}
+                    textAnchor="middle"
+                    fontSize={4.8}
+                    fontWeight={700}
+                    fill="#f8fafc"
+                  >
+                    {item.code} ({isNeutral ? 'NÖTR' : 'TOPRAK'}) ✥
+                  </text>
+                </g>
+              );
+            })}
 
             {/* Üst ve Alt 35 mm DIN Rayları */}
             {(['top-rail', 'bottom-rail'] as const).map((railId) => {
@@ -801,9 +877,9 @@ export default function PanelCanvas({
 
                 <text
                   x={enclosure.outerWidthMm / 2}
-                  y={rails['top-rail'].centerYMm - 46}
+                  y={rails['top-rail'].centerYMm + 52}
                   textAnchor="middle"
-                  fontSize={5.4}
+                  fontSize={5.3}
                   fill={analysis.topRail.overflow ? '#f87171' : '#94a3b8'}
                 >
                   Üst Ray: {analysis.topRail.usedWidthMm} / {analysis.topRail.usableWidthMm} mm (Kalan: {analysis.topRail.remainingMm} mm)
@@ -813,7 +889,7 @@ export default function PanelCanvas({
                   x={enclosure.outerWidthMm / 2}
                   y={rails['bottom-rail'].centerYMm + 37}
                   textAnchor="middle"
-                  fontSize={5.4}
+                  fontSize={5.3}
                   fill={analysis.bottomRail.overflow ? '#f87171' : analysis.bottomRail.remainingMm < 5 ? '#fbbf24' : '#94a3b8'}
                 >
                   Alt Ray: {analysis.bottomRail.usedWidthMm} / {analysis.bottomRail.usableWidthMm} mm (Kalan: {analysis.bottomRail.remainingMm} mm)
@@ -821,9 +897,9 @@ export default function PanelCanvas({
 
                 <text
                   x={enclosure.outerWidthMm / 2}
-                  y={(rails['top-rail'].centerYMm + rails['bottom-rail'].centerYMm) / 2 + 8}
+                  y={rails['top-rail'].centerYMm + 61}
                   textAnchor="middle"
-                  fontSize={5.5}
+                  fontSize={5.4}
                   fill={analysis.interRailGapMm < 24 ? '#fbbf24' : '#38bdf8'}
                 >
                   ↕ Kablo Geçiş Boşluğu: {analysis.interRailGapMm} mm

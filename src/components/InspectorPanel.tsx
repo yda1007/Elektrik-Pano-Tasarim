@@ -20,6 +20,7 @@ interface InspectorPanelProps {
 const MOUNT_LABELS: Record<MountLocation, string> = {
   'top-rail': 'Üst DIN Rayı',
   'bottom-rail': 'Alt DIN Rayı',
+  backplate: 'Pano İçi (Taban / Yuva)',
   'left-wall': 'Sol Yan Duvar',
   'right-wall': 'Sağ Yan Duvar',
   'bottom-wall': 'Alt Duvar',
@@ -206,23 +207,81 @@ export default function InspectorPanel({
                       const nextMount = e.target.value as MountLocation;
                       const patch: Partial<PanelItem> = { mount: nextMount };
                       if (nextMount === 'left-wall' || nextMount === 'right-wall') {
-                        patch.posYMm = selectedItem.posYMm ?? 262;
+                        patch.posYMm = selectedItem.posYMm ?? 264;
                         patch.posZMm = selectedItem.posZMm ?? 48;
                       } else if (nextMount === 'bottom-wall' || nextMount === 'top-wall') {
                         patch.posXMm = selectedItem.posXMm ?? 122.5;
                         patch.posZMm = selectedItem.posZMm ?? 48;
+                      } else if (nextMount === 'backplate') {
+                        patch.posXMm = selectedItem.posXMm ?? 122.5;
+                        patch.posYMm = selectedItem.posYMm ?? 21;
                       }
                       onUpdateItem(selectedItem.id, patch);
                     }}
                   >
                     <option value="top-rail">Üst DIN Rayı</option>
                     <option value="bottom-rail">Alt DIN Rayı</option>
+                    <option value="backplate">Pano İçi (Taban / Yuva)</option>
                     <option value="left-wall">Sol Yan Duvar</option>
                     <option value="right-wall">Sağ Yan Duvar</option>
                     <option value="bottom-wall">Alt Duvar (Rakor)</option>
                     <option value="top-wall">Üst Duvar (Rakor)</option>
                   </select>
                 </label>
+
+                {selectedItem.mount === 'backplate' && (
+                  <div className="side-coords-box">
+                    <div className="sub-title">Pano İçi Bara Konumu (Serbest Taşınabilir)</div>
+                    <label className="field">
+                      <span>Soldan X: {selectedItem.posXMm ?? 122} mm</span>
+                      <input
+                        type="range"
+                        min={46}
+                        max={200}
+                        step={1}
+                        value={selectedItem.posXMm ?? 122}
+                        onChange={(e) => onUpdateItem(selectedItem.id, { posXMm: Number(e.target.value) })}
+                      />
+                    </label>
+                    <label className="field">
+                      <span>Üstten Y: {selectedItem.posYMm ?? 21} mm</span>
+                      <input
+                        type="range"
+                        min={20}
+                        max={298}
+                        step={1}
+                        value={selectedItem.posYMm ?? 21}
+                        onChange={(e) => onUpdateItem(selectedItem.id, { posYMm: Number(e.target.value) })}
+                      />
+                    </label>
+                    <div className="btn-group">
+                      <button
+                        type="button"
+                        className="btn-sm"
+                        onClick={() =>
+                          onUpdateItem(selectedItem.id, {
+                            posXMm: selectedItem.code.startsWith('N') ? 78 : 167,
+                            posYMm: 21,
+                          })
+                        }
+                      >
+                        Üst Yuvaya Al
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-sm"
+                        onClick={() =>
+                          onUpdateItem(selectedItem.id, {
+                            posXMm: 122.5,
+                            posYMm: selectedItem.code.startsWith('N') ? 228 : 246,
+                          })
+                        }
+                      >
+                        Alt Boşluğa Al
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {(selectedItem.mount === 'top-rail' || selectedItem.mount === 'bottom-rail') && (
                   <div className="rail-order-row">

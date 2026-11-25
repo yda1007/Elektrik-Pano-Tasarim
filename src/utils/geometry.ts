@@ -149,6 +149,23 @@ function layoutHorizontalWallItem(item: PanelItem, enclosure: EnclosureSpec): Pl
   return { item, box, clearanceBox: { ...box, y2: box.y2 + wire } };
 }
 
+function layoutBackplateItem(item: PanelItem, enclosure: EnclosureSpec): PlacedItem {
+  const { backWallZ } = getWallOffsets(enclosure);
+  const posX = item.posXMm ?? enclosure.outerWidthMm / 2;
+  const posY = item.posYMm ?? 21;
+  const halfW = item.widthMm / 2;
+  const halfH = item.heightMm / 2;
+  const box: Box3D = {
+    x1: posX - halfW,
+    x2: posX + halfW,
+    y1: posY - halfH,
+    y2: posY + halfH,
+    z1: backWallZ,
+    z2: backWallZ + item.depthMm,
+  };
+  return { item, box };
+}
+
 export function analyzeLayout(
   items: PanelItem[],
   enclosure: EnclosureSpec,
@@ -157,17 +174,19 @@ export function analyzeLayout(
   const walls = getWallOffsets(enclosure);
   const topItems = items.filter((i) => i.mount === 'top-rail');
   const bottomItems = items.filter((i) => i.mount === 'bottom-rail');
+  const backplateItems = items.filter((i) => i.mount === 'backplate');
   const sideItems = items.filter((i) => i.mount === 'left-wall' || i.mount === 'right-wall');
   const horizWallItems = items.filter((i) => i.mount === 'bottom-wall' || i.mount === 'top-wall');
 
   const topResult = layoutRail(topItems, rails['top-rail'], enclosure);
   const bottomResult = layoutRail(bottomItems, rails['bottom-rail'], enclosure);
+  const backplatePlaced = backplateItems.map((i) => layoutBackplateItem(i, enclosure));
   const sidePlaced = sideItems.map((i) => layoutSideItem(i, enclosure));
   const horizPlaced = horizWallItems.map((i) => layoutHorizontalWallItem(i, enclosure));
 
   const wallPlaced = [...sidePlaced, ...horizPlaced];
   const railPlaced = [...topResult.placed, ...bottomResult.placed];
-  const placed: PlacedItem[] = [...railPlaced, ...wallPlaced];
+  const placed: PlacedItem[] = [...railPlaced, ...backplatePlaced, ...wallPlaced];
   const issues: LayoutIssue[] = [];
   const collidingItemIds = new Set<string>();
 
@@ -368,6 +387,39 @@ export function analyzeLayout(
           title: `Yakın Yerleşim: ${wItem.item.code} ↔ ${other.item.code}`,
           detail: `Kablo payları birbirine yaklaşıyor; kablolamayı kontrol edin.`,
           itemIds: [wItem.item.id, other.item.id],
+        });
+      }
+    }
+  }
+
+  // 4b. Taban (backplate) baraları ile diğer tüm elemanlar arası 3D çakışma
+  const nonBackplate = [...railPlaced, ...wallPlaced];
+  for (let i = 0; i < backplatePlaced.length; i++) {
+    const bp = backplatePlaced[i];
+    for (const other of nonBackplate) {
+      if (boxesOverlap3D(bp.box, other.box)) {
+        collidingItemIds.add(bp.item.id);
+        collidingItemIds.add(other.item.id);
+        issues.push({
+          id: `bp-collision-${bp.item.id}-${other.item.id}`,
+          severity: 'error',
+          title: `3D Çakışma: ${bp.item.code} ↔ ${other.item.code}`,
+          detail: `${bp.item.code} klemens barası ${other.item.code} ile çakışıyor. Barayı boş bir alana sürükleyin.`,
+          itemIds: [bp.item.id, other.item.id],
+        });
+      }
+    }
+    for (let j = i + 1; j < backplatePlaced.length; j++) {
+      const otherBp = backplatePlaced[j];
+      if (boxesOverlap3D(bp.box, otherBp.box)) {
+        collidingItemIds.add(bp.item.id);
+        collidingItemIds.add(otherBp.item.id);
+        issues.push({
+          id: `bp-bp-${bp.item.id}-${otherBp.item.id}`,
+          severity: 'error',
+          title: `Çakışma: ${bp.item.code} ↔ ${otherBp.item.code}`,
+          detail: `İki klemens barası üst üste biniyor.`,
+          itemIds: [bp.item.id, otherBp.item.id],
         });
       }
     }
