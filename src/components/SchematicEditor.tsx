@@ -209,7 +209,7 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     });
   });
 
-  // 4. Mini Kontaktörler
+  // 4. Mini Kontaktörler (3P + 1NO: 1-2, 3-4, 5-6, 13-14, A1-A2)
   const contactors = items
     .filter((i) => i.category === 'contactor')
     .sort((a, b) => a.order - b.order);
@@ -217,21 +217,20 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     nodes.push({
       id: item.id,
       title: item.code,
-      subtitle: item.rating ?? 'Mini Kontaktör',
-      width: 210,
+      subtitle: item.rating ?? 'Mini Kontaktör (3P+1NO)',
+      width: 190,
       height: 86,
       accent: item.color,
-      defaultX: 40 + idx * 235,
+      defaultX: 40 + idx * 215,
       defaultY: 360,
       pins: makeTopBottomPins(
-        210,
+        190,
         86,
         [
           { id: '1', label: '1', title: `${item.code} Güç 1/L1` },
           { id: '3', label: '3', title: `${item.code} Güç 3/L2` },
           { id: '5', label: '5', title: `${item.code} Güç 5/L3` },
           { id: '13', label: '13', title: `${item.code} Yardımcı NO 13` },
-          { id: '21', label: '21', title: `${item.code} Yardımcı NC 21` },
           { id: 'A1', label: 'A1', title: `${item.code} Bobin A1` },
         ],
         [
@@ -239,7 +238,6 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
           { id: '4', label: '4', title: `${item.code} Güç 4/T2` },
           { id: '6', label: '6', title: `${item.code} Güç 6/T3` },
           { id: '14', label: '14', title: `${item.code} Yardımcı NO 14` },
-          { id: '22', label: '22', title: `${item.code} Yardımcı NC 22` },
           { id: 'A2', label: 'A2', title: `${item.code} Bobin A2` },
         ]
       ),
