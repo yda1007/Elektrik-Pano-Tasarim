@@ -182,7 +182,7 @@ export const COMPONENT_CATALOG: CatalogTemplate[] = [
 
 export function createInitialItems(): PanelItem[] {
   return [
-    // Üst DIN Rayı: 2× 1-1,6A MKŞ (90) + 3× 14 pin mini röle (81) + 3× 5mm klemens (15) = 186 mm / 216 mm (30 mm boşluk)
+    // Üst DIN Rayı: 2× 1-1,6A MKŞ (90) + 1× 14 pin mini röle (27) + 3× 2,5 mm² (5 mm) klemens (15) = 132 mm / 216 mm (84 mm boşluk)
     {
       id: 'q1',
       code: 'Q1',
@@ -216,7 +216,7 @@ export function createInitialItems(): PanelItem[] {
     {
       id: 'r1',
       code: 'R1',
-      name: '14 Pin Mini Röle 1',
+      name: '14 Pin Mini Röle',
       model: '14 Pin Mini Röle + DIN Soket',
       category: 'relay',
       mount: 'top-rail',
@@ -226,54 +226,24 @@ export function createInitialItems(): PanelItem[] {
       order: 2,
       rating: '14 Pin (4CO)',
       color: '#8b5cf6',
-      notes: 'Kumanda rölesi 1 (PYF14A soket kullanılırsa 29,5 mm olarak güncelleyin)',
-    },
-    {
-      id: 'r2',
-      code: 'R2',
-      name: '14 Pin Mini Röle 2',
-      model: '14 Pin Mini Röle + DIN Soket',
-      category: 'relay',
-      mount: 'top-rail',
-      widthMm: 27,
-      heightMm: 74,
-      depthMm: 66,
-      order: 3,
-      rating: '14 Pin (4CO)',
-      color: '#8b5cf6',
-      notes: 'Kumanda rölesi 2',
-    },
-    {
-      id: 'r3',
-      code: 'R3',
-      name: '14 Pin Mini Röle 3',
-      model: '14 Pin Mini Röle + DIN Soket',
-      category: 'relay',
-      mount: 'top-rail',
-      widthMm: 27,
-      heightMm: 74,
-      depthMm: 66,
-      order: 4,
-      rating: '14 Pin (4CO)',
-      color: '#8b5cf6',
-      notes: 'Kumanda rölesi 3',
+      notes: 'Kumanda rölesi (PYF14A soket kullanılırsa 29,5 mm olarak güncelleyin)',
     },
     ...[1, 2, 3].map((n, idx): PanelItem => ({
       id: `xt-${n}`,
       code: `X${n}`,
       name: `Üst Ray Klemens ${n}`,
-      model: '5 mm Ray Klemensi (2,5 mm²)',
+      model: '2,5 mm² Ray Klemensi (5 mm kalınlık)',
       category: 'terminal',
       mount: 'top-rail',
       widthMm: 5,
       heightMm: 46,
       depthMm: 42,
-      order: 5 + idx,
-      rating: '5 mm / 2,5 mm²',
+      order: 3 + idx,
+      rating: '2,5 mm² (5 mm)',
       color: '#64748b',
     })),
 
-    // Alt DIN Rayı: 4× Mini Kontaktör (180 mm) + 9× 5mm klemens (45 mm) = 225 mm (N ve PE panodaki kendi baralarında!)
+    // Alt DIN Rayı: 4× Mini Kontaktör (180 mm) + 9× 2,5 mm² (5 mm) klemens (45 mm) = 225 mm (N ve PE panodaki kendi baralarında!)
     {
       id: 'km1',
       code: 'KM1',
@@ -338,14 +308,14 @@ export function createInitialItems(): PanelItem[] {
       id: `xb-${n}`,
       code: `X${3 + n}`,
       name: `Alt Ray Klemens ${n}`,
-      model: '5 mm Ray Klemensi (2,5 mm²)',
+      model: '2,5 mm² Ray Klemensi (5 mm kalınlık)',
       category: 'terminal',
       mount: 'bottom-rail',
       widthMm: 5,
       heightMm: 46,
       depthMm: 42,
       order: 4 + idx,
-      rating: '5 mm / 2,5 mm²',
+      rating: '2,5 mm² (5 mm)',
       color: '#64748b',
     })),
 

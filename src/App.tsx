@@ -18,7 +18,8 @@ import type {
 } from './types/panel';
 import { analyzeLayout } from './utils/geometry';
 
-const STORAGE_KEY = 'elektrik-pano-tasarim:v2:bemis-bh6-6000';
+const STORAGE_KEY = 'elektrik-pano-tasarim:v3:bemis-bh6-6000';
+const PREV_STORAGE_KEY = 'elektrik-pano-tasarim:v2:bemis-bh6-6000';
 
 type AppTab = 'layout' | 'schematic';
 
@@ -33,11 +34,14 @@ function loadSavedState(): SavedState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
+      // Önceki sürümde çizilen manuel kablolar varsa koru
+      const prevRaw = localStorage.getItem(PREV_STORAGE_KEY);
+      const prev = prevRaw ? (JSON.parse(prevRaw) as Partial<SavedState>) : null;
       return {
         items: createInitialItems(),
         rails: DEFAULT_RAILS,
-        schematicNodes: {},
-        schematicWires: [],
+        schematicNodes: prev?.schematicNodes ?? {},
+        schematicWires: Array.isArray(prev?.schematicWires) ? prev.schematicWires : [],
       };
     }
     const parsed = JSON.parse(raw) as Partial<SavedState>;

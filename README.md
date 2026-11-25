@@ -7,11 +7,11 @@
 * **Pano Gövdesi:** Bemis `BH6-6000-0000` (`245 × 325 × 138 mm`, IP66, Halojen Free ABS — dahili ayrı **Nötr (N)** ve **Toprak (PE)** klemens baralı)
 * **Üst DIN Rayı (12 Modül / 216 mm):**
   * 2× `1–1,6A` Motor Koruma Şalteri (MKŞ) — `45 mm`
-  * 3× `14 Pin` Mini Röle + Soket — `27 mm` *(PYF14A için 29,5 mm olarak ayarlanabilir)*
-  * 3× `5 mm` Ray Klemensi (`2,5 mm²`)
+  * 1× `14 Pin` Mini Röle + Soket — `27 mm` *(PYF14A için 29,5 mm olarak ayarlanabilir)*
+  * 3× `2,5 mm²` Ray Klemensi (`5 mm` kalınlık)
 * **Alt DIN Rayı (Ek 35 mm Ray / 226 mm):**
   * 4× Mini Kontaktör — `45 mm`
-  * 9× `5 mm` Ray Klemensi (`2,5 mm²`)
+  * 9× `2,5 mm²` Ray Klemensi (`5 mm` kalınlık)
 * **Sol & Sağ Yan Duvarlar:**
   * 2× **Mutlusan SW-BL4252** (`010 104 000081`) Ø22 mm Yukarı-Aşağı Ters Yönlü İkiz Buton (`1NO+1NO`)
 * **Alt Duvar:**
