@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { PanelItem, SchematicNodePos, SchematicPoint, SchematicWire } from '../types/panel';
+import {
+  autoRouteWires,
+  buildRoundedWirePath,
+  getBestWireLabelPoint,
+} from '../utils/schematicRouter';
 
 interface PinDef {
   id: string;
@@ -448,6 +453,11 @@ export default function SchematicEditor({
   const [wireSection, setWireSection] = useState('1,0');
   const [wireLabel, setWireLabel] = useState('');
   const [selectedWireId, setSelectedWireId] = useState<string | null>(null);
+  const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
+  const [wireFilter, setWireFilter] = useState<'all' | 'power' | 'control'>('all');
+  const [showWireLabels, setShowWireLabels] = useState(false);
+  const [dimOthersOnSelect, setDimOthersOnSelect] = useState(true);
+  const [preRouteBackup, setPreRouteBackup] = useState<SchematicWire[] | null>(null);
 
   const [draft, setDraft] = useState<{
     fromNodeId: string;
@@ -460,6 +470,11 @@ export default function SchematicEditor({
     id: string;
     offsetX: number;
     offsetY: number;
+  } | null>(null);
+
+  const [draggingWaypoint, setDraggingWaypoint] = useState<{
+    wireId: string;
+    index: number;
   } | null>(null);
 
   const nodes = useMemo(() => buildSchematicNodes(items), [items]);
@@ -482,6 +497,7 @@ export default function SchematicEditor({
       if (e.key === 'Escape') {
         setDraft(null);
         setSelectedWireId(null);
+        setFocusedNodeId(null);
       } else if (
         (e.key === 'Delete' || e.key === 'Backspace') &&
         selectedWireId &&
@@ -495,6 +511,25 @@ export default function SchematicEditor({
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [selectedWireId, wires, onChangeWires]);
+
+  const handleAutoRoute = () => {
+    if (wires.length === 0) return;
+    setPreRouteBackup(wires);
+    const routed = autoRouteWires(wires, nodes, nodePositions, CANVAS_W, CANVAS_H);
+    onChangeWires(routed);
+  };
+
+  const handleUndoAutoRoute = () => {
+    if (!preRouteBackup) return;
+    onChangeWires(preRouteBackup);
+    setPreRouteBackup(null);
+  };
+
+  const isWireVisibleByFilter = (w: SchematicWire): boolean => {
+    if (wireFilter === 'all') return true;
+    const isPower = w.sectionMm2 === '2,5';
+    return wireFilter === 'power' ? isPower : !isPower;
+  };
 
   const toSvgCoords = (clientX: number, clientY: number): SchematicPoint | null => {
     if (!svgRef.current) return null;
@@ -581,12 +616,26 @@ export default function SchematicEditor({
       setDraft({ ...draft, waypoints: [...draft.waypoints, next] });
     } else {
       setSelectedWireId(null);
+      setFocusedNodeId(null);
     }
   };
 
   const handlePointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
     const pt = toSvgCoords(e.clientX, e.clientY);
     if (!pt) return;
+
+    if (draggingWaypoint) {
+      onChangeWires(
+        wires.map((w) => {
+          if (w.id !== draggingWaypoint.wireId) return w;
+          const nextPts = w.waypoints.map((wp, idx) =>
+            idx === draggingWaypoint.index ? pt : wp
+          );
+          return { ...w, waypoints: nextPts };
+        })
+      );
+      return;
+    }
 
     if (draggingNode) {
       const nextX = snap(Math.max(10, Math.min(CANVAS_W - 140, pt.x - draggingNode.offsetX)));
@@ -760,8 +809,21 @@ export default function SchematicEditor({
         </section>
 
         <section className="sidebar-section">
-          <div className="section-title">Şema İşlemleri</div>
+          <div className="section-title">Şema Düzenleme & Temizlik</div>
           <div className="action-stack">
+            <button
+              type="button"
+              className="btn-primary"
+              disabled={wires.length === 0}
+              onClick={handleAutoRoute}
+            >
+              ✦ Kabloları Otomatik Düzenle
+            </button>
+            {preRouteBackup && (
+              <button type="button" className="btn-sm" onClick={handleUndoAutoRoute}>
+                ↶ Otomatik Düzenlemeyi Geri Al
+              </button>
+            )}
             {draft && (
               <button type="button" className="btn-sm btn-danger" onClick={() => setDraft(null)}>
                 Aktif Çizimi İptal Et (ESC)
@@ -805,13 +867,76 @@ export default function SchematicEditor({
       {/* ORTA ÇİZİM TUVALİ */}
       <main className="canvas-stage schematic-stage">
         <div className="cad-card">
-          <div className="cad-card-header">
-            <span>
-              Manuel Kumanda & Güç Şeması — {draft ? 'Hedef pine veya köşe noktasına tıklayın (ESC: İptal)' : tool === 'wire' ? 'Başlamak için bir pine tıklayın' : 'Elemanları sürükleyip düzenleyin'}
-            </span>
-            <span className="cad-meta">
-              {nodes.length} blok • {wires.length} kablo bağlantısı
-            </span>
+          <div className="cad-card-header schematic-toolbar">
+            <div className="toolbar-group">
+              <button
+                type="button"
+                className="btn-primary"
+                disabled={wires.length === 0}
+                onClick={handleAutoRoute}
+              >
+                ✦ Kabloları Otomatik Düzenle
+              </button>
+              {preRouteBackup && (
+                <button type="button" className="btn-sm" onClick={handleUndoAutoRoute}>
+                  ↶ Geri Al
+                </button>
+              )}
+              <div className="segmented">
+                <button
+                  type="button"
+                  className={wireFilter === 'all' ? 'active' : ''}
+                  onClick={() => setWireFilter('all')}
+                >
+                  Tümü ({wires.length})
+                </button>
+                <button
+                  type="button"
+                  className={wireFilter === 'power' ? 'active' : ''}
+                  onClick={() => setWireFilter('power')}
+                >
+                  Güç (2,5 mm²)
+                </button>
+                <button
+                  type="button"
+                  className={wireFilter === 'control' ? 'active' : ''}
+                  onClick={() => setWireFilter('control')}
+                >
+                  Kumanda
+                </button>
+              </div>
+            </div>
+
+            <div className="toolbar-group">
+              <label className="inline-check">
+                <input
+                  type="checkbox"
+                  checked={showWireLabels}
+                  onChange={(e) => setShowWireLabels(e.target.checked)}
+                />
+                <span>Kablo Etiketleri</span>
+              </label>
+              <label className="inline-check">
+                <input
+                  type="checkbox"
+                  checked={dimOthersOnSelect}
+                  onChange={(e) => setDimOthersOnSelect(e.target.checked)}
+                />
+                <span>Seçiliyi Vurgula</span>
+              </label>
+              {(selectedWireId || focusedNodeId) && (
+                <button
+                  type="button"
+                  className="btn-sm"
+                  onClick={() => {
+                    setSelectedWireId(null);
+                    setFocusedNodeId(null);
+                  }}
+                >
+                  Seçimi Kaldır
+                </button>
+              )}
+            </div>
           </div>
 
           <svg
@@ -826,8 +951,14 @@ export default function SchematicEditor({
               }
             }}
             onPointerMove={handlePointerMove}
-            onPointerUp={() => setDraggingNode(null)}
-            onPointerLeave={() => setDraggingNode(null)}
+            onPointerUp={() => {
+              setDraggingNode(null);
+              setDraggingWaypoint(null);
+            }}
+            onPointerLeave={() => {
+              setDraggingNode(null);
+              setDraggingWaypoint(null);
+            }}
           >
             <defs>
               <pattern id="sch-grid" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -839,57 +970,73 @@ export default function SchematicEditor({
             <rect x={0} y={0} width={CANVAS_W} height={CANVAS_H} fill="url(#sch-grid)" />
 
             {/* ÇİZİLMİŞ KABLOLAR */}
-            {wires.map((w) => {
+            {wires.map((w, wireIdx) => {
+              if (!isWireVisibleByFilter(w)) return null;
               const p1 = getPinAbsPos(w.fromNodeId, w.fromPinId);
               const p2 = getPinAbsPos(w.toNodeId, w.toPinId);
               if (!p1 || !p2) return null;
               const pts = [p1, ...w.waypoints, p2];
+              const pathD = buildRoundedWirePath(pts, 7);
               const isSelected = selectedWireId === w.id;
-              const midIdx = Math.floor(pts.length / 2);
-              const labelX = (pts[midIdx - 1].x + pts[midIdx].x) / 2;
-              const labelY = (pts[midIdx - 1].y + pts[midIdx].y) / 2;
+              const isConnectedToFocused =
+                focusedNodeId !== null &&
+                (w.fromNodeId === focusedNodeId || w.toNodeId === focusedNodeId);
+              const hasSelectionFocus =
+                dimOthersOnSelect && (selectedWireId !== null || focusedNodeId !== null);
+              const isHighlighted = isSelected || isConnectedToFocused;
+              const opacity = hasSelectionFocus && !isHighlighted ? 0.14 : 1;
+              const labelPt = getBestWireLabelPoint(pts, wireIdx);
+              const strokeWidth = w.sectionMm2 === '2,5' ? 3.2 : 2.3;
 
               return (
                 <g
                   key={w.id}
+                  opacity={opacity}
                   onClick={(e) => {
                     e.stopPropagation();
+                    setFocusedNodeId(null);
                     setSelectedWireId(w.id);
                   }}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer', transition: 'opacity 0.15s' }}
                 >
                   {/* Tıklamayı kolaylaştıran kalın görünmez seçim hattı */}
-                  <polyline
-                    points={buildPolyline(pts)}
+                  <path d={pathD} fill="none" stroke="transparent" strokeWidth={13} />
+
+                  {/* Çapraz geçişlerde kabloları birbirinden ayıran koyu koruyucu kılıf */}
+                  <path
+                    d={pathD}
                     fill="none"
-                    stroke="transparent"
-                    strokeWidth={12}
+                    stroke="#0b1220"
+                    strokeWidth={strokeWidth + 3.4}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
-                  {isSelected && (
-                    <polyline
-                      points={buildPolyline(pts)}
+
+                  {isHighlighted && (
+                    <path
+                      d={pathD}
                       fill="none"
                       stroke="#38bdf8"
-                      strokeWidth={6}
+                      strokeWidth={strokeWidth + 4}
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeOpacity={0.55}
+                      strokeOpacity={0.45}
                     />
                   )}
-                  <polyline
-                    points={buildPolyline(pts)}
+                  <path
+                    d={pathD}
                     fill="none"
                     stroke={w.color}
-                    strokeWidth={w.sectionMm2 === '2,5' ? 3.2 : 2.3}
+                    strokeWidth={strokeWidth}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                   {getWireColorSpec(w.color).stripeHex && (
-                    <polyline
-                      points={buildPolyline(pts)}
+                    <path
+                      d={pathD}
                       fill="none"
                       stroke={getWireColorSpec(w.color).stripeHex}
-                      strokeWidth={w.sectionMm2 === '2,5' ? 3.2 : 2.3}
+                      strokeWidth={strokeWidth}
                       strokeDasharray="6 6"
                       strokeLinecap="butt"
                       strokeLinejoin="round"
@@ -899,22 +1046,41 @@ export default function SchematicEditor({
                   <circle cx={p1.x} cy={p1.y} r={3.5} fill={w.color} />
                   <circle cx={p2.x} cy={p2.y} r={3.5} fill={w.color} />
 
-                  {/* Kablo etiketi */}
-                  {w.label && (
-                    <g>
+                  {/* Seçili kablonun sürüklenebilir köşe tutamaçları */}
+                  {isSelected &&
+                    w.waypoints.map((wp, wpIdx) => (
+                      <circle
+                        key={wpIdx}
+                        cx={wp.x}
+                        cy={wp.y}
+                        r={5.5}
+                        fill="#38bdf8"
+                        stroke="#0b1220"
+                        strokeWidth={1.6}
+                        style={{ cursor: 'move' }}
+                        onPointerDown={(e) => {
+                          e.stopPropagation();
+                          setDraggingWaypoint({ wireId: w.id, index: wpIdx });
+                        }}
+                      />
+                    ))}
+
+                  {/* Kablo etiketi (isteğe bağlı veya seçiliyken her zaman görünür) */}
+                  {w.label && (showWireLabels || isHighlighted) && (
+                    <g pointerEvents="none">
                       <rect
-                        x={labelX - 16}
-                        y={labelY - 8}
+                        x={labelPt.x - 16}
+                        y={labelPt.y - 8}
                         width={32}
                         height={14}
                         rx={3}
                         fill="#0f172a"
                         stroke={isSelected ? '#38bdf8' : w.color}
-                        strokeWidth={0.8}
+                        strokeWidth={0.9}
                       />
                       <text
-                        x={labelX}
-                        y={labelY + 2}
+                        x={labelPt.x}
+                        y={labelPt.y + 2}
                         textAnchor="middle"
                         fontSize={8.5}
                         fill="#f8fafc"
@@ -951,10 +1117,18 @@ export default function SchematicEditor({
             {/* ELEMAN BLOKLARI VE PİNLERİ */}
             {nodes.map((node) => {
               const pos = getNodePos(node);
+              const isNodeFocused = focusedNodeId === node.id;
               return (
                 <g
                   key={node.id}
                   transform={`translate(${pos.x}, ${pos.y})`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!draft) {
+                      setSelectedWireId(null);
+                      setFocusedNodeId(isNodeFocused ? null : node.id);
+                    }
+                  }}
                   onPointerDown={(e) => {
                     if (tool !== 'move') return;
                     e.stopPropagation();
@@ -966,7 +1140,7 @@ export default function SchematicEditor({
                       offsetY: pt.y - pos.y,
                     });
                   }}
-                  style={{ cursor: tool === 'move' ? 'grab' : 'default' }}
+                  style={{ cursor: tool === 'move' ? 'grab' : 'pointer' }}
                 >
                   <rect
                     x={0}
@@ -975,8 +1149,8 @@ export default function SchematicEditor({
                     height={node.height}
                     rx={6}
                     fill="#131e33"
-                    stroke={node.accent}
-                    strokeWidth={1.5}
+                    stroke={isNodeFocused ? '#38bdf8' : node.accent}
+                    strokeWidth={isNodeFocused ? 2.5 : 1.5}
                   />
                   {/* Üst vurgu şeridi */}
                   <rect

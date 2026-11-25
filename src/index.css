@@ -652,6 +652,28 @@ body {
   padding: 12px;
 }
 
+.schematic-toolbar {
+  padding: 8px 12px;
+  gap: 10px;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.inline-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  cursor: pointer;
+}
+
 .schematic-svg {
   min-height: 620px;
   max-height: calc(100vh - 115px);
