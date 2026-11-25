@@ -32,17 +32,42 @@ interface SchematicEditorProps {
   onChangeWires: (next: SchematicWire[]) => void;
 }
 
-const WIRE_PRESETS = [
-  { name: 'Kumanda (Kırmızı)', color: '#ef4444', section: '1,0' },
-  { name: 'Kumanda Dönüş (Turuncu)', color: '#f97316', section: '1,0' },
-  { name: 'Faz L1 (Kahverengi)', color: '#b45309', section: '2,5' },
-  { name: 'Faz L2 (Koyu Gri)', color: '#64748b', section: '2,5' },
-  { name: 'Faz L3 (Açık Gri)', color: '#cbd5e1', section: '2,5' },
-  { name: 'Nötr N (Mavi)', color: '#3b82f6', section: '1,5' },
-  { name: 'Toprak PE (Yeşil)', color: '#22c55e', section: '2,5' },
-  { name: 'Sinyal (Mor)', color: '#a855f7', section: '0,75' },
-  { name: 'Yardımcı (Sarı)', color: '#eab308', section: '1,0' },
+interface StandardWireColor {
+  name: string;
+  short: string;
+  hex: string;
+  stripeHex?: string;
+}
+
+const STANDARD_WIRE_COLORS: StandardWireColor[] = [
+  { name: 'Kırmızı (Kumanda)', short: 'KRM', hex: '#ef4444' },
+  { name: 'Kahverengi (Faz L1)', short: 'KHV', hex: '#b45309' },
+  { name: 'Siyah (Faz L2)', short: 'SYH', hex: '#475569' },
+  { name: 'Gri (Faz L3)', short: 'GRI', hex: '#94a3b8' },
+  { name: 'Mavi (Nötr N)', short: 'MVI', hex: '#3b82f6' },
+  { name: 'Sarı-Yeşil (Toprak PE)', short: 'PE', hex: '#22c55e', stripeHex: '#facc15' },
+  { name: 'Turuncu', short: 'TRN', hex: '#f97316' },
+  { name: 'Sarı', short: 'SRI', hex: '#eab308' },
+  { name: 'Yeşil', short: 'YSL', hex: '#10b981' },
+  { name: 'Beyaz', short: 'BYZ', hex: '#f8fafc' },
+  { name: 'Koyu Mavi (DC+)', short: 'KMV', hex: '#1d4ed8' },
+  { name: 'Mor', short: 'MOR', hex: '#a855f7' },
+  { name: 'Pembe', short: 'PMB', hex: '#ec4899' },
+  { name: 'Turkuaz', short: 'TRK', hex: '#06b6d4' },
+  { name: 'Bordo', short: 'BRD', hex: '#be123c' },
+  { name: 'Açık Yeşil', short: 'AYŞ', hex: '#84cc16' },
+  { name: 'Lacivert', short: 'LCV', hex: '#4f46e5' },
+  { name: 'Krem / Bej', short: 'BEJ', hex: '#d6d3d1' },
+  { name: 'Açık Pembe', short: 'APM', hex: '#f472b6' },
+  { name: 'Hardal / Altın', short: 'HRD', hex: '#d97706' },
 ];
+
+function getWireColorSpec(hex: string): StandardWireColor {
+  return (
+    STANDARD_WIRE_COLORS.find((c) => c.hex.toLowerCase() === hex.toLowerCase()) ??
+    STANDARD_WIRE_COLORS[0]
+  );
+}
 
 const CANVAS_W = 1480;
 const CANVAS_H = 940;
@@ -419,8 +444,8 @@ export default function SchematicEditor({
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [tool, setTool] = useState<'wire' | 'move'>('wire');
   const [orthoMode, setOrthoMode] = useState(true);
-  const [wireColor, setWireColor] = useState(WIRE_PRESETS[0].color);
-  const [wireSection, setWireSection] = useState(WIRE_PRESETS[0].section);
+  const [wireColor, setWireColor] = useState(STANDARD_WIRE_COLORS[0].hex);
+  const [wireSection, setWireSection] = useState('1,0');
   const [wireLabel, setWireLabel] = useState('');
   const [selectedWireId, setSelectedWireId] = useState<string | null>(null);
 
@@ -602,7 +627,7 @@ export default function SchematicEditor({
       formatEndpoint(w.fromNodeId, w.fromPinId),
       formatEndpoint(w.toNodeId, w.toPinId),
       w.sectionMm2,
-      w.color,
+      getWireColorSpec(w.color).name,
     ]);
     const csv =
       '\uFEFF' +
@@ -679,20 +704,36 @@ export default function SchematicEditor({
         </section>
 
         <section className="sidebar-section">
-          <div className="section-title">Kablo Rengi ve Kesiti</div>
-          <div className="wire-palette">
-            {WIRE_PRESETS.map((p) => (
+          <div className="section-title">Sabit Kablo Renkleri (20 Standart)</div>
+          <div className="active-color-label">
+            <span
+              className="wire-dot"
+              style={{
+                background: getWireColorSpec(wireColor).stripeHex
+                  ? `repeating-linear-gradient(45deg, ${wireColor}, ${wireColor} 4px, ${getWireColorSpec(wireColor).stripeHex} 4px, ${getWireColorSpec(wireColor).stripeHex} 8px)`
+                  : wireColor,
+              }}
+            />
+            <strong>{getWireColorSpec(wireColor).name}</strong>
+          </div>
+          <div className="fixed-color-grid">
+            {STANDARD_WIRE_COLORS.map((c) => (
               <button
-                key={p.name}
+                key={c.hex}
                 type="button"
-                className={`wire-chip ${wireColor === p.color ? 'active' : ''}`}
-                onClick={() => {
-                  setWireColor(p.color);
-                  setWireSection(p.section);
-                }}
+                title={c.name}
+                className={`color-swatch-btn ${wireColor === c.hex ? 'active' : ''}`}
+                onClick={() => setWireColor(c.hex)}
               >
-                <span className="wire-dot" style={{ backgroundColor: p.color }} />
-                <span>{p.name}</span>
+                <span
+                  className="color-swatch-fill"
+                  style={{
+                    background: c.stripeHex
+                      ? `repeating-linear-gradient(45deg, ${c.hex}, ${c.hex} 4px, ${c.stripeHex} 4px, ${c.stripeHex} 8px)`
+                      : c.hex,
+                  }}
+                />
+                <span className="color-swatch-code">{c.short}</span>
               </button>
             ))}
           </div>
@@ -839,10 +880,21 @@ export default function SchematicEditor({
                     points={buildPolyline(pts)}
                     fill="none"
                     stroke={w.color}
-                    strokeWidth={w.sectionMm2 === '2,5' ? 3 : 2.2}
+                    strokeWidth={w.sectionMm2 === '2,5' ? 3.2 : 2.3}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
+                  {getWireColorSpec(w.color).stripeHex && (
+                    <polyline
+                      points={buildPolyline(pts)}
+                      fill="none"
+                      stroke={getWireColorSpec(w.color).stripeHex}
+                      strokeWidth={w.sectionMm2 === '2,5' ? 3.2 : 2.3}
+                      strokeDasharray="6 6"
+                      strokeLinecap="butt"
+                      strokeLinejoin="round"
+                    />
+                  )}
                   {/* Uç bağlantı noktaları */}
                   <circle cx={p1.x} cy={p1.y} r={3.5} fill={w.color} />
                   <circle cx={p2.x} cy={p2.y} r={3.5} fill={w.color} />
@@ -1040,40 +1092,52 @@ export default function SchematicEditor({
                   }
                 />
               </label>
-              <div className="dims-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
-                <label className="field">
-                  <span>Kesit</span>
-                  <select
-                    value={selectedWire.sectionMm2}
-                    onChange={(e) =>
-                      onChangeWires(
-                        wires.map((w) =>
-                          w.id === selectedWire.id ? { ...w, sectionMm2: e.target.value } : w
-                        )
+              <label className="field">
+                <span>Kesit</span>
+                <select
+                  value={selectedWire.sectionMm2}
+                  onChange={(e) =>
+                    onChangeWires(
+                      wires.map((w) =>
+                        w.id === selectedWire.id ? { ...w, sectionMm2: e.target.value } : w
                       )
-                    }
-                  >
-                    <option value="0,75">0,75 mm²</option>
-                    <option value="1,0">1,0 mm²</option>
-                    <option value="1,5">1,5 mm²</option>
-                    <option value="2,5">2,5 mm²</option>
-                  </select>
-                </label>
-                <label className="field">
-                  <span>Renk</span>
-                  <input
-                    type="color"
-                    value={selectedWire.color}
-                    style={{ height: 32, padding: 2 }}
-                    onChange={(e) =>
-                      onChangeWires(
-                        wires.map((w) =>
-                          w.id === selectedWire.id ? { ...w, color: e.target.value } : w
+                    )
+                  }
+                >
+                  <option value="0,75">0,75 mm²</option>
+                  <option value="1,0">1,0 mm²</option>
+                  <option value="1,5">1,5 mm²</option>
+                  <option value="2,5">2,5 mm²</option>
+                </select>
+              </label>
+              <div className="field">
+                <span>Sabit Renk: {getWireColorSpec(selectedWire.color).name}</span>
+                <div className="fixed-color-grid compact">
+                  {STANDARD_WIRE_COLORS.map((c) => (
+                    <button
+                      key={c.hex}
+                      type="button"
+                      title={c.name}
+                      className={`color-swatch-btn ${selectedWire.color === c.hex ? 'active' : ''}`}
+                      onClick={() =>
+                        onChangeWires(
+                          wires.map((w) =>
+                            w.id === selectedWire.id ? { ...w, color: c.hex } : w
+                          )
                         )
-                      )
-                    }
-                  />
-                </label>
+                      }
+                    >
+                      <span
+                        className="color-swatch-fill"
+                        style={{
+                          background: c.stripeHex
+                            ? `repeating-linear-gradient(45deg, ${c.hex}, ${c.hex} 4px, ${c.stripeHex} 4px, ${c.stripeHex} 8px)`
+                            : c.hex,
+                        }}
+                      />
+                    </button>
+                  ))}
+                </div>
               </div>
               <button
                 type="button"
