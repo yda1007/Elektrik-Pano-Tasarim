@@ -80,7 +80,7 @@ export const COMPONENT_CATALOG: CatalogTemplate[] = [
   },
   {
     key: 'terminal-5mm',
-    name: '5 mm Ray Klemensi',
+    name: '5 mm Ray Klemensi (2,5 mm²)',
     model: '2,5 mm² Geçiş Klemensi (5 mm)',
     category: 'terminal',
     defaultMount: 'bottom-rail',
@@ -90,6 +90,19 @@ export const COMPONENT_CATALOG: CatalogTemplate[] = [
     depthMm: 42,
     rating: '5 mm / 2,5 mm²',
     color: '#64748b',
+  },
+  {
+    key: 'terminal-6mm2',
+    name: '8 mm Ray Klemensi (6 mm² / 5 mm² kablo)',
+    model: '6 mm² Ray Klemensi (8 mm • 5 mm² kablo)',
+    category: 'terminal',
+    defaultMount: 'top-rail',
+    codePrefix: 'X',
+    widthMm: 8,
+    heightMm: 48,
+    depthMm: 47,
+    rating: '6 mm² (8 mm)',
+    color: '#475569',
   },
   {
     key: 'button-sw-bl4252',
@@ -208,7 +221,7 @@ export const COMPONENT_CATALOG: CatalogTemplate[] = [
 
 export function createInitialItems(): PanelItem[] {
   return [
-    // Üst DIN Rayı: 2× 1-1,6A MKŞ (90) + 1× 14 pin mini röle (27) + 3× 2,5 mm² (5 mm) klemens (15) = 132 mm / 216 mm (84 mm boşluk)
+    // Üst DIN Rayı: 2× 1-1,6A MKŞ (90) + 1× 14 pin mini röle (27) + 3× 6 mm² (8 mm, 5 mm² kabloya uygun) klemens (24) = 141 mm / 216 mm (75 mm boşluk)
     {
       id: 'q1',
       code: 'Q1',
@@ -257,16 +270,17 @@ export function createInitialItems(): PanelItem[] {
     ...[1, 2, 3].map((n, idx): PanelItem => ({
       id: `xt-${n}`,
       code: `X${n}`,
-      name: `Üst Ray Klemens ${n}`,
-      model: '2,5 mm² Ray Klemensi (5 mm kalınlık)',
+      name: `Üst Ray Klemens ${n} (5 mm² kablo)`,
+      model: '6 mm² Ray Klemensi (8 mm • 5 mm² kablo)',
       category: 'terminal',
       mount: 'top-rail',
-      widthMm: 5,
-      heightMm: 46,
-      depthMm: 42,
+      widthMm: 8,
+      heightMm: 48,
+      depthMm: 47,
       order: 3 + idx,
-      rating: '2,5 mm² (5 mm)',
-      color: '#64748b',
+      rating: '6 mm² (8 mm)',
+      color: '#475569',
+      notes: '5 mm² kablo için standart 6 mm² DIN ray klemensi (8 mm genişlik)',
     })),
 
     // Alt DIN Rayı: Sol KM1-KM2 (90 mm) + Orta 9× 2,5 mm² klemens (45 mm, PG36 hizasında) + Sağ KM3-KM4 (90 mm) = 225 mm

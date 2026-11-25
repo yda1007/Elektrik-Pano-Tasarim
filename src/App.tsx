@@ -55,8 +55,29 @@ function loadSavedState(): SavedState {
     }
     const parsed = JSON.parse(raw) as Partial<SavedState>;
     if (Array.isArray(parsed.items) && parsed.rails?.['top-rail'] && parsed.rails?.['bottom-rail']) {
+      const migratedItems = parsed.items.map((it) => {
+        if (
+          (it.id === 'xt-1' || it.id === 'xt-2' || it.id === 'xt-3') &&
+          it.mount === 'top-rail' &&
+          it.widthMm === 5 &&
+          it.model.includes('2,5 mm²')
+        ) {
+          return {
+            ...it,
+            name: `${it.name.replace(/ \(5 mm² kablo\)$/, '')} (5 mm² kablo)`,
+            model: '6 mm² Ray Klemensi (8 mm • 5 mm² kablo)',
+            widthMm: 8,
+            heightMm: 48,
+            depthMm: 47,
+            rating: '6 mm² (8 mm)',
+            color: '#475569',
+            notes: '5 mm² kablo için standart 6 mm² DIN ray klemensi (8 mm genişlik)',
+          };
+        }
+        return it;
+      });
       return {
-        items: parsed.items,
+        items: migratedItems,
         rails: parsed.rails,
         schematicNodes: parsed.schematicNodes ?? {},
         schematicWires: Array.isArray(parsed.schematicWires) ? parsed.schematicWires : [],

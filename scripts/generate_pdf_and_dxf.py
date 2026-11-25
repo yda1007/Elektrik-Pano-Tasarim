@@ -373,7 +373,7 @@ def draw_panel_layout_page(c: canvas.Canvas, data: dict, total_pages: int):
     tr = analysis["topRail"]
     br = analysis["bottomRail"]
     summary_lines = [
-        f"• Üst DIN Rayı (12M): {tr['usedWidthMm']} / {tr['usableWidthMm']} mm (Kalan: {tr['remainingMm']} mm) — Q1, Q2, R1, X1–X3",
+        f"• Üst DIN Rayı (12M): {tr['usedWidthMm']} / {tr['usableWidthMm']} mm (Kalan: {tr['remainingMm']} mm) — Q1, Q2, R1, X1–X3 (6 mm²)",
         f"• Alt DIN Rayı (Ek): {br['usedWidthMm']} / {br['usableWidthMm']} mm (Kalan: {br['remainingMm']} mm) — KM1–KM2 | X4–X12 | KM3–KM4",
         f"• Raylar Arası Boşluk: {analysis['interRailGapMm']} mm  |  Orta Koridor (S1–S2): {analysis['sideButtonMiddleGapMm']} mm",
         f"• Dahili Baralar: N-BARA (Y={n_y} mm) ve PE-BARA (Y={pe_y} mm) — 6'şar vidalı pano içi bara",

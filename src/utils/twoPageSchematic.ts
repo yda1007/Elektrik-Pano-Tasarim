@@ -176,7 +176,7 @@ function getPowerBlocks(): CleanBlock[] {
     {
       id: 'p-top-term',
       title: 'ÜST KLEMENS (X1–X3)',
-      subtitle: 'Üst DIN Rayı • Faz Giriş',
+      subtitle: 'Üst Ray • 6 mm² (5 mm² kablo)',
       x: 80,
       y: 184,
       width: 200,

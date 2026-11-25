@@ -343,7 +343,7 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     nodes.push({
       id: 'blk-top-terminals',
       title: `ÜST KLEMENS (${topTerminals.length} Adet)`,
-      subtitle: 'Üst DIN Rayı',
+      subtitle: topTerminals[0]?.rating ? `Üst Ray • ${topTerminals[0].rating}` : 'Üst DIN Rayı',
       width: w,
       height: 68,
       accent: '#64748b',
@@ -932,6 +932,9 @@ export default function SchematicEditor({
                 <option value="1,0">1,0 mm²</option>
                 <option value="1,5">1,5 mm²</option>
                 <option value="2,5">2,5 mm²</option>
+                <option value="4,0">4,0 mm²</option>
+                <option value="5,0">5,0 mm²</option>
+                <option value="6,0">6,0 mm²</option>
               </select>
             </label>
             <label className="field">
@@ -1805,6 +1808,9 @@ export default function SchematicEditor({
                   <option value="1,0">1,0 mm²</option>
                   <option value="1,5">1,5 mm²</option>
                   <option value="2,5">2,5 mm²</option>
+                  <option value="4,0">4,0 mm²</option>
+                  <option value="5,0">5,0 mm²</option>
+                  <option value="6,0">6,0 mm²</option>
                 </select>
               </label>
               <div className="field">

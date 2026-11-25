@@ -59,8 +59,9 @@ const MOUNT_LABELS: Record<string, string> = {
   'top-wall': 'Üst Duvar',
 };
 
-const inputPath = process.argv[2] ?? '/home/yakup/İndirilenler/Bemis-BH6-6000-0000-Proje.json';
 const outDir = path.resolve('/home/yakup/Projeler/Elektrik-Pano-Tasarim/ciktilar');
+const defaultProjectJson = path.join(outDir, 'Bemis-BH6-6000-0000-Proje.json');
+const inputPath = process.argv[2] ?? defaultProjectJson;
 fs.mkdirSync(outDir, { recursive: true });
 
 const raw = JSON.parse(fs.readFileSync(inputPath, 'utf8')) as {
@@ -156,7 +157,9 @@ const payload = {
   wireList,
 };
 
-fs.copyFileSync(inputPath, path.join(outDir, 'Bemis-BH6-6000-0000-Proje.json'));
+if (path.resolve(inputPath) !== path.resolve(defaultProjectJson)) {
+  fs.copyFileSync(inputPath, defaultProjectJson);
+}
 fs.writeFileSync(path.join(outDir, '_export_payload.json'), JSON.stringify(payload, null, 2));
 console.log(
   `Prepared payload: ${items.length} items, ${power.wires.length} power wires, ${control.wires.length} control wires`
