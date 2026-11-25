@@ -35,6 +35,7 @@ interface SchematicEditorProps {
   wires: SchematicWire[];
   onChangeNodePositions: (next: Record<string, SchematicNodePos>) => void;
   onChangeWires: (next: SchematicWire[]) => void;
+  onExportJson: () => void;
 }
 
 interface StandardWireColor {
@@ -467,6 +468,7 @@ export default function SchematicEditor({
   wires,
   onChangeNodePositions,
   onChangeWires,
+  onExportJson,
 }: SchematicEditorProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [tool, setTool] = useState<'wire' | 'move'>('wire');
@@ -477,10 +479,12 @@ export default function SchematicEditor({
   const [selectedWireId, setSelectedWireId] = useState<string | null>(null);
   const [hoveredWireId, setHoveredWireId] = useState<string | null>(null);
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
-  const [displayMode, setDisplayMode] = useState<'tags' | 'tags-target' | 'lines'>('tags');
+  const [displayMode, setDisplayMode] = useState<'tags' | 'tags-target' | 'lines' | 'cards'>('tags');
   const [wireFilter, setWireFilter] = useState<'all' | 'power' | 'control'>('all');
   const [showWireLabels, setShowWireLabels] = useState(false);
   const [dimOthersOnSelect, setDimOthersOnSelect] = useState(true);
+  const [zoom, setZoom] = useState(1.15);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [preRouteBackup, setPreRouteBackup] = useState<SchematicWire[] | null>(null);
 
   const [draft, setDraft] = useState<{
@@ -781,8 +785,9 @@ export default function SchematicEditor({
   };
 
   return (
-    <div className="schematic-workspace">
+    <div className={`schematic-workspace ${isFullscreen ? 'is-fullscreen' : ''}`}>
       {/* SOL ARAÇ ÇUBUĞU */}
+      {!isFullscreen && (
       <aside className="left-sidebar">
         <section className="sidebar-section">
           <div className="section-title">Çizim Aracı</div>
@@ -920,6 +925,9 @@ export default function SchematicEditor({
             >
               ↶ Son Kabloyu Geri Al
             </button>
+            <button type="button" className="btn-sm" onClick={onExportJson}>
+              💾 Projeyi JSON Yedekle
+            </button>
             <button type="button" className="btn-sm" onClick={handleDownloadSvg}>
               Şemayı SVG İndir
             </button>
@@ -946,6 +954,7 @@ export default function SchematicEditor({
           </div>
         </section>
       </aside>
+      )}
 
       {/* ORTA ÇİZİM TUVALİ */}
       <main className="canvas-stage schematic-stage">
@@ -958,14 +967,21 @@ export default function SchematicEditor({
                   className={displayMode === 'tags' ? 'active' : ''}
                   onClick={() => setDisplayMode('tags')}
                 >
-                  🏷 Numaralı Temiz
+                  🏷 Numaralı
                 </button>
                 <button
                   type="button"
                   className={displayMode === 'tags-target' ? 'active' : ''}
                   onClick={() => setDisplayMode('tags-target')}
                 >
-                  🏷 Numara + Hedef
+                  🏷 Numara+Hedef
+                </button>
+                <button
+                  type="button"
+                  className={displayMode === 'cards' ? 'active' : ''}
+                  onClick={() => setDisplayMode('cards')}
+                >
+                  📋 Montaj Kartları
                 </button>
                 <button
                   type="button"
@@ -1002,6 +1018,32 @@ export default function SchematicEditor({
             </div>
 
             <div className="toolbar-group">
+              {displayMode !== 'cards' && (
+                <div className="segmented">
+                  <button
+                    type="button"
+                    title="Küçült"
+                    onClick={() => setZoom((z) => Math.max(0.7, Number((z - 0.15).toFixed(2))))}
+                  >
+                    −
+                  </button>
+                  <button
+                    type="button"
+                    title="Sıfırla"
+                    onClick={() => setZoom(1.15)}
+                  >
+                    {Math.round(zoom * 100)}%
+                  </button>
+                  <button
+                    type="button"
+                    title="Büyüt"
+                    onClick={() => setZoom((z) => Math.min(2.4, Number((z + 0.15).toFixed(2))))}
+                  >
+                    +
+                  </button>
+                </div>
+              )}
+
               {displayMode === 'lines' && (
                 <>
                   <button
@@ -1022,14 +1064,30 @@ export default function SchematicEditor({
                   </label>
                 </>
               )}
-              <label className="inline-check">
-                <input
-                  type="checkbox"
-                  checked={dimOthersOnSelect}
-                  onChange={(e) => setDimOthersOnSelect(e.target.checked)}
-                />
-                <span>Seçiliyi Vurgula</span>
-              </label>
+
+              {displayMode !== 'cards' && (
+                <label className="inline-check">
+                  <input
+                    type="checkbox"
+                    checked={dimOthersOnSelect}
+                    onChange={(e) => setDimOthersOnSelect(e.target.checked)}
+                  />
+                  <span>Seçiliyi Vurgula</span>
+                </label>
+              )}
+
+              <button
+                type="button"
+                className={isFullscreen ? 'btn-primary' : 'btn-sm'}
+                onClick={() => setIsFullscreen((f) => !f)}
+              >
+                {isFullscreen ? '✕ Paneli Göster' : '⛶ Tam Ekran'}
+              </button>
+
+              <button type="button" className="btn-sm" onClick={onExportJson}>
+                💾 Yedekle
+              </button>
+
               {(selectedWireId || focusedNodeId) && (
                 <button
                   type="button"
@@ -1045,10 +1103,82 @@ export default function SchematicEditor({
             </div>
           </div>
 
+          {displayMode === 'cards' ? (
+            <div className="mounting-cards-wrap">
+              {wires.length === 0 ? (
+                <div className="empty-state">
+                  Henüz bağlantı yok. <strong>Numaralı</strong> veya <strong>Tüm Hatlar</strong> görünümünde kablo çizdiğinizde her elemanın pin-pin montaj kartı burada otomatik oluşur.
+                </div>
+              ) : (
+                <div className="mounting-cards-grid">
+                  {nodes.map((node) => {
+                    const nodeRows = node.pins.flatMap((pin) => {
+                      const entries = pinAttachments.get(`${node.id}::${pin.id}`) ?? [];
+                      return entries.map((entry) => ({ pin, entry }));
+                    });
+                    if (nodeRows.length === 0) return null;
+
+                    return (
+                      <section
+                        key={node.id}
+                        className="mount-card"
+                        style={{ borderTopColor: node.accent }}
+                      >
+                        <header className="mount-card-head">
+                          <div>
+                            <strong>{node.title}</strong>
+                            <span>{node.subtitle}</span>
+                          </div>
+                          <span className="mount-count">{nodeRows.length} uç</span>
+                        </header>
+                        <div className="mount-card-list">
+                          {nodeRows.map(({ pin, entry }, idx) => {
+                            const { wire } = entry;
+                            const spec = getWireColorSpec(wire.color);
+                            const isSel = selectedWireId === wire.id;
+                            return (
+                              <div
+                                key={`${pin.id}-${wire.id}-${idx}`}
+                                className={`mount-row ${isSel ? 'selected-row' : ''}`}
+                                onClick={() => setSelectedWireId(isSel ? null : wire.id)}
+                              >
+                                <span className="mount-pin">
+                                  <strong>{pin.label}</strong>
+                                  {pin.subLabel && <small>{pin.subLabel}</small>}
+                                </span>
+                                <span
+                                  className="wire-num-pill"
+                                  style={{
+                                    background: spec.stripeHex
+                                      ? `repeating-linear-gradient(45deg, ${wire.color}, ${wire.color} 4px, ${spec.stripeHex} 4px, ${spec.stripeHex} 8px)`
+                                      : wire.color,
+                                    color: isLightHex(wire.color) ? '#0b1120' : '#ffffff',
+                                  }}
+                                >
+                                  #{entry.badgeNumText}
+                                </span>
+                                <span className="mount-wire-meta">
+                                  {spec.name.split(' (')[0]} • {wire.sectionMm2}
+                                </span>
+                                <span className="mount-arrow">→</span>
+                                <strong className="mount-target">{entry.partnerShort}</strong>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </section>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ) : (
+          <div className="schematic-scroll-wrap">
           <svg
             ref={svgRef}
-            viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
+            viewBox={`-24 -70 ${CANVAS_W + 48} ${CANVAS_H + 140}`}
             className="cad-svg schematic-svg"
+            style={{ width: `${Math.round(CANVAS_W * zoom * 0.82)}px`, minWidth: '100%' }}
             onClick={handleCanvasClick}
             onContextMenu={(e) => {
               if (draft) {
@@ -1072,8 +1202,8 @@ export default function SchematicEditor({
               </pattern>
             </defs>
 
-            <rect x={0} y={0} width={CANVAS_W} height={CANVAS_H} fill="#0b1220" />
-            <rect x={0} y={0} width={CANVAS_W} height={CANVAS_H} fill="url(#sch-grid)" />
+            <rect x={-24} y={-70} width={CANVAS_W + 48} height={CANVAS_H + 140} fill="#0b1220" />
+            <rect x={-24} y={-70} width={CANVAS_W + 48} height={CANVAS_H + 140} fill="url(#sch-grid)" />
 
             {/* TAM KABLO HATLARI (Tüm Hatlar modunda hepsi; Numaralı modda sadece seçili/hover/odaklı hatlar!) */}
             {wires.map((w, wireIdx) => {
@@ -1338,29 +1468,36 @@ export default function SchematicEditor({
                     );
                   })}
 
-                  {/* NUMARALI YÜKSÜK / BAYRAK ETİKETLERİ (Sıfır karmaşa görünümü) */}
-                  {displayMode !== 'lines' &&
+                  {/* NUMARALI YÜKSÜK / BAYRAK ETİKETLERİ (Büyük, okunaklı, çakışmasız) */}
+                  {(displayMode === 'tags' || displayMode === 'tags-target') &&
                     node.pins.map((pin, pinIdx) => {
                       const entries = pinAttachments.get(`${node.id}::${pin.id}`);
                       if (!entries || entries.length === 0) return null;
                       const dir = pin.side === 'top' ? -1 : 1;
-                      const tierBase = pinIdx % 2 === 0 ? 19 : 37;
-                      const maxDist = tierBase + (entries.length - 1) * 18;
+                      const tierBase =
+                        displayMode === 'tags-target'
+                          ? pinIdx % 2 === 0
+                            ? 24
+                            : 48
+                          : pinIdx % 2 === 0
+                            ? 22
+                            : 44;
+                      const stepGap = 23;
+                      const maxDist = tierBase + (entries.length - 1) * stepGap;
                       const lastEntryColor = entries[entries.length - 1].wire.color;
 
                       return (
                         <g key={`flags-${pin.id}`}>
-                          {/* Pin çıkış kısa kablo saplaması */}
                           <line
                             x1={pin.dx}
                             y1={pin.dy + dir * 5}
                             x2={pin.dx}
                             y2={pin.dy + dir * maxDist}
                             stroke={lastEntryColor}
-                            strokeWidth={2.2}
+                            strokeWidth={2.6}
                           />
                           {entries.map((entry, subIdx) => {
-                            const dist = tierBase + subIdx * 18;
+                            const dist = tierBase + subIdx * stepGap;
                             const fy = pin.dy + dir * dist;
                             const { wire } = entry;
                             const isSel = selectedWireId === wire.id;
@@ -1372,7 +1509,7 @@ export default function SchematicEditor({
                             const hasFocus =
                               dimOthersOnSelect &&
                               (selectedWireId !== null || focusedNodeId !== null || hoveredWireId !== null);
-                            const badgeOpacity = hasFocus && !isActive ? 0.28 : 1;
+                            const badgeOpacity = hasFocus && !isActive ? 0.25 : 1;
 
                             const text =
                               displayMode === 'tags-target'
@@ -1380,9 +1517,9 @@ export default function SchematicEditor({
                                 : entry.badgeNumText;
                             const pillW =
                               displayMode === 'tags-target'
-                                ? Math.max(54, text.length * 5.2 + 10)
-                                : Math.max(22, text.length * 6.5 + 10);
-                            const pillH = 15;
+                                ? Math.max(72, text.length * 6.4 + 14)
+                                : Math.max(28, text.length * 8 + 14);
+                            const pillH = 20;
                             const textColor = isLightHex(wire.color) ? '#0b1120' : '#ffffff';
                             const colorSpec = getWireColorSpec(wire.color);
 
@@ -1407,16 +1544,16 @@ export default function SchematicEditor({
                                   y={fy - pillH / 2}
                                   width={pillW}
                                   height={pillH}
-                                  rx={4}
+                                  rx={5}
                                   fill={wire.color}
                                   stroke={isActive ? '#38bdf8' : colorSpec.stripeHex ?? '#0b1120'}
-                                  strokeWidth={isActive ? 2.2 : colorSpec.stripeHex ? 1.5 : 1}
+                                  strokeWidth={isActive ? 2.5 : colorSpec.stripeHex ? 2 : 1.2}
                                 />
                                 <text
                                   x={pin.dx}
-                                  y={fy + 3.2}
+                                  y={fy + 4}
                                   textAnchor="middle"
-                                  fontSize={displayMode === 'tags-target' ? 7.6 : 8.6}
+                                  fontSize={displayMode === 'tags-target' ? 9.8 : 11.5}
                                   fontWeight={800}
                                   fill={textColor}
                                   pointerEvents="none"
@@ -1433,10 +1570,13 @@ export default function SchematicEditor({
               );
             })}
           </svg>
+          </div>
+          )}
         </div>
       </main>
 
       {/* SAĞ PANEL: SEÇİLİ KABLO & BAĞLANTI LİSTESİ (NETLIST) */}
+      {!isFullscreen && (
       <aside className="inspector-panel">
         <div className="sidebar-section">
           <div className="section-title">Seçili Kablo</div>
@@ -1592,6 +1732,7 @@ export default function SchematicEditor({
           )}
         </div>
       </aside>
+      )}
     </div>
   );
 }

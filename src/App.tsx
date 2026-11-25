@@ -508,6 +508,7 @@ export default function App() {
           wires={schematicWires}
           onChangeNodePositions={setSchematicNodes}
           onChangeWires={setSchematicWires}
+          onExportJson={handleExportJson}
         />
       )}
     </div>
