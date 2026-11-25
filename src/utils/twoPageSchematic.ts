@@ -394,11 +394,11 @@ function getPowerBlocks(): CleanBlock[] {
 
 function getControlBlocks(): CleanBlock[] {
   return [
-    // Satır 1 (Y = 38): Sektör 1 & 2 (5×1) + Manuel Besleme Ref + Pano Nötr (N2–N4)
+    // Satır 1 (Y = 38): Sektör Kumanda 1 & 2 (5×1) + Manuel Besleme Ref + Pano Nötr (N2–N4)
     {
       id: 'c-sec1',
-      title: 'SEKTÖR 1 (5×1 mm²)',
-      subtitle: 'Otomasyon Girişi',
+      title: 'SEKTÖR KUMANDA 1 (5×1 mm²)',
+      subtitle: 'Sektör Kumanda Girişi',
       x: 50,
       y: 38,
       width: 270,
@@ -419,8 +419,8 @@ function getControlBlocks(): CleanBlock[] {
     },
     {
       id: 'c-sec2',
-      title: 'SEKTÖR 2 (5×1 mm²)',
-      subtitle: 'Paralel Çıkış / Giriş',
+      title: 'SEKTÖR KUMANDA 2 (5×1 mm²)',
+      subtitle: 'Sektör Kumanda Paralel Çıkış',
       x: 370,
       y: 38,
       width: 270,
@@ -496,7 +496,7 @@ function getControlBlocks(): CleanBlock[] {
     {
       id: 'c-klem-sec',
       title: 'ALT KLEMENS (X6 – X10)',
-      subtitle: 'Sektör Sinyal & Röle Bobin Girişi',
+      subtitle: 'Sektör Kumanda & Röle Bobin Girişi',
       x: 150,
       y: 205,
       width: 380,
@@ -1138,7 +1138,7 @@ function routeCleanPage(
     subtitle:
       kind === 'power'
         ? 'Besleme 5×2,5 → X1–X3 → Q1/Q2 → KM1–KM4 Güç → M1/M2 Motorlar & PE'
-        : 'Sektör 1–2 & S1/S2 İkiz Butonlar → R1 (14 Pin) → KM1–KM4 Kilitleme → Limit Switchler & N',
+        : 'Sektör Kumanda 1–2 & S1/S2 İkiz Butonlar → R1 (14 Pin) → KM1–KM4 Kilitleme → Limit Switchler & N',
     width,
     height,
     blocks,

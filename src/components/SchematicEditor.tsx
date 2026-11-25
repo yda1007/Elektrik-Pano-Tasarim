@@ -439,12 +439,12 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     });
   });
 
-  // 10. 2 Adet 5×1 mm² Sektör Sinyal Kablosu
+  // 10. 2 Adet 5×1 mm² Sektör Kumanda Kablosu
   [1, 2].forEach((secNo, idx) => {
     nodes.push({
       id: `sys-sector-${secNo}`,
-      title: `SEKTÖR ${secNo} SİNYAL (5×1 mm²)`,
-      subtitle: `5×1 mm² Kumanda / Sektör Kablosu ${secNo}`,
+      title: `SEKTÖR KUMANDA ${secNo} (5×1 mm²)`,
+      subtitle: `5×1 mm² Sektör Kumanda Kablosu ${secNo}`,
       width: 270,
       height: 76,
       accent: '#ec4899',
@@ -454,11 +454,11 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
         270,
         76,
         [
-          { id: '1', label: '1', subLabel: 'D1', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 1` },
-          { id: '2', label: '2', subLabel: 'D2', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 2` },
-          { id: '3', label: '3', subLabel: 'D3', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 3` },
-          { id: '4', label: '4', subLabel: 'D4', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 4` },
-          { id: '5', label: '5', subLabel: 'D5', subColor: '#f472b6', title: `Sektör ${secNo} (5×1) — Damar 5` },
+          { id: '1', label: '1', subLabel: 'D1', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 1` },
+          { id: '2', label: '2', subLabel: 'D2', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 2` },
+          { id: '3', label: '3', subLabel: 'D3', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 3` },
+          { id: '4', label: '4', subLabel: 'D4', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 4` },
+          { id: '5', label: '5', subLabel: 'D5', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 5` },
         ],
         []
       ),
