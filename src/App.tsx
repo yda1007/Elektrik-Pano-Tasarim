@@ -132,13 +132,16 @@ export default function App() {
   const [highlightedIds, setHighlightedIds] = useState<Set<string>>(new Set());
   const [schematicFocusItemId, setSchematicFocusItemId] = useState<string | null>(null);
 
-  const [viewMode, setViewMode] = useState<ViewMode>('all');
+  const [viewMode, setViewMode] = useState<ViewMode>(() =>
+    activeProject.enclosure.outerWidthMm >= 500 ? 'front' : 'all'
+  );
+  const [leftTab, setLeftTab] = useState<'catalog' | 'setup'>('catalog');
   const [showDimensions, setShowDimensions] = useState(true);
   const [showWindowOverlay, setShowWindowOverlay] = useState(true);
   const [showWireClearance, setShowWireClearance] = useState(true);
   const [showMetaDrawer, setShowMetaDrawer] = useState(false);
 
-  const [addTarget, setAddTarget] = useState<MountLocation>('bottom-rail');
+  const [addTarget, setAddTarget] = useState<MountLocation>('top-rail');
   const [catalogGroup, setCatalogGroup] = useState<string>('all');
   const [catalogSearch, setCatalogSearch] = useState('');
 
@@ -202,7 +205,7 @@ export default function App() {
     });
   }, [activeProjectId, takeSnapshot]);
 
-  // Global klavye kısayolları: Ctrl+Z / Ctrl+Y
+  // Global klavye kısayolları: Ctrl+Z / Ctrl+Y / Delete / Ctrl+D / Ok tuşları
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
@@ -219,11 +222,94 @@ export default function App() {
       } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
         e.preventDefault();
         handleRedo();
+      } else if (appTab === 'layout' && selectedId) {
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+          e.preventDefault();
+          updateActiveProject((p) => ({ ...p, items: p.items.filter((i) => i.id !== selectedId) }));
+          setSelectedId(null);
+        } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
+          e.preventDefault();
+          updateActiveProject((p) => {
+            const src = p.items.find((i) => i.id === selectedId);
+            if (!src) return p;
+            const newId = `copy-${Date.now()}`;
+            const sameMountCount = p.items.filter((i) => i.mount === src.mount).length;
+            const clone: PanelItem = {
+              ...src,
+              id: newId,
+              code: `${src.code}*`,
+              order: sameMountCount,
+              railXMm: src.railXMm !== undefined ? src.railXMm + src.widthMm + 5 : undefined,
+              posXMm:
+                src.posXMm !== undefined
+                  ? Math.min(p.enclosure.outerWidthMm - 30, src.posXMm + 25)
+                  : undefined,
+              posYMm:
+                src.posYMm !== undefined
+                  ? Math.min(p.enclosure.outerHeightMm - 30, src.posYMm + 25)
+                  : undefined,
+            };
+            setSelectedId(newId);
+            return { ...p, items: [...p.items, clone] };
+          });
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          const step = e.shiftKey ? 20 : 5;
+          const dir = e.key === 'ArrowLeft' ? -1 : 1;
+          e.preventDefault();
+          updateActiveProject((p) => {
+            const item = p.items.find((i) => i.id === selectedId);
+            if (!item) return p;
+            if (isRailMount(item.mount)) {
+              const rail = p.rails.find((r) => r.id === item.mount);
+              const railStart = rail ? (p.enclosure.outerWidthMm - rail.usableWidthMm) / 2 : 20;
+              const curX = item.railXMm ?? railStart;
+              return {
+                ...p,
+                items: p.items.map((it) =>
+                  it.id === selectedId ? { ...it, railXMm: Math.max(railStart, curX + dir * step) } : it
+                ),
+              };
+            }
+            if (item.posXMm !== undefined) {
+              return {
+                ...p,
+                items: p.items.map((it) =>
+                  it.id === selectedId
+                    ? {
+                        ...it,
+                        posXMm: Math.max(20, Math.min(p.enclosure.outerWidthMm - 20, (it.posXMm ?? 0) + dir * step)),
+                      }
+                    : it
+                ),
+              };
+            }
+            return p;
+          });
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          const step = e.shiftKey ? 20 : 5;
+          const dir = e.key === 'ArrowUp' ? -1 : 1;
+          updateActiveProject((p) => {
+            const item = p.items.find((i) => i.id === selectedId);
+            if (!item || item.posYMm === undefined) return p;
+            e.preventDefault();
+            return {
+              ...p,
+              items: p.items.map((it) =>
+                it.id === selectedId
+                  ? {
+                      ...it,
+                      posYMm: Math.max(20, Math.min(p.enclosure.outerHeightMm - 20, (it.posYMm ?? 0) + dir * step)),
+                    }
+                  : it
+              ),
+            };
+          });
+        }
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [handleUndo, handleRedo]);
+  }, [handleUndo, handleRedo, appTab, selectedId, updateActiveProject]);
 
   // localStorage otomatik kayıt
   useEffect(() => {
@@ -282,6 +368,7 @@ export default function App() {
     setHighlightedIds(new Set());
     const found = projects.find((p) => p.meta.id === id);
     setSelectedId(found?.items[0]?.id ?? null);
+    if (found && found.enclosure.outerWidthMm >= 500) setViewMode('front');
   };
 
   const handleCreateFromPreset = (presetId: string) => {
@@ -291,6 +378,7 @@ export default function App() {
     setUndoStack([]);
     setRedoStack([]);
     setSelectedId(created.items[0]?.id ?? null);
+    if (created.enclosure.outerWidthMm >= 500) setViewMode('front');
   };
 
   const handleDeleteCurrentProject = () => {
@@ -397,7 +485,12 @@ export default function App() {
     );
   };
 
-  const handleReorderRailItem = (itemId: string, targetRailId: RailId, targetIndex: number) => {
+  const handleReorderRailItem = (
+    itemId: string,
+    targetRailId: RailId,
+    targetIndex: number,
+    freeXMm?: number
+  ) => {
     updateActiveProject((p) => {
       const moving = p.items.find((i) => i.id === itemId);
       if (!moving || !isRailMount(moving.mount)) return p;
@@ -408,7 +501,7 @@ export default function App() {
 
       const clampedIdx = Math.max(0, Math.min(targetSiblings.length, targetIndex));
       const nextTargetList = [...targetSiblings];
-      nextTargetList.splice(clampedIdx, 0, { ...moving, mount: targetRailId });
+      nextTargetList.splice(clampedIdx, 0, { ...moving, mount: targetRailId, railXMm: freeXMm });
       const targetOrderMap = new Map(nextTargetList.map((it, idx) => [it.id, idx]));
 
       // Kaynak ray farklıysa kaynak rayın sıralamasını da sıkılaştır
@@ -423,7 +516,14 @@ export default function App() {
       return {
         ...p,
         items: p.items.map((it) => {
-          if (it.id === itemId) return { ...it, mount: targetRailId, order: targetOrderMap.get(it.id) ?? 0 };
+          if (it.id === itemId) {
+            return {
+              ...it,
+              mount: targetRailId,
+              order: targetOrderMap.get(it.id) ?? 0,
+              railXMm: freeXMm,
+            };
+          }
           if (targetOrderMap.has(it.id)) return { ...it, order: targetOrderMap.get(it.id)! };
           if (sourceOrderMap.has(it.id)) return { ...it, order: sourceOrderMap.get(it.id)! };
           return it;
@@ -432,16 +532,29 @@ export default function App() {
     });
   };
 
-  const handleAddFromCatalog = (tpl: CatalogTemplate) => {
+  const handleCompactRails = () => {
+    updateActiveProject((p) => ({
+      ...p,
+      items: p.items.map((it) => (it.railXMm !== undefined ? { ...it, railXMm: undefined } : it)),
+    }));
+  };
+
+  const handleAddFromCatalog = (
+    tpl: CatalogTemplate,
+    overrideMount?: MountLocation,
+    dropXMm?: number,
+    dropYMm?: number
+  ) => {
+    const preferredMount = overrideMount ?? addTarget;
     let mount: MountLocation = tpl.defaultMount;
     if (tpl.category === 'button') {
-      mount = addTarget === 'right-wall' ? 'right-wall' : 'left-wall';
+      mount = preferredMount === 'right-wall' ? 'right-wall' : 'left-wall';
     } else if (tpl.category === 'gland') {
-      mount = addTarget === 'top-wall' ? 'top-wall' : 'bottom-wall';
+      mount = preferredMount === 'top-wall' ? 'top-wall' : 'bottom-wall';
     } else if (tpl.category === 'busbar' || tpl.category === 'duct') {
       mount = 'backplate';
-    } else if (isRailMount(addTarget) && rails.some((r) => r.id === addTarget)) {
-      mount = addTarget;
+    } else if (isRailMount(preferredMount) && rails.some((r) => r.id === preferredMount)) {
+      mount = preferredMount;
     } else if (isRailMount(mount) && !rails.some((r) => r.id === mount)) {
       mount = rails[0]?.id ?? 'top-rail';
     }
@@ -449,6 +562,22 @@ export default function App() {
     const sameMount = items.filter((i) => i.mount === mount);
     const samePrefixCount = items.filter((i) => i.code.startsWith(tpl.codePrefix)).length;
     const newId = `${tpl.key}-${Date.now()}`;
+
+    // Eğer katalogdan boş ray noktasına sürüklenip bırakıldıysa tam o X noktasına yerleştir
+    let railXMm: number | undefined;
+    if (dropXMm !== undefined && isRailMount(mount)) {
+      const targetRail = rails.find((r) => r.id === mount);
+      if (targetRail) {
+        const railStartX = (enclosure.outerWidthMm - targetRail.usableWidthMm) / 2;
+        const railEndX = railStartX + targetRail.usableWidthMm;
+        const desired = Math.round((dropXMm - tpl.widthMm / 2) / 5) * 5;
+        const clamped = Math.max(railStartX, Math.min(railEndX - tpl.widthMm, desired));
+        const usedRightEdge = sameMount.reduce((acc, it) => Math.max(acc, (it.railXMm ?? railStartX) + it.widthMm), railStartX);
+        if (sameMount.length === 0 ? clamped - railStartX > 15 : clamped > usedRightEdge + 12) {
+          railXMm = clamped;
+        }
+      }
+    }
 
     const nextItem: PanelItem = {
       id: newId,
@@ -468,17 +597,16 @@ export default function App() {
       powerLossW: tpl.powerLossW,
       unitPriceTry: tpl.unitPriceTry,
       order: sameMount.length,
+      railXMm,
       posXMm:
         mount === 'bottom-wall' || mount === 'top-wall' || mount === 'backplate'
-          ? Math.round(enclosure.outerWidthMm / 2)
+          ? dropXMm ?? Math.round(enclosure.outerWidthMm / 2)
           : undefined,
       posYMm:
         mount === 'left-wall' || mount === 'right-wall'
-          ? Math.min(264, enclosure.outerHeightMm - 55)
+          ? dropYMm ?? Math.min(264, enclosure.outerHeightMm - 55)
           : mount === 'backplate'
-            ? tpl.category === 'duct'
-              ? Math.round(enclosure.outerHeightMm / 2)
-              : 24
+            ? dropYMm ?? (tpl.category === 'duct' ? Math.round(enclosure.outerHeightMm / 2) : 24)
             : undefined,
       posZMm:
         mount === 'left-wall' || mount === 'right-wall' || mount === 'bottom-wall' || mount === 'top-wall'
@@ -490,6 +618,17 @@ export default function App() {
 
     updateActiveProject((p) => ({ ...p, items: [...p.items, nextItem] }));
     setSelectedId(newId);
+  };
+
+  const handleDropCatalogItem = (
+    catalogKey: string,
+    mount: MountLocation,
+    posXMm?: number,
+    posYMm?: number
+  ) => {
+    const tpl = FULL_COMPONENT_CATALOG.find((c) => c.key === catalogKey);
+    if (!tpl) return;
+    handleAddFromCatalog(tpl, mount, posXMm, posYMm);
   };
 
   const handleInsertMacro = (macroId: string) => {
@@ -775,248 +914,276 @@ export default function App() {
 
       {appTab === 'layout' && (
         <div className="workspace">
-          {/* SOL PANEL */}
+          {/* SOL PANEL (2 Hızlı Sekme: + Elemanlar | ⚙ Pano & Ray) */}
           <aside className="left-sidebar">
-            {/* PANO GÖVDESİ SEÇİMİ & ÖZEL ÖLÇÜ */}
-            <section className="sidebar-section">
-              <div className="section-title">Pano Gövdesi & Ölçü</div>
-              <label className="field">
-                <span>Hazır Kutu / Sac Pano</span>
-                <select
-                  value={enclosure.id ?? ''}
-                  onChange={(e) => handleSelectEnclosure(e.target.value)}
-                >
-                  {ENCLOSURE_LIBRARY.map((enc) => (
-                    <option key={enc.id} value={enc.id}>
-                      {enc.brand} {enc.model} ({enc.outerWidthMm}×{enc.outerHeightMm}×{enc.outerDepthMm})
-                    </option>
+            <div className="left-tab-bar">
+              <button
+                type="button"
+                className={leftTab === 'catalog' ? 'active' : ''}
+                onClick={() => setLeftTab('catalog')}
+              >
+                + Elemanlar
+              </button>
+              <button
+                type="button"
+                className={leftTab === 'setup' ? 'active' : ''}
+                onClick={() => setLeftTab('setup')}
+              >
+                ⚙ Pano & Ray
+              </button>
+            </div>
+
+            {leftTab === 'catalog' && (
+              <section className="sidebar-section">
+                <div className="section-title">Eleman Ekle (Tıkla veya Sürükle-Bırak)</div>
+                <label className="field" style={{ marginBottom: 6 }}>
+                  <span>Aktif Hedef Ray / Konum</span>
+                  <select value={addTarget} onChange={(e) => setAddTarget(e.target.value as MountLocation)}>
+                    {rails.map((r) => (
+                      <option key={r.id} value={r.id}>
+                        ★ {r.name}
+                      </option>
+                    ))}
+                    <option value="backplate">Pano İçi (Kablo Kanalı / Bara)</option>
+                    <option value="left-wall">Sol Yan Duvar</option>
+                    <option value="right-wall">Sağ Yan Duvar</option>
+                    <option value="bottom-wall">Alt Duvar (Rakor)</option>
+                    <option value="top-wall">Üst Duvar (Rakor)</option>
+                  </select>
+                </label>
+
+                <input
+                  type="text"
+                  className="search-input"
+                  style={{ width: '100%', marginBottom: 6 }}
+                  placeholder="Ara: 50mm², 80A, 63A, kaçak, kontaktör..."
+                  value={catalogSearch}
+                  onChange={(e) => setCatalogSearch(e.target.value)}
+                />
+
+                <div className="cat-chips">
+                  {[
+                    ['all', 'Tümü'],
+                    ['koruma', 'Koruma'],
+                    ['kumanda', 'Kumanda'],
+                    ['klemens', 'Klemens'],
+                    ['duvar', 'Duvar'],
+                    ['altyapi', 'Kanal/Bara'],
+                  ].map(([k, lbl]) => (
+                    <button
+                      key={k}
+                      type="button"
+                      className={`cat-chip ${catalogGroup === k ? 'active' : ''}`}
+                      onClick={() => setCatalogGroup(k)}
+                    >
+                      {lbl}
+                    </button>
                   ))}
-                </select>
-              </label>
-              <div className="dims-grid" style={{ marginTop: 6 }}>
-                <label className="field">
-                  <span>G (mm)</span>
-                  <input
-                    type="number"
-                    min={150}
-                    max={1200}
-                    value={enclosure.outerWidthMm}
-                    onChange={(e) => handleUpdateEnclosureDims({ outerWidthMm: Number(e.target.value) })}
-                  />
-                </label>
-                <label className="field">
-                  <span>Y (mm)</span>
-                  <input
-                    type="number"
-                    min={180}
-                    max={1600}
-                    value={enclosure.outerHeightMm}
-                    onChange={(e) => handleUpdateEnclosureDims({ outerHeightMm: Number(e.target.value) })}
-                  />
-                </label>
-                <label className="field">
-                  <span>D (mm)</span>
-                  <input
-                    type="number"
-                    min={100}
-                    max={500}
-                    value={enclosure.outerDepthMm}
-                    onChange={(e) => handleUpdateEnclosureDims({ outerDepthMm: Number(e.target.value) })}
-                  />
-                </label>
-              </div>
-              <label className="field" style={{ marginTop: 6 }}>
-                <span>Gövde Malzemesi (Isıl k)</span>
-                <select
-                  value={enclosure.materialType ?? 'abs'}
-                  onChange={(e) =>
-                    handleUpdateEnclosureDims({
-                      materialType: e.target.value as 'abs' | 'steel' | 'stainless',
-                    })
-                  }
-                >
-                  <option value="abs">ABS / Polikarbonat (k=3,5)</option>
-                  <option value="steel">Boyalı Sac Pano (k=5,5)</option>
-                  <option value="stainless">Paslanmaz Çelik (k=4,5)</option>
-                </select>
-              </label>
-            </section>
+                </div>
 
-            {/* DİNAMİK DIN RAYLARI (1–4) */}
-            <section className="sidebar-section">
-              <div className="section-title-row">
-                <span className="section-title" style={{ marginBottom: 0 }}>
-                  DIN Rayları ({rails.length}/4)
-                </span>
-                {rails.length < 4 && (
-                  <button type="button" className="btn-xs" onClick={handleAddRail}>
-                    + Ray Ekle
-                  </button>
-                )}
-              </div>
+                <div className="catalog-list">
+                  {filteredCatalog.map((tpl) => (
+                    <button
+                      key={tpl.key}
+                      type="button"
+                      className="catalog-btn"
+                      draggable
+                      onDragStart={(e) => {
+                        e.dataTransfer.setData('application/x-pano-catalog-key', tpl.key);
+                        e.dataTransfer.effectAllowed = 'copy';
+                      }}
+                      onClick={() => handleAddFromCatalog(tpl)}
+                      title="Tıklayınca aktif raya ekler • Sürükleyip istediğin raya bırakabilirsin"
+                    >
+                      <span className="swatch" style={{ backgroundColor: tpl.color }} />
+                      <span className="catalog-info">
+                        <strong>{tpl.name}</strong>
+                        <small>
+                          {tpl.widthMm}×{tpl.heightMm}×{tpl.depthMm} mm
+                          {tpl.powerLossW ? ` • ${tpl.powerLossW}W` : ''}
+                        </small>
+                      </span>
+                      <span className="plus">+</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
 
-              {rails.map((rail, idx) => (
-                <div key={rail.id} className="rail-config-card">
-                  <div className="rail-config-head">
-                    <strong>Ray {idx + 1}</strong>
-                    <span>
-                      Y={rail.centerYMm} • L={rail.usableWidthMm} mm
+            {leftTab === 'setup' && (
+              <>
+                {/* PANO GÖVDESİ SEÇİMİ & ÖZEL ÖLÇÜ */}
+                <section className="sidebar-section">
+                  <div className="section-title">Pano Gövdesi & Ölçü</div>
+                  <label className="field">
+                    <span>Hazır Kutu / Sac Pano</span>
+                    <select
+                      value={enclosure.id ?? ''}
+                      onChange={(e) => handleSelectEnclosure(e.target.value)}
+                    >
+                      {ENCLOSURE_LIBRARY.map((enc) => (
+                        <option key={enc.id} value={enc.id}>
+                          {enc.brand} {enc.model} ({enc.outerWidthMm}×{enc.outerHeightMm}×{enc.outerDepthMm})
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <div className="dims-grid" style={{ marginTop: 6 }}>
+                    <label className="field">
+                      <span>G (mm)</span>
+                      <input
+                        type="number"
+                        min={150}
+                        max={1600}
+                        value={enclosure.outerWidthMm}
+                        onChange={(e) => handleUpdateEnclosureDims({ outerWidthMm: Number(e.target.value) })}
+                      />
+                    </label>
+                    <label className="field">
+                      <span>Y (mm)</span>
+                      <input
+                        type="number"
+                        min={180}
+                        max={1600}
+                        value={enclosure.outerHeightMm}
+                        onChange={(e) => handleUpdateEnclosureDims({ outerHeightMm: Number(e.target.value) })}
+                      />
+                    </label>
+                    <label className="field">
+                      <span>D (mm)</span>
+                      <input
+                        type="number"
+                        min={100}
+                        max={500}
+                        value={enclosure.outerDepthMm}
+                        onChange={(e) => handleUpdateEnclosureDims({ outerDepthMm: Number(e.target.value) })}
+                      />
+                    </label>
+                  </div>
+                  <label className="field" style={{ marginTop: 6 }}>
+                    <span>Gövde Malzemesi (Isıl k)</span>
+                    <select
+                      value={enclosure.materialType ?? 'abs'}
+                      onChange={(e) =>
+                        handleUpdateEnclosureDims({
+                          materialType: e.target.value as 'abs' | 'steel' | 'stainless',
+                        })
+                      }
+                    >
+                      <option value="abs">ABS / Polikarbonat (k=3,5)</option>
+                      <option value="steel">Boyalı Sac Pano (k=5,5)</option>
+                      <option value="stainless">Paslanmaz Çelik (k=4,5)</option>
+                    </select>
+                  </label>
+                </section>
+
+                {/* DİNAMİK DIN RAYLARI (1–4) */}
+                <section className="sidebar-section">
+                  <div className="section-title-row">
+                    <span className="section-title" style={{ marginBottom: 0 }}>
+                      DIN Rayları ({rails.length}/4)
                     </span>
-                    {rails.length > 1 && (
-                      <button
-                        type="button"
-                        className="btn-xs-del"
-                        title="Bu rayı kaldır"
-                        onClick={() => handleRemoveRail(rail.id)}
-                      >
-                        ✕
+                    {rails.length < 4 && (
+                      <button type="button" className="btn-xs" onClick={handleAddRail}>
+                        + Ray Ekle
                       </button>
                     )}
                   </div>
-                  <input
-                    type="range"
-                    min={45}
-                    max={enclosure.outerHeightMm - 45}
-                    value={rail.centerYMm}
-                    onChange={(e) =>
-                      updateActiveProject(
-                        (p) => ({
-                          ...p,
-                          rails: p.rails.map((r) =>
-                            r.id === rail.id ? { ...r, centerYMm: Number(e.target.value) } : r
-                          ),
-                        }),
-                        false
-                      )
-                    }
-                  />
-                  <input
-                    type="range"
-                    min={120}
-                    max={Math.max(180, enclosure.innerWidthMm)}
-                    value={rail.usableWidthMm}
-                    onChange={(e) =>
-                      updateActiveProject(
-                        (p) => ({
-                          ...p,
-                          rails: p.rails.map((r) =>
-                            r.id === rail.id ? { ...r, usableWidthMm: Number(e.target.value) } : r
-                          ),
-                        }),
-                        false
-                      )
-                    }
-                  />
-                </div>
-              ))}
-            </section>
 
-            {/* HAZIR DEVRE MAKROLARI */}
-            <section className="sidebar-section">
-              <div className="section-title">Hazır Devre Makroları</div>
-              <div className="macro-list">
-                {CIRCUIT_MACROS.map((m) => (
-                  <button
-                    key={m.id}
-                    type="button"
-                    className="macro-btn"
-                    title={m.description}
-                    onClick={() => handleInsertMacro(m.id)}
-                  >
-                    <strong>⚡ {m.name}</strong>
-                  </button>
-                ))}
-              </div>
-            </section>
-
-            {/* GÖRÜNÜM SEÇENEKLERİ */}
-            <section className="sidebar-section">
-              <div className="section-title">Görünüm</div>
-              <label className="check-row">
-                <input type="checkbox" checked={showDimensions} onChange={(e) => setShowDimensions(e.target.checked)} />
-                <span>Ölçülendirme çizgileri (mm)</span>
-              </label>
-              {enclosure.hasWindow !== false && (
-                <label className="check-row">
-                  <input type="checkbox" checked={showWindowOverlay} onChange={(e) => setShowWindowOverlay(e.target.checked)} />
-                  <span>Şeffaf kapak penceresi</span>
-                </label>
-              )}
-              <label className="check-row">
-                <input type="checkbox" checked={showWireClearance} onChange={(e) => setShowWireClearance(e.target.checked)} />
-                <span>Kablo bükülme / giriş payları</span>
-              </label>
-            </section>
-
-            {/* ELEMAN KATALOĞU */}
-            <section className="sidebar-section">
-              <div className="section-title">Eleman Kataloğu</div>
-              <label className="field" style={{ marginBottom: 6 }}>
-                <span>Hedef Konum</span>
-                <select value={addTarget} onChange={(e) => setAddTarget(e.target.value as MountLocation)}>
-                  {rails.map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.name}
-                    </option>
+                  {rails.map((rail, idx) => (
+                    <div key={rail.id} className="rail-config-card">
+                      <div className="rail-config-head">
+                        <strong>Ray {idx + 1}</strong>
+                        <span>
+                          Y={rail.centerYMm} • L={rail.usableWidthMm} mm
+                        </span>
+                        {rails.length > 1 && (
+                          <button
+                            type="button"
+                            className="btn-xs-del"
+                            title="Bu rayı kaldır"
+                            onClick={() => handleRemoveRail(rail.id)}
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                      <input
+                        type="range"
+                        min={45}
+                        max={enclosure.outerHeightMm - 45}
+                        value={rail.centerYMm}
+                        onChange={(e) =>
+                          updateActiveProject(
+                            (p) => ({
+                              ...p,
+                              rails: p.rails.map((r) =>
+                                r.id === rail.id ? { ...r, centerYMm: Number(e.target.value) } : r
+                              ),
+                            }),
+                            false
+                          )
+                        }
+                      />
+                      <input
+                        type="range"
+                        min={120}
+                        max={Math.max(180, enclosure.innerWidthMm)}
+                        value={rail.usableWidthMm}
+                        onChange={(e) =>
+                          updateActiveProject(
+                            (p) => ({
+                              ...p,
+                              rails: p.rails.map((r) =>
+                                r.id === rail.id ? { ...r, usableWidthMm: Number(e.target.value) } : r
+                              ),
+                            }),
+                            false
+                          )
+                        }
+                      />
+                    </div>
                   ))}
-                  <option value="backplate">Pano İçi (Kablo Kanalı / Bara)</option>
-                  <option value="left-wall">Sol Yan Duvar</option>
-                  <option value="right-wall">Sağ Yan Duvar</option>
-                  <option value="bottom-wall">Alt Duvar (Rakor)</option>
-                  <option value="top-wall">Üst Duvar (Rakor)</option>
-                </select>
-              </label>
+                </section>
 
-              <input
-                type="text"
-                className="search-input"
-                style={{ width: '100%', marginBottom: 6 }}
-                placeholder="ABB, kontaktör, kanal, rakor..."
-                value={catalogSearch}
-                onChange={(e) => setCatalogSearch(e.target.value)}
-              />
+                {/* HAZIR DEVRE MAKROLARI */}
+                <section className="sidebar-section">
+                  <div className="section-title">Hazır Devre Makroları</div>
+                  <div className="macro-list">
+                    {CIRCUIT_MACROS.map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        className="macro-btn"
+                        title={m.description}
+                        onClick={() => handleInsertMacro(m.id)}
+                      >
+                        <strong>⚡ {m.name}</strong>
+                      </button>
+                    ))}
+                  </div>
+                </section>
 
-              <div className="cat-chips">
-                {[
-                  ['all', 'Tümü'],
-                  ['koruma', 'Koruma'],
-                  ['kumanda', 'Kumanda'],
-                  ['klemens', 'Klemens'],
-                  ['duvar', 'Duvar'],
-                  ['altyapi', 'Kanal/Bara'],
-                ].map(([k, lbl]) => (
-                  <button
-                    key={k}
-                    type="button"
-                    className={`cat-chip ${catalogGroup === k ? 'active' : ''}`}
-                    onClick={() => setCatalogGroup(k)}
-                  >
-                    {lbl}
-                  </button>
-                ))}
-              </div>
-
-              <div className="catalog-list">
-                {filteredCatalog.map((tpl) => (
-                  <button
-                    key={tpl.key}
-                    type="button"
-                    className="catalog-btn"
-                    onClick={() => handleAddFromCatalog(tpl)}
-                  >
-                    <span className="swatch" style={{ backgroundColor: tpl.color }} />
-                    <span className="catalog-info">
-                      <strong>{tpl.name}</strong>
-                      <small>
-                        {tpl.widthMm}×{tpl.heightMm}×{tpl.depthMm} mm
-                        {tpl.powerLossW ? ` • ${tpl.powerLossW}W` : ''}
-                      </small>
-                    </span>
-                    <span className="plus">+</span>
-                  </button>
-                ))}
-              </div>
-            </section>
+                {/* GÖRÜNÜM SEÇENEKLERİ */}
+                <section className="sidebar-section">
+                  <div className="section-title">Görünüm</div>
+                  <label className="check-row">
+                    <input type="checkbox" checked={showDimensions} onChange={(e) => setShowDimensions(e.target.checked)} />
+                    <span>Ölçülendirme çizgileri (mm)</span>
+                  </label>
+                  {enclosure.hasWindow !== false && (
+                    <label className="check-row">
+                      <input type="checkbox" checked={showWindowOverlay} onChange={(e) => setShowWindowOverlay(e.target.checked)} />
+                      <span>Şeffaf kapak penceresi</span>
+                    </label>
+                  )}
+                  <label className="check-row">
+                    <input type="checkbox" checked={showWireClearance} onChange={(e) => setShowWireClearance(e.target.checked)} />
+                    <span>Kablo bükülme / giriş payları</span>
+                  </label>
+                </section>
+              </>
+            )}
           </aside>
 
           {/* ORTA CAD ALANI */}
@@ -1027,6 +1194,7 @@ export default function App() {
               analysis={analysis}
               selectedId={selectedId}
               highlightedIds={highlightedIds}
+              activeMount={addTarget}
               viewMode={viewMode}
               showDimensions={showDimensions}
               showWindowOverlay={showWindowOverlay}
@@ -1035,10 +1203,13 @@ export default function App() {
                 setSelectedId(id);
                 setHighlightedIds(new Set());
               }}
+              onSelectMount={(m) => setAddTarget(m)}
               onUpdateSidePosY={handleUpdateSidePosY}
               onUpdateHorizPosX={handleUpdateHorizPosX}
               onUpdateBackplatePos={handleUpdateBackplatePos}
               onReorderRailItem={handleReorderRailItem}
+              onDropCatalogItem={handleDropCatalogItem}
+              onCompactRails={handleCompactRails}
             />
           </main>
 

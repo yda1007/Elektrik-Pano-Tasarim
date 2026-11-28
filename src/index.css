@@ -249,8 +249,72 @@ body {
 }
 
 .canvas-grid.mode-front {
-  grid-template-columns: minmax(360px, 760px);
-  justify-content: center;
+  grid-template-columns: 1fr;
+}
+
+.canvas-grid.cad-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  padding: 10px;
+  background: #0b1120;
+  grid-template-columns: 1fr !important;
+}
+
+.canvas-grid.cad-fullscreen .front-svg {
+  max-height: calc(100vh - 76px);
+  height: calc(100vh - 76px);
+}
+
+.cad-head-left,
+.cad-head-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cad-tip {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #7dd3fc;
+  opacity: 0.85;
+}
+
+.left-tab-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #131e33;
+  border-bottom: 1px solid #1e293b;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.left-tab-bar button {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #94a3b8;
+  padding: 9px 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.left-tab-bar button.active {
+  color: #38bdf8;
+  border-bottom-color: #38bdf8;
+  background: #0f172a;
+}
+
+.catalog-btn[draggable='true'] {
+  cursor: grab;
+}
+
+.catalog-btn[draggable='true']:active {
+  cursor: grabbing;
+  border-color: #10b981;
 }
 
 .canvas-grid.mode-sides {
@@ -304,7 +368,8 @@ body {
 }
 
 .front-svg {
-  max-height: 76vh;
+  max-height: calc(100vh - 136px);
+  min-height: 460px;
 }
 
 .side-svg {

@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import type { EnclosureSpec, LayoutAnalysis, PlacedItem, RailId, RailSpec } from '../types/panel';
+import { useEffect, useRef, useState } from 'react';
+import type { EnclosureSpec, LayoutAnalysis, MountLocation, PlacedItem, RailId, RailSpec } from '../types/panel';
 import { getWallOffsets, isRailMount } from '../utils/geometry';
 
 export type ViewMode = 'all' | 'front' | 'sides';
@@ -10,15 +10,29 @@ interface PanelCanvasProps {
   analysis: LayoutAnalysis;
   selectedId: string | null;
   highlightedIds?: Set<string>;
+  activeMount?: MountLocation;
   viewMode: ViewMode;
   showDimensions: boolean;
   showWindowOverlay: boolean;
   showWireClearance: boolean;
   onSelect: (id: string) => void;
+  onSelectMount?: (mount: MountLocation) => void;
   onUpdateSidePosY: (id: string, nextYMm: number) => void;
   onUpdateHorizPosX: (id: string, nextXMm: number) => void;
   onUpdateBackplatePos: (id: string, nextXMm: number, nextYMm: number) => void;
-  onReorderRailItem?: (itemId: string, targetRailId: RailId, targetIndex: number) => void;
+  onReorderRailItem?: (
+    itemId: string,
+    targetRailId: RailId,
+    targetIndex: number,
+    freeXMm?: number
+  ) => void;
+  onDropCatalogItem?: (
+    catalogKey: string,
+    mount: MountLocation,
+    posXMm?: number,
+    posYMm?: number
+  ) => void;
+  onCompactRails?: () => void;
 }
 
 function renderRailComponentGraphic(
@@ -273,22 +287,48 @@ export default function PanelCanvas({
   analysis,
   selectedId,
   highlightedIds,
+  activeMount,
   viewMode,
   showDimensions,
   showWindowOverlay,
   showWireClearance,
   onSelect,
+  onSelectMount,
   onUpdateSidePosY,
   onUpdateHorizPosX,
   onUpdateBackplatePos,
   onReorderRailItem,
+  onDropCatalogItem,
+  onCompactRails,
 }: PanelCanvasProps) {
   const frontSvgRef = useRef<SVGSVGElement | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [dropPreview, setDropPreview] = useState<{ railId: RailId; xMm: number } | null>(null);
   const [dragState, setDragState] = useState<
     | { kind: 'pos'; id: string; axis: 'y' | 'x' | 'xy' }
-    | { kind: 'rail'; id: string; sourceRailId: RailId; targetRailId: RailId; targetIndex: number; indicatorX: number; indicatorY1: number; indicatorY2: number }
+    | {
+        kind: 'rail';
+        id: string;
+        itemWidthMm: number;
+        sourceRailId: RailId;
+        targetRailId: RailId;
+        targetIndex: number;
+        freeXMm?: number;
+        indicatorX: number;
+        indicatorY1: number;
+        indicatorY2: number;
+      }
+    | { kind: 'pan'; startClientX: number; startClientY: number; startPanX: number; startPanY: number }
     | null
   >(null);
+
+  // Pano ölçüsü değişince zoom & pan'ı sıfırla
+  useEffect(() => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  }, [enclosure.outerWidthMm, enclosure.outerHeightMm]);
 
   const walls = getWallOffsets(enclosure);
   const primaryRail = rails[0];
@@ -308,71 +348,163 @@ export default function PanelCanvas({
   const rightSides = sidePlaced.filter((p) => p.item.mount === 'right-wall');
   const bottomGlands = horizWallPlaced.filter((p) => p.item.mount === 'bottom-wall');
 
-  const padX = Math.max(42, Math.round(enclosure.outerWidthMm * 0.14));
-  const padTop = 38;
-  const padBottom = 66;
-  const frontViewBox = `${-padX} ${-padTop} ${enclosure.outerWidthMm + padX * 2} ${enclosure.outerHeightMm + padTop + padBottom}`;
+  // Büyük panolarda okunaklılık ölçeği (420 mm altı = 1, 1200 mm = ~2.4)
+  const uiScale = Math.max(1, Math.min(2.6, enclosure.outerWidthMm / 440));
+  const padX = Math.max(46, Math.round(enclosure.outerWidthMm * 0.08));
+  const padTop = Math.round(38 * uiScale * 0.72);
+  const padBottom = Math.round(58 * uiScale * 0.72);
+  const baseVbX = -padX;
+  const baseVbY = -padTop;
+  const baseVbW = enclosure.outerWidthMm + padX * 2;
+  const baseVbH = enclosure.outerHeightMm + padTop + padBottom;
+
+  const vbW = baseVbW / zoom;
+  const vbH = baseVbH / zoom;
+  const vbX = baseVbX + (baseVbW - vbW) / 2 + pan.x;
+  const vbY = baseVbY + (baseVbH - vbH) / 2 + pan.y;
+
+  const frontViewBox = `${vbX.toFixed(1)} ${vbY.toFixed(1)} ${vbW.toFixed(1)} ${vbH.toFixed(1)}`;
   const sideViewBox = `${-30} ${-30} ${enclosure.outerDepthMm + 68} ${enclosure.outerHeightMm + 60}`;
   const bottomViewBox = `${-36} ${-26} ${enclosure.outerWidthMm + 72} ${enclosure.outerDepthMm + 58}`;
 
-  const toSvgCoords = (e: React.PointerEvent<SVGSVGElement>) => {
+  const toSvgCoordsFromClient = (clientX: number, clientY: number) => {
     const svg = frontSvgRef.current;
     if (!svg) return null;
     const pt = svg.createSVGPoint();
-    pt.x = e.clientX;
-    pt.y = e.clientY;
+    pt.x = clientX;
+    pt.y = clientY;
     const ctm = svg.getScreenCTM();
     if (!ctm) return null;
     return pt.matrixTransform(ctm.inverse());
   };
 
-  const handleFrontPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
-    if (!dragState) return;
-    const local = toSvgCoords(e);
-    if (!local) return;
+  const toSvgCoords = (e: React.PointerEvent<SVGSVGElement>) =>
+    toSvgCoordsFromClient(e.clientX, e.clientY);
 
-    if (dragState.kind === 'pos') {
-      if (dragState.axis === 'y') {
-        const clampedY = Math.round(Math.max(36, Math.min(enclosure.outerHeightMm - 36, local.y)));
-        onUpdateSidePosY(dragState.id, clampedY);
-      } else if (dragState.axis === 'x') {
-        const clampedX = Math.round(Math.max(32, Math.min(enclosure.outerWidthMm - 32, local.x)));
-        onUpdateHorizPosX(dragState.id, clampedX);
-      } else {
-        const clampedX = Math.round(Math.max(24, Math.min(enclosure.outerWidthMm - 24, local.x)));
-        const clampedY = Math.round(Math.max(18, Math.min(enclosure.outerHeightMm - 18, local.y)));
-        onUpdateBackplatePos(dragState.id, clampedX, clampedY);
-      }
-      return;
-    }
-
-    // Ray üzerinde sürükle-bırak sıralama (hatta raylar arası taşıma!)
+  const findClosestRail = (yMm: number) => {
     let closestRail = rails[0];
     let bestDist = Infinity;
     for (const r of rails) {
-      const d = Math.abs(local.y - r.centerYMm);
+      const d = Math.abs(yMm - r.centerYMm);
       if (d < bestDist) {
         bestDist = d;
         closestRail = r;
       }
     }
+    return { rail: closestRail, dist: bestDist };
+  };
+
+  const handleFrontWheel = (e: React.WheelEvent<SVGSVGElement>) => {
+    e.preventDefault();
+    const factor = e.deltaY < 0 ? 1.16 : 1 / 1.16;
+    const nextZoom = Math.max(0.7, Math.min(4.5, Number((zoom * factor).toFixed(3))));
+    if (nextZoom === zoom) return;
+
+    const pt = toSvgCoordsFromClient(e.clientX, e.clientY);
+    if (pt) {
+      const nextVbW = baseVbW / nextZoom;
+      const nextVbH = baseVbH / nextZoom;
+      const relX = (pt.x - vbX) / vbW;
+      const relY = (pt.y - vbY) / vbH;
+      const targetVbX = pt.x - relX * nextVbW;
+      const targetVbY = pt.y - relY * nextVbH;
+      const nextPanX = targetVbX - (baseVbX + (baseVbW - nextVbW) / 2);
+      const nextPanY = targetVbY - (baseVbY + (baseVbH - nextVbH) / 2);
+      setPan({ x: nextPanX, y: nextPanY });
+    }
+    setZoom(nextZoom);
+  };
+
+  const handleResetView = () => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  };
+
+  const handleFrontPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (!dragState) return;
+
+    if (dragState.kind === 'pan') {
+      const svg = frontSvgRef.current;
+      if (!svg) return;
+      const rect = svg.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+      const scaleX = vbW / rect.width;
+      const scaleY = vbH / rect.height;
+      setPan({
+        x: dragState.startPanX - (e.clientX - dragState.startClientX) * scaleX,
+        y: dragState.startPanY - (e.clientY - dragState.startClientY) * scaleY,
+      });
+      return;
+    }
+
+    const local = toSvgCoords(e);
+    if (!local) return;
+
+    if (dragState.kind === 'pos') {
+      const snap5 = (v: number) => Math.round(v / 5) * 5;
+      if (dragState.axis === 'y') {
+        const clampedY = snap5(Math.max(36, Math.min(enclosure.outerHeightMm - 36, local.y)));
+        onUpdateSidePosY(dragState.id, clampedY);
+      } else if (dragState.axis === 'x') {
+        const clampedX = snap5(Math.max(32, Math.min(enclosure.outerWidthMm - 32, local.x)));
+        onUpdateHorizPosX(dragState.id, clampedX);
+      } else {
+        const clampedX = snap5(Math.max(24, Math.min(enclosure.outerWidthMm - 24, local.x)));
+        const clampedY = snap5(Math.max(18, Math.min(enclosure.outerHeightMm - 18, local.y)));
+        onUpdateBackplatePos(dragState.id, clampedX, clampedY);
+      }
+      return;
+    }
+
+    // Ray üzerinde sürükle-bırak: hem sıralama hem serbest X konumlandırma!
+    const { rail: closestRail } = findClosestRail(local.y);
     if (!closestRail) return;
+
+    const railStartX = (enclosure.outerWidthMm - closestRail.usableWidthMm) / 2;
+    const railEndX = railStartX + closestRail.usableWidthMm;
 
     const siblings = railPlaced
       .filter((p) => p.item.mount === closestRail.id && p.item.id !== dragState.id)
       .sort((a, b) => a.item.order - b.item.order);
 
     let targetIndex = siblings.length;
-    let indicatorX = (enclosure.outerWidthMm - closestRail.usableWidthMm) / 2 + closestRail.usableWidthMm / 2;
-    if (siblings.length > 0) {
+    let indicatorX = railStartX;
+    let freeXMm: number | undefined;
+
+    if (siblings.length === 0) {
+      const desiredX = Math.round((local.x - dragState.itemWidthMm / 2) / 5) * 5;
+      const clampedX = Math.max(railStartX, Math.min(railEndX - dragState.itemWidthMm, desiredX));
+      if (clampedX - railStartX > 15) {
+        freeXMm = clampedX;
+        indicatorX = clampedX;
+      } else {
+        indicatorX = railStartX;
+      }
+    } else {
       indicatorX = siblings[siblings.length - 1].box.x2;
+      let insertedBetween = false;
       for (let i = 0; i < siblings.length; i++) {
         const midX = (siblings[i].box.x1 + siblings[i].box.x2) / 2;
         if (local.x < midX) {
           targetIndex = i;
           indicatorX = siblings[i].box.x1;
+          insertedBetween = true;
           break;
         }
+      }
+
+      // Boş bir alana bırakıldıysa (en yakın kardeşten >18 mm uzaksa) serbest X konumu uygula
+      const desiredX = Math.round((local.x - dragState.itemWidthMm / 2) / 5) * 5;
+      const clampedX = Math.max(railStartX, Math.min(railEndX - dragState.itemWidthMm, desiredX));
+      const leftNeighborEnd = targetIndex > 0 ? siblings[targetIndex - 1].box.x2 : railStartX;
+      const rightNeighborStart =
+        insertedBetween && targetIndex < siblings.length ? siblings[targetIndex].box.x1 : railEndX;
+      const fitsFreely =
+        clampedX >= leftNeighborEnd + 14 &&
+        clampedX + dragState.itemWidthMm <= rightNeighborStart - 4;
+      if (fitsFreely) {
+        freeXMm = clampedX;
+        indicatorX = clampedX;
       }
     }
 
@@ -380,17 +512,48 @@ export default function PanelCanvas({
       ...dragState,
       targetRailId: closestRail.id,
       targetIndex,
+      freeXMm,
       indicatorX,
-      indicatorY1: closestRail.centerYMm - 46,
-      indicatorY2: closestRail.centerYMm + 46,
+      indicatorY1: closestRail.centerYMm - 48,
+      indicatorY2: closestRail.centerYMm + 48,
     });
   };
 
   const handleFrontPointerUp = () => {
     if (dragState?.kind === 'rail' && onReorderRailItem) {
-      onReorderRailItem(dragState.id, dragState.targetRailId, dragState.targetIndex);
+      onReorderRailItem(
+        dragState.id,
+        dragState.targetRailId,
+        dragState.targetIndex,
+        dragState.freeXMm
+      );
     }
     setDragState(null);
+  };
+
+  const handleCanvasDragOver = (e: React.DragEvent<SVGSVGElement>) => {
+    if (!e.dataTransfer.types.includes('application/x-pano-catalog-key')) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+    const local = toSvgCoordsFromClient(e.clientX, e.clientY);
+    if (!local) return;
+    const { rail } = findClosestRail(local.y);
+    if (rail) {
+      setDropPreview({ railId: rail.id, xMm: Math.round(local.x / 5) * 5 });
+    }
+  };
+
+  const handleCanvasDrop = (e: React.DragEvent<SVGSVGElement>) => {
+    const key = e.dataTransfer.getData('application/x-pano-catalog-key');
+    setDropPreview(null);
+    if (!key || !onDropCatalogItem) return;
+    e.preventDefault();
+    const local = toSvgCoordsFromClient(e.clientX, e.clientY);
+    if (!local) return;
+    const { rail } = findClosestRail(local.y);
+    const snapX = Math.round(local.x / 5) * 5;
+    const snapY = Math.round(local.y / 5) * 5;
+    onDropCatalogItem(key, rail ? rail.id : 'top-rail', snapX, snapY);
   };
 
   const renderSideElevation = (side: 'left-wall' | 'right-wall', title: string) => {
@@ -495,24 +658,90 @@ export default function PanelCanvas({
   };
 
   return (
-    <div className={`canvas-grid mode-${viewMode}`}>
+    <div className={`canvas-grid mode-${viewMode} ${isFullscreen ? 'cad-fullscreen' : ''}`}>
       {/* ÖN / İÇ YERLEŞİM GÖRÜNÜŞÜ */}
       {(viewMode === 'all' || viewMode === 'front') && (
         <div className="cad-card front-card">
           <div className="cad-card-header">
-            <span>Ön İç Yerleşim — {enclosure.brand} {enclosure.model}</span>
-            <span className="cad-meta">
-              {enclosure.outerWidthMm} × {enclosure.outerHeightMm} × {enclosure.outerDepthMm} mm • Ray elemanlarını sürükleyip sıralayabilirsiniz
-            </span>
+            <div className="cad-head-left">
+              <span>Ön İç Yerleşim — {enclosure.brand} {enclosure.model}</span>
+              <span className="cad-meta">
+                {enclosure.outerWidthMm} × {enclosure.outerHeightMm} × {enclosure.outerDepthMm} mm
+              </span>
+            </div>
+            <div className="cad-head-tools">
+              <span className="cad-tip">Tekerlek: Zoom • Boş alan sürükle: Kaydır • Raya tıkla: Hedef seç</span>
+              {onCompactRails && (
+                <button
+                  type="button"
+                  className="btn-xs"
+                  onClick={onCompactRails}
+                  title="Raylardaki serbest boşlukları kaldırıp tüm elemanları temizce yan yana hizala"
+                >
+                  ⇇ Sıkılaştır
+                </button>
+              )}
+              <div className="segmented">
+                <button
+                  type="button"
+                  title="Küçült"
+                  onClick={() => setZoom((z) => Math.max(0.7, Number((z / 1.2).toFixed(2))))}
+                >
+                  −
+                </button>
+                <button
+                  type="button"
+                  className={zoom === 1 && pan.x === 0 && pan.y === 0 ? 'active' : ''}
+                  title="Ekrana Sığdır"
+                  onClick={handleResetView}
+                >
+                  {zoom === 1 ? 'Sığdır' : `${Math.round(zoom * 100)}%`}
+                </button>
+                <button
+                  type="button"
+                  title="Büyüt"
+                  onClick={() => setZoom((z) => Math.min(4.5, Number((z * 1.2).toFixed(2))))}
+                >
+                  +
+                </button>
+              </div>
+              <button
+                type="button"
+                className={isFullscreen ? 'btn-xs btn-active-sm' : 'btn-xs'}
+                onClick={() => setIsFullscreen((v) => !v)}
+                title="Tam ekran çizim alanı"
+              >
+                {isFullscreen ? '✕ Küçült' : '⛶ Tam Ekran'}
+              </button>
+            </div>
           </div>
 
           <svg
             ref={frontSvgRef}
             viewBox={frontViewBox}
             className="cad-svg front-svg"
+            style={{
+              cursor: dragState?.kind === 'pan' ? 'grabbing' : dragState ? 'grabbing' : 'grab',
+            }}
+            onWheel={handleFrontWheel}
+            onPointerDown={(e) => {
+              // Boş alandan sol veya orta tuşla kaydırma (Pan)
+              if (e.button === 0 || e.button === 1) {
+                setDragState({
+                  kind: 'pan',
+                  startClientX: e.clientX,
+                  startClientY: e.clientY,
+                  startPanX: pan.x,
+                  startPanY: pan.y,
+                });
+              }
+            }}
             onPointerMove={handleFrontPointerMove}
             onPointerUp={handleFrontPointerUp}
             onPointerLeave={handleFrontPointerUp}
+            onDragOver={handleCanvasDragOver}
+            onDragLeave={() => setDropPreview(null)}
+            onDrop={handleCanvasDrop}
           >
             <defs>
               <pattern id="grid-10mm" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -618,7 +847,7 @@ export default function PanelCanvas({
                       y={cy}
                       textAnchor="middle"
                       dominantBaseline="central"
-                      fontSize={5.5}
+                      fontSize={Math.min(h * 0.48, 5.5 * uiScale)}
                       fill="#e2e8f0"
                       fontWeight={600}
                       transform={isHoriz ? undefined : `rotate(-90 ${cx} ${cy})`}
@@ -667,16 +896,40 @@ export default function PanelCanvas({
               );
             })}
 
-            {/* Dinamik 1–4 adet 35 mm DIN Rayları */}
-            {rails.map((rail) => {
+            {/* Dinamik 1–4 adet 35 mm DIN Rayları (Tıklayınca Aktif Hedef Ray Seçilir) */}
+            {rails.map((rail, railIdx) => {
               const railY = rail.centerYMm - rail.railHeightMm / 2;
               const rx = (enclosure.outerWidthMm - rail.usableWidthMm) / 2;
               const metrics = analysis.rails.find((m) => m.railId === rail.id);
               const isOverflow = metrics?.overflow ?? false;
+              const isActiveTarget = activeMount === rail.id;
+              const isDropTarget = dropPreview?.railId === rail.id;
               const slotCount = Math.max(4, Math.floor(rail.usableWidthMm / 25));
 
               return (
-                <g key={rail.id}>
+                <g
+                  key={rail.id}
+                  onPointerDown={(e) => {
+                    if (e.button === 0 && onSelectMount) {
+                      e.stopPropagation();
+                      onSelectMount(rail.id);
+                    }
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {(isActiveTarget || isDropTarget) && (
+                    <rect
+                      x={rx - 4}
+                      y={railY - 4}
+                      width={rail.usableWidthMm + 8}
+                      height={rail.railHeightMm + 8}
+                      rx={4}
+                      fill={isDropTarget ? 'rgba(16, 185, 129, 0.14)' : 'rgba(56, 189, 248, 0.08)'}
+                      stroke={isDropTarget ? '#10b981' : '#38bdf8'}
+                      strokeWidth={1.6}
+                      strokeDasharray={isDropTarget ? '6 3' : '4 3'}
+                    />
+                  )}
                   <rect
                     x={rx}
                     y={railY}
@@ -684,18 +937,59 @@ export default function PanelCanvas({
                     height={rail.railHeightMm}
                     rx={1.5}
                     fill="#1e293b"
-                    stroke={isOverflow ? '#ef4444' : '#64748b'}
-                    strokeWidth={1}
+                    stroke={isOverflow ? '#ef4444' : isDropTarget ? '#10b981' : isActiveTarget ? '#38bdf8' : '#64748b'}
+                    strokeWidth={isActiveTarget || isDropTarget ? 1.5 : 1}
                   />
                   <rect x={rx + 2} y={rail.centerYMm - 10} width={rail.usableWidthMm - 4} height={20} fill="#0f172a" stroke="#334155" strokeWidth={0.5} />
                   {Array.from({ length: slotCount }).map((_, slot) => (
                     <rect key={slot} x={rx + 12 + slot * 24} y={rail.centerYMm - 2.2} width={10} height={4.4} rx={2} fill="#1e293b" />
                   ))}
+                  {/* Ray başlangıç etiketi */}
+                  <text
+                    x={rx + 6}
+                    y={railY - 4}
+                    fontSize={5.5 * uiScale}
+                    fontWeight={700}
+                    fill={isDropTarget ? '#34d399' : isActiveTarget ? '#38bdf8' : '#64748b'}
+                    pointerEvents="none"
+                  >
+                    {isActiveTarget ? `★ Ray ${railIdx + 1} (Aktif Hedef)` : `Ray ${railIdx + 1}`}
+                  </text>
                 </g>
               );
             })}
 
-            {/* DIN Ray Elemanları (Sürükle-Bırak Sıralamalı) */}
+            {/* Katalogdan sürükle-bırak önizleme çizgisi */}
+            {dropPreview &&
+              (() => {
+                const targetRail = rails.find((r) => r.id === dropPreview.railId);
+                if (!targetRail) return null;
+                return (
+                  <g pointerEvents="none">
+                    <line
+                      x1={dropPreview.xMm}
+                      y1={targetRail.centerYMm - 52}
+                      x2={dropPreview.xMm}
+                      y2={targetRail.centerYMm + 52}
+                      stroke="#10b981"
+                      strokeWidth={2.4 * uiScale * 0.7}
+                      strokeDasharray="5 3"
+                    />
+                    <text
+                      x={dropPreview.xMm}
+                      y={targetRail.centerYMm - 56}
+                      textAnchor="middle"
+                      fontSize={6 * uiScale}
+                      fontWeight={700}
+                      fill="#34d399"
+                    >
+                      + Buraya Bırak (X={dropPreview.xMm} mm)
+                    </text>
+                  </g>
+                );
+              })()}
+
+            {/* DIN Ray Elemanları (Sürükle-Bırak Sıralamalı & Serbest X) */}
             {railPlaced.map((p) =>
               renderRailComponentGraphic(
                 p,
@@ -710,6 +1004,7 @@ export default function PanelCanvas({
                     setDragState({
                       kind: 'rail',
                       id: p.item.id,
+                      itemWidthMm: p.item.widthMm,
                       sourceRailId: p.item.mount,
                       targetRailId: p.item.mount,
                       targetIndex: p.item.order,
@@ -722,20 +1017,48 @@ export default function PanelCanvas({
               )
             )}
 
-            {/* Sürükle-bırak hedef çizgisi */}
+            {/* Sürükle-bırak hedef çizgisi veya serbest konum kutusu */}
             {dragState?.kind === 'rail' && (
               <g pointerEvents="none">
-                <line
-                  x1={dragState.indicatorX}
-                  y1={dragState.indicatorY1}
-                  x2={dragState.indicatorX}
-                  y2={dragState.indicatorY2}
-                  stroke="#38bdf8"
-                  strokeWidth={2.4}
-                  strokeDasharray="4 2"
-                />
-                <circle cx={dragState.indicatorX} cy={dragState.indicatorY1} r={3} fill="#38bdf8" />
-                <circle cx={dragState.indicatorX} cy={dragState.indicatorY2} r={3} fill="#38bdf8" />
+                {dragState.freeXMm !== undefined ? (
+                  <>
+                    <rect
+                      x={dragState.freeXMm}
+                      y={dragState.indicatorY1 + 6}
+                      width={dragState.itemWidthMm}
+                      height={dragState.indicatorY2 - dragState.indicatorY1 - 12}
+                      rx={3}
+                      fill="rgba(16, 185, 129, 0.16)"
+                      stroke="#10b981"
+                      strokeWidth={2}
+                      strokeDasharray="5 3"
+                    />
+                    <text
+                      x={dragState.freeXMm + dragState.itemWidthMm / 2}
+                      y={dragState.indicatorY1}
+                      textAnchor="middle"
+                      fontSize={5.8 * uiScale}
+                      fontWeight={700}
+                      fill="#34d399"
+                    >
+                      Serbest X={dragState.freeXMm} mm
+                    </text>
+                  </>
+                ) : (
+                  <>
+                    <line
+                      x1={dragState.indicatorX}
+                      y1={dragState.indicatorY1}
+                      x2={dragState.indicatorX}
+                      y2={dragState.indicatorY2}
+                      stroke="#38bdf8"
+                      strokeWidth={2.4 * uiScale * 0.7}
+                      strokeDasharray="4 2"
+                    />
+                    <circle cx={dragState.indicatorX} cy={dragState.indicatorY1} r={3 * uiScale * 0.7} fill="#38bdf8" />
+                    <circle cx={dragState.indicatorX} cy={dragState.indicatorY2} r={3 * uiScale * 0.7} fill="#38bdf8" />
+                  </>
+                )}
               </g>
             )}
 
@@ -898,24 +1221,24 @@ export default function PanelCanvas({
             {/* Ölçülendirme Çizgileri */}
             {showDimensions && (
               <g pointerEvents="none">
-                <line x1={0} y1={-16} x2={enclosure.outerWidthMm} y2={-16} stroke="#94a3b8" strokeWidth={0.8} />
-                <line x1={0} y1={-21} x2={0} y2={-4} stroke="#64748b" strokeWidth={0.6} />
-                <line x1={enclosure.outerWidthMm} y1={-21} x2={enclosure.outerWidthMm} y2={-4} stroke="#64748b" strokeWidth={0.6} />
-                <text x={enclosure.outerWidthMm / 2} y={-20} textAnchor="middle" fontSize={8} fill="#e2e8f0" fontWeight={600}>
+                <line x1={0} y1={-16 * uiScale * 0.7} x2={enclosure.outerWidthMm} y2={-16 * uiScale * 0.7} stroke="#94a3b8" strokeWidth={0.8 * uiScale} />
+                <line x1={0} y1={-22 * uiScale * 0.7} x2={0} y2={-4} stroke="#64748b" strokeWidth={0.6 * uiScale} />
+                <line x1={enclosure.outerWidthMm} y1={-22 * uiScale * 0.7} x2={enclosure.outerWidthMm} y2={-4} stroke="#64748b" strokeWidth={0.6 * uiScale} />
+                <text x={enclosure.outerWidthMm / 2} y={-20 * uiScale * 0.7} textAnchor="middle" fontSize={8 * uiScale} fill="#e2e8f0" fontWeight={600}>
                   {enclosure.outerWidthMm} mm (İç: {enclosure.innerWidthMm} mm)
                 </text>
 
-                <line x1={-28} y1={0} x2={-28} y2={enclosure.outerHeightMm} stroke="#94a3b8" strokeWidth={0.8} />
-                <line x1={-33} y1={0} x2={-4} y2={0} stroke="#64748b" strokeWidth={0.6} />
-                <line x1={-33} y1={enclosure.outerHeightMm} x2={-4} y2={enclosure.outerHeightMm} stroke="#64748b" strokeWidth={0.6} />
+                <line x1={-26 * uiScale * 0.7} y1={0} x2={-26 * uiScale * 0.7} y2={enclosure.outerHeightMm} stroke="#94a3b8" strokeWidth={0.8 * uiScale} />
+                <line x1={-32 * uiScale * 0.7} y1={0} x2={-4} y2={0} stroke="#64748b" strokeWidth={0.6 * uiScale} />
+                <line x1={-32 * uiScale * 0.7} y1={enclosure.outerHeightMm} x2={-4} y2={enclosure.outerHeightMm} stroke="#64748b" strokeWidth={0.6 * uiScale} />
                 <text
-                  x={-32}
+                  x={-30 * uiScale * 0.7}
                   y={enclosure.outerHeightMm / 2}
                   textAnchor="middle"
-                  fontSize={8}
+                  fontSize={8 * uiScale}
                   fill="#e2e8f0"
                   fontWeight={600}
-                  transform={`rotate(-90 ${-32} ${enclosure.outerHeightMm / 2})`}
+                  transform={`rotate(-90 ${-30 * uiScale * 0.7} ${enclosure.outerHeightMm / 2})`}
                 >
                   {enclosure.outerHeightMm} mm (İç: {enclosure.innerHeightMm} mm)
                 </text>
@@ -923,14 +1246,14 @@ export default function PanelCanvas({
                 {rails.map((rail, idx) => {
                   const m = analysis.rails.find((rm) => rm.railId === rail.id);
                   if (!m) return null;
-                  const labelY = rail.centerYMm + Math.max(24, m.maxHeightMm / 2 + 8);
+                  const labelY = rail.centerYMm + Math.max(24, m.maxHeightMm / 2 + 8 * uiScale * 0.7);
                   return (
                     <text
                       key={rail.id}
                       x={enclosure.outerWidthMm / 2}
                       y={labelY}
                       textAnchor="middle"
-                      fontSize={5.2}
+                      fontSize={5.5 * uiScale}
                       fill={m.overflow ? '#f87171' : m.remainingMm < 8 ? '#fbbf24' : '#94a3b8'}
                     >
                       Ray {idx + 1}: {m.usedWidthMm} / {m.usableWidthMm} mm (Kalan: {m.remainingMm} mm)

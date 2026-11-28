@@ -58,10 +58,14 @@ function layoutRail(
   const sorted = [...items].sort((a, b) => a.order - b.order);
   const usedWidthMm = sorted.reduce((sum, item) => sum + item.widthMm, 0);
   const railStartX = (enclosure.outerWidthMm - rail.usableWidthMm) / 2;
+  const railEndX = railStartX + rail.usableWidthMm;
   const backWallZ = getWallOffsets(enclosure).backWallZ;
 
+  const hasCustomX = sorted.some((it) => it.railXMm !== undefined);
+  const effectiveAlign = rail.align ?? (enclosure.outerWidthMm >= 500 || hasCustomX ? 'left' : 'center');
+
   let cursorX =
-    usedWidthMm <= rail.usableWidthMm
+    effectiveAlign === 'center' && usedWidthMm <= rail.usableWidthMm
       ? railStartX + (rail.usableWidthMm - usedWidthMm) / 2
       : railStartX;
 
@@ -69,8 +73,12 @@ function layoutRail(
   let maxDepthMm = 0;
 
   const placed: PlacedItem[] = sorted.map((item) => {
-    const x1 = cursorX;
-    const x2 = cursorX + item.widthMm;
+    let x1 = cursorX;
+    if (item.railXMm !== undefined) {
+      const clampedStart = Math.max(railStartX, Math.min(railEndX - item.widthMm, item.railXMm));
+      x1 = Math.max(cursorX, clampedStart);
+    }
+    const x2 = x1 + item.widthMm;
     const y1 = rail.centerYMm - item.heightMm / 2;
     const y2 = rail.centerYMm + item.heightMm / 2;
     const z1 = backWallZ + rail.standoffZMm;

@@ -29,6 +29,8 @@ export interface RailSpec {
   centerYMm: number;
   railHeightMm: number;
   standoffZMm: number;
+  /** Ray hizalama yönü — büyük panolarda varsayılan 'left', küçüklerde 'center' */
+  align?: 'left' | 'center';
 }
 
 export type EnclosureMaterialType = 'abs' | 'steel' | 'stainless';
@@ -85,6 +87,8 @@ export interface PanelItem {
   unitPriceTry?: number;
   /** Ray üzerindeki sıralama indeksi */
   order: number;
+  /** Ray üzerinde serbest X başlangıç konumu (mm, pano sol dış kenarından). Tanımsızsa otomatik yan yana dizilir */
+  railXMm?: number;
   /** Alt/üst duvar ve taban elemanları için sol dış kenardan merkez X mesafesi (mm) */
   posXMm?: number;
   /** Yan duvar ve taban elemanları için dış üst kenardan merkez Y mesafesi (mm) */

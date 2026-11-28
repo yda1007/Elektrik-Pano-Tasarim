@@ -1,0 +1,1380 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2280" height="2360" viewBox="0 0 2280 2360">
+  <defs>
+    <style>
+      text { font-family: 'Liberation Sans', 'DejaVu Sans', Arial, sans-serif; }
+    </style>
+    <filter id="cardShadow" x="-8%" y="-8%" width="118%" height="118%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.13"/>
+    </filter>
+    <linearGradient id="dinRail" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="22%" stop-color="#f8fafc"/>
+      <stop offset="50%" stop-color="#94a3b8"/>
+      <stop offset="82%" stop-color="#e2e8f0"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="2280" height="2360" fill="#ffffff"/>
+
+
+  <g>
+    <rect x="56" y="30" width="10" height="58" rx="4" fill="#1F9D6B"/>
+    <text x="82" y="58" font-size="28" font-weight="800" fill="#0B2540"><tspan fill="#1F9D6B">O2Sera</tspan> — SERA İÇİ BÖLGE PANOSU BAĞLANTI DİYAGRAMI</text>
+    <text x="82" y="84" font-size="15" font-weight="500" fill="#475569">3~ 400V / 230V AC • Giriş: 3×50 mm² + 35 mm² N + 50 mm² PE • 80A Isıtma • 63A Hav.(36)+Perde(2) • 63A Fan(2×18) • 63A 4P 30mA Komb. Priz</text>
+    <rect x="1950" y="34" width="274" height="52" rx="8" fill="#0B2540" stroke="#1F9D6B" stroke-width="2"/>
+    <text x="2087" y="56" text-anchor="middle" font-size="14" font-weight="800" fill="#ffffff"><tspan fill="#34D399">O2Sera</tspan> • BÖLGE PANOSU</text>
+    <text x="2087" y="75" text-anchor="middle" font-size="11.5" font-weight="600" fill="#cbd5e1">www.o2sera.com • 160A ABB Şalt</text>
+    <line x1="56" y1="104" x2="2224" y2="104" stroke="#e2e8f0" stroke-width="2"/>
+  </g>
+
+<g id="top-summary">
+<text x="66" y="134" font-size="13.5" font-weight="800" fill="#0B2540">1) ANA GÜÇ GİRİŞ KLEMENSİ (X0 • 160A SINIFI)</text>
+<text x="102.0" y="153" text-anchor="middle" font-size="11" font-weight="800" fill="#8B4513">50 mm²</text>
+<rect x="66" y="160" width="72" height="42" fill="#ffffff" stroke="#334155" stroke-width="1.6"/>
+<text x="102.0" y="187" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">L1</text>
+<line x1="102.0" y1="240" x2="102.0" y2="206" stroke="#8B4513" stroke-width="3.6"/>
+<polygon points="102.0,205 96.0,217 108.0,217" fill="#8B4513"/>
+<text x="102.0" y="258" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">Faz 1</text>
+<text x="174.0" y="153" text-anchor="middle" font-size="11" font-weight="800" fill="#1E293B">50 mm²</text>
+<rect x="138" y="160" width="72" height="42" fill="#ffffff" stroke="#334155" stroke-width="1.6"/>
+<text x="174.0" y="187" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">L2</text>
+<line x1="174.0" y1="240" x2="174.0" y2="206" stroke="#1E293B" stroke-width="3.6"/>
+<polygon points="174.0,205 168.0,217 180.0,217" fill="#1E293B"/>
+<text x="174.0" y="258" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">Faz 2</text>
+<text x="246.0" y="153" text-anchor="middle" font-size="11" font-weight="800" fill="#64748B">50 mm²</text>
+<rect x="210" y="160" width="72" height="42" fill="#ffffff" stroke="#334155" stroke-width="1.6"/>
+<text x="246.0" y="187" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">L3</text>
+<line x1="246.0" y1="240" x2="246.0" y2="206" stroke="#64748B" stroke-width="3.6"/>
+<polygon points="246.0,205 240.0,217 252.0,217" fill="#64748B"/>
+<text x="246.0" y="258" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">Faz 3</text>
+<text x="318.0" y="153" text-anchor="middle" font-size="11" font-weight="800" fill="#1D4ED8">35 mm²</text>
+<rect x="282" y="160" width="72" height="42" fill="#ffffff" stroke="#334155" stroke-width="1.6"/>
+<text x="318.0" y="187" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">N</text>
+<line x1="318.0" y1="240" x2="318.0" y2="206" stroke="#1D4ED8" stroke-width="3.6"/>
+<polygon points="318.0,205 312.0,217 324.0,217" fill="#1D4ED8"/>
+<text x="318.0" y="258" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">Nötr</text>
+<text x="390.0" y="153" text-anchor="middle" font-size="11" font-weight="800" fill="#16A34A">50 mm²</text>
+<rect x="354" y="160" width="72" height="42" fill="#ffffff" stroke="#334155" stroke-width="1.6"/>
+<text x="390.0" y="187" text-anchor="middle" font-size="16" font-weight="800" fill="#0f172a">PE</text>
+<line x1="390.0" y1="240" x2="390.0" y2="206" stroke="#16A34A" stroke-width="3.6"/>
+<polygon points="390.0,205 384.0,217 396.0,217" fill="#16A34A"/>
+<text x="390.0" y="258" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">Toprak</text>
+<text x="246" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#0B2540">X0 → Q0 (160A Şalter) → DB1 (4×160A Bara)</text>
+
+    <text x="480" y="134" font-size="13.5" font-weight="800" fill="#0B2540">2) GÜÇ KORUMA &amp; ÇIKIŞ HATLARI</text>
+    <rect x="480" y="148" width="900" height="142" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="496" y="174" font-size="12.5" font-weight="800" fill="#B91C1C">• Q1 — ISITMA (80A 3P):</text>
+    <text x="732" y="174" font-size="12.3" fill="#334155">ABB S803S-C80 • Doğrudan ısıtma ana besleme çıkışı (3~ 400V + N + PE)</text>
+    <text x="496" y="200" font-size="12.5" font-weight="800" fill="#0369a1">• Q2 — HAV. + PERDE ORTAK (63A 3P):</text>
+    <text x="732" y="200" font-size="12.3" fill="#334155">ABB S203-C63 • 36 Havalandırma (18× İkili Pano) + 2 Perde Motoru ortak gücü</text>
+    <text x="496" y="226" font-size="12.5" font-weight="800" fill="#EA580C">• Q3 — FANLAR (63A 3P → 2×40A KM):</text>
+    <text x="732" y="226" font-size="12.3" fill="#334155">36 Fan 2 gruba bölünür: KM-F1 (18 Fan) + KT1 (3 sn) → KM-F2 (18 Fan)</text>
+    <text x="496" y="252" font-size="12.5" font-weight="800" fill="#1d4ed8">• QF1 — KOMB. PRİZ (63A 4P 30mA):</text>
+    <text x="732" y="252" font-size="12.3" fill="#334155">3P+N Kaçak Akım → Q4 (32A 3P CEE Priz) + Q5 (16A 1P 2× Schuko Priz)</text>
+    <text x="496" y="278" font-size="12" font-weight="700" fill="#475569">• F1 (10A 1P) + FK1 (Faz Koruma Rölesi): Faz kaybı / gerilim hatasında tüm kumanda kesilir.</text>
+    
+
+    <text x="1412" y="134" font-size="13.5" font-weight="800" fill="#0B2540">3) SEKTÖR KUMANDA &amp; O2SERA SAHA UYUMU</text>
+    <rect x="1412" y="148" width="810" height="142" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="1428" y="174" font-size="12.5" font-weight="800" fill="#4338CA">• Havalandırma (5×1 mm² D1–D5):</text>
+    <text x="1658" y="174" font-size="12.2" fill="#334155">D1:M1↓ | D2:M1↑ | D3:M2↓ | D4:M2↑ | D5:Yerel İzin (230V)</text>
+    <text x="1428" y="200" font-size="12.5" font-weight="800" fill="#059669">• Perde Kumanda (P1–P3):</text>
+    <text x="1658" y="200" font-size="12.2" fill="#334155">P1:Perde Topla (▼) | P2:Perde Ser (▲) | P3:Yerel İzin</text>
+    <text x="1428" y="226" font-size="12.5" font-weight="800" fill="#EA580C">• Fan Kontrol (S-FAN / Oto):</text>
+    <text x="1658" y="226" font-size="12.2" fill="#334155">OTO–0–AÇ → KM-F1 anında (18 Fan), KT1 3 sn → KM-F2 (18 Fan)</text>
+    <text x="1428" y="252" font-size="12.5" font-weight="800" fill="#1F9D6B">• Çift Yönlü Çalışma Mantığı:</text>
+    <text x="1658" y="252" font-size="12.2" fill="#334155">S-MOD=OTO: Merkez Otomasyon | S-MOD=EL: Bölge Şalterleri</text>
+    <text x="1428" y="278" font-size="11.8" font-weight="700" fill="#64748b">* D1–D5 çıkışı, O2Sera İkili Redüktör Motor Panolarının X6–X10 girişine paralel bağlanır.</text>
+    
+</g>
+<line x1="56" y1="312" x2="2224" y2="312" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+  <g>
+    <rect x="460.0" y="559.0" width="1360.0" height="52" rx="3" fill="url(#dinRail)" stroke="#475569" stroke-width="1.4"/>
+    <rect x="484.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="568.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="652.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="736.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="820.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="904.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="988.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1072.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1156.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1240.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1324.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1408.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1492.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1576.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1660.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1744.0" y="580.0" width="40" height="10" rx="5" fill="#64748b"/>
+  </g>
+
+  <g>
+    <rect x="460.0" y="1019.0" width="1360.0" height="52" rx="3" fill="url(#dinRail)" stroke="#475569" stroke-width="1.4"/>
+    <rect x="484.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="568.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="652.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="736.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="820.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="904.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="988.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1072.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1156.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1240.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1324.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1408.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1492.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1576.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1660.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/><rect x="1744.0" y="1040.0" width="40" height="10" rx="5" fill="#64748b"/>
+  </g>
+<g id="rail-components" filter="url(#softShadow)">
+
+        <g>
+          <rect x="486.0" y="490.0" width="44.0" height="190.0" rx="4" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+          <rect x="490.0" y="495.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <rect x="490.0" y="643.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <circle cx="508.0" cy="509.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="504.0,509.0 506.0,505.5 510.0,505.5 512.0,509.0 510.0,512.5 506.0,512.5" fill="#cbd5e1"/>
+          <circle cx="508.0" cy="661.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="504.0,661.0 506.0,657.5 510.0,657.5 512.0,661.0 510.0,664.5 506.0,664.5" fill="#cbd5e1"/>
+          <rect x="490.0" y="548.0" width="36.0" height="74" rx="3" fill="#ffffff" stroke="#8B4513" stroke-width="1.8"/>
+          <text x="508.0" y="578.0" text-anchor="middle" font-size="12.5" font-weight="900" fill="#0f172a">L1</text>
+          <text x="508.0" y="596.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#8B4513">50</text>
+          <text x="508.0" y="612.0" text-anchor="middle" font-size="8" font-weight="700" fill="#64748b">mm²</text>
+        </g>
+
+        <g>
+          <rect x="530.0" y="490.0" width="44.0" height="190.0" rx="4" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+          <rect x="534.0" y="495.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <rect x="534.0" y="643.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <circle cx="552.0" cy="509.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="548.0,509.0 550.0,505.5 554.0,505.5 556.0,509.0 554.0,512.5 550.0,512.5" fill="#cbd5e1"/>
+          <circle cx="552.0" cy="661.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="548.0,661.0 550.0,657.5 554.0,657.5 556.0,661.0 554.0,664.5 550.0,664.5" fill="#cbd5e1"/>
+          <rect x="534.0" y="548.0" width="36.0" height="74" rx="3" fill="#ffffff" stroke="#1E293B" stroke-width="1.8"/>
+          <text x="552.0" y="578.0" text-anchor="middle" font-size="12.5" font-weight="900" fill="#0f172a">L2</text>
+          <text x="552.0" y="596.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1E293B">50</text>
+          <text x="552.0" y="612.0" text-anchor="middle" font-size="8" font-weight="700" fill="#64748b">mm²</text>
+        </g>
+
+        <g>
+          <rect x="574.0" y="490.0" width="44.0" height="190.0" rx="4" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+          <rect x="578.0" y="495.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <rect x="578.0" y="643.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <circle cx="596.0" cy="509.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="592.0,509.0 594.0,505.5 598.0,505.5 600.0,509.0 598.0,512.5 594.0,512.5" fill="#cbd5e1"/>
+          <circle cx="596.0" cy="661.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="592.0,661.0 594.0,657.5 598.0,657.5 600.0,661.0 598.0,664.5 594.0,664.5" fill="#cbd5e1"/>
+          <rect x="578.0" y="548.0" width="36.0" height="74" rx="3" fill="#ffffff" stroke="#64748B" stroke-width="1.8"/>
+          <text x="596.0" y="578.0" text-anchor="middle" font-size="12.5" font-weight="900" fill="#0f172a">L3</text>
+          <text x="596.0" y="596.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#64748B">50</text>
+          <text x="596.0" y="612.0" text-anchor="middle" font-size="8" font-weight="700" fill="#64748b">mm²</text>
+        </g>
+
+        <g>
+          <rect x="618.0" y="490.0" width="44.0" height="190.0" rx="4" fill="#dbeafe" stroke="#334155" stroke-width="1.5"/>
+          <rect x="622.0" y="495.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <rect x="622.0" y="643.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <circle cx="640.0" cy="509.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="636.0,509.0 638.0,505.5 642.0,505.5 644.0,509.0 642.0,512.5 638.0,512.5" fill="#cbd5e1"/>
+          <circle cx="640.0" cy="661.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="636.0,661.0 638.0,657.5 642.0,657.5 644.0,661.0 642.0,664.5 638.0,664.5" fill="#cbd5e1"/>
+          <rect x="622.0" y="548.0" width="36.0" height="74" rx="3" fill="#ffffff" stroke="#1D4ED8" stroke-width="1.8"/>
+          <text x="640.0" y="578.0" text-anchor="middle" font-size="12.5" font-weight="900" fill="#0f172a">N</text>
+          <text x="640.0" y="596.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1D4ED8">35</text>
+          <text x="640.0" y="612.0" text-anchor="middle" font-size="8" font-weight="700" fill="#64748b">mm²</text>
+        </g>
+
+        <g>
+          <rect x="662.0" y="490.0" width="44.0" height="190.0" rx="4" fill="#dcfce7" stroke="#334155" stroke-width="1.5"/>
+          <rect x="666.0" y="495.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <rect x="666.0" y="643.0" width="36.0" height="32" rx="3" fill="#e2e8f0" stroke="#64748b" stroke-width="1"/>
+          <circle cx="684.0" cy="509.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="680.0,509.0 682.0,505.5 686.0,505.5 688.0,509.0 686.0,512.5 682.0,512.5" fill="#cbd5e1"/>
+          <circle cx="684.0" cy="661.0" r="8.2" fill="#475569" stroke="#1e293b" stroke-width="1.3"/>
+          <polygon points="680.0,661.0 682.0,657.5 686.0,657.5 688.0,661.0 686.0,664.5 682.0,664.5" fill="#cbd5e1"/>
+          <rect x="666.0" y="548.0" width="36.0" height="74" rx="3" fill="#ffffff" stroke="#16A34A" stroke-width="1.8"/>
+          <text x="684.0" y="578.0" text-anchor="middle" font-size="12.5" font-weight="900" fill="#0f172a">PE</text>
+          <text x="684.0" y="596.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#16A34A">50</text>
+          <text x="684.0" y="612.0" text-anchor="middle" font-size="8" font-weight="700" fill="#64748b">mm²</text>
+        </g>
+
+    <g>
+      <rect x="740.0" y="490.0" width="138.0" height="190.0" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="743.0" y="493.0" width="132.0" height="38" rx="3" fill="#e6ebef"/>
+      <rect x="743.0" y="639.0" width="132.0" height="38" rx="3" fill="#e6ebef"/>
+      <line x1="786.0" y1="494.0" x2="786.0" y2="676.0" stroke="#cbd5e1" stroke-width="1"/><line x1="832.0" y1="494.0" x2="832.0" y2="676.0" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <text x="748.0" y="545.0" font-size="10.5" font-weight="900" fill="#e2231a">ABB</text>
+      <text x="870.0" y="545.0" text-anchor="end" font-size="8.6" font-weight="800" fill="#334155">OT160</text>
+      <text x="809.0" y="559.0" text-anchor="middle" font-size="11" font-weight="900" fill="#0f172a">160A 3P</text>
+      
+          <rect x="754.0" y="563.0" width="110.0" height="52" rx="8" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5"/>
+          <circle cx="809.0" cy="589.0" r="20" fill="#dc2626" stroke="#7f1d1d" stroke-width="1.5"/>
+          <rect x="803.5" y="571.0" width="11" height="36" rx="4" fill="#ef4444" stroke="#ffffff" stroke-width="1.2"/>
+          <text x="809.0" y="628.0" text-anchor="middle" font-size="9" font-weight="900" fill="#b91c1c">I - ON</text>
+        
+      
+          <circle cx="763.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="759.0" y1="508.0" x2="767.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="763.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">1</text>
+          <circle cx="763.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="759.0" y1="662.0" x2="767.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="763.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">2</text>
+        
+          <circle cx="809.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="805.0" y1="508.0" x2="813.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="809.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">3</text>
+          <circle cx="809.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="805.0" y1="662.0" x2="813.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="809.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">4</text>
+        
+          <circle cx="855.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="851.0" y1="508.0" x2="859.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="855.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">5</text>
+          <circle cx="855.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="851.0" y1="662.0" x2="859.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="855.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">6</text>
+        
+    </g>
+
+    <g>
+      <rect x="912.0" y="490.0" width="174.0" height="190.0" rx="8" fill="#f1f5f9" stroke="#334155" stroke-width="1.8"/>
+      <rect x="918.0" y="496.0" width="162.0" height="178.0" rx="5" fill="#e2e8f0" fill-opacity="0.45" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4 3"/>
+      
+          <rect x="928.0" y="524.0" width="26" height="122.0" rx="3" fill="#d97706" stroke="#92400e" stroke-width="1"/>
+          <circle cx="941.0" cy="512.0" r="7.5" fill="#fef08a" stroke="#8B4513" stroke-width="2.2"/>
+          <text x="941.0" y="542.0" text-anchor="middle" font-size="9.5" font-weight="900" fill="#ffffff">L1</text>
+          <circle cx="941.0" cy="566.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="941.0" cy="590.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="941.0" cy="614.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="941.0" cy="658.0" r="6.8" fill="#fef08a" stroke="#8B4513" stroke-width="2"/>
+        
+          <rect x="966.0" y="524.0" width="26" height="122.0" rx="3" fill="#d97706" stroke="#92400e" stroke-width="1"/>
+          <circle cx="979.0" cy="512.0" r="7.5" fill="#fef08a" stroke="#1E293B" stroke-width="2.2"/>
+          <text x="979.0" y="542.0" text-anchor="middle" font-size="9.5" font-weight="900" fill="#ffffff">L2</text>
+          <circle cx="979.0" cy="566.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="979.0" cy="590.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="979.0" cy="614.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="979.0" cy="658.0" r="6.8" fill="#fef08a" stroke="#1E293B" stroke-width="2"/>
+        
+          <rect x="1004.0" y="524.0" width="26" height="122.0" rx="3" fill="#d97706" stroke="#92400e" stroke-width="1"/>
+          <circle cx="1017.0" cy="512.0" r="7.5" fill="#fef08a" stroke="#64748B" stroke-width="2.2"/>
+          <text x="1017.0" y="542.0" text-anchor="middle" font-size="9.5" font-weight="900" fill="#ffffff">L3</text>
+          <circle cx="1017.0" cy="566.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="1017.0" cy="590.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="1017.0" cy="614.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="1017.0" cy="658.0" r="6.8" fill="#fef08a" stroke="#64748B" stroke-width="2"/>
+        
+          <rect x="1042.0" y="524.0" width="26" height="122.0" rx="3" fill="#d97706" stroke="#92400e" stroke-width="1"/>
+          <circle cx="1055.0" cy="512.0" r="7.5" fill="#fef08a" stroke="#1D4ED8" stroke-width="2.2"/>
+          <text x="1055.0" y="542.0" text-anchor="middle" font-size="9.5" font-weight="900" fill="#ffffff">N</text>
+          <circle cx="1055.0" cy="566.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="1055.0" cy="590.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="1055.0" cy="614.0" r="4.2" fill="#fef08a" stroke="#78350f" stroke-width="1"/>
+          <circle cx="1055.0" cy="658.0" r="6.8" fill="#fef08a" stroke="#1D4ED8" stroke-width="2"/>
+        
+    </g>
+
+    <g>
+      <rect x="1132.0" y="490.0" width="144.0" height="190.0" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="1135.0" y="493.0" width="138.0" height="38" rx="3" fill="#e6ebef"/>
+      <rect x="1135.0" y="639.0" width="138.0" height="38" rx="3" fill="#e6ebef"/>
+      <line x1="1180.0" y1="494.0" x2="1180.0" y2="676.0" stroke="#cbd5e1" stroke-width="1"/><line x1="1228.0" y1="494.0" x2="1228.0" y2="676.0" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <text x="1140.0" y="545.0" font-size="10.5" font-weight="900" fill="#e2231a">ABB</text>
+      <text x="1268.0" y="545.0" text-anchor="end" font-size="8.6" font-weight="800" fill="#334155">S803S</text>
+      <text x="1204.0" y="559.0" text-anchor="middle" font-size="11" font-weight="900" fill="#0f172a">80A 3P</text>
+      
+          <rect x="1142.0" y="574.0" width="124.0" height="22" rx="4" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/>
+          <rect x="1145.0" y="577.0" width="118.0" height="14" rx="3" fill="#b91c1c"/>
+          <rect x="1195.0" y="563.0" width="18" height="8" rx="2" fill="#dc2626"/>
+          <text x="1204.0" y="569.5" text-anchor="middle" font-size="6.8" font-weight="900" fill="#ffffff">I</text>
+        
+      
+          <circle cx="1156.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1152.0" y1="508.0" x2="1160.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1156.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">1</text>
+          <circle cx="1156.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1152.0" y1="662.0" x2="1160.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1156.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">2</text>
+        
+          <circle cx="1204.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1200.0" y1="508.0" x2="1208.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1204.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">3</text>
+          <circle cx="1204.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1200.0" y1="662.0" x2="1208.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1204.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">4</text>
+        
+          <circle cx="1252.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1248.0" y1="508.0" x2="1256.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1252.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">5</text>
+          <circle cx="1252.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1248.0" y1="662.0" x2="1256.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1252.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">6</text>
+        
+    </g>
+
+    <g>
+      <rect x="1334.0" y="490.0" width="138.0" height="190.0" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="1337.0" y="493.0" width="132.0" height="38" rx="3" fill="#e6ebef"/>
+      <rect x="1337.0" y="639.0" width="132.0" height="38" rx="3" fill="#e6ebef"/>
+      <line x1="1380.0" y1="494.0" x2="1380.0" y2="676.0" stroke="#cbd5e1" stroke-width="1"/><line x1="1426.0" y1="494.0" x2="1426.0" y2="676.0" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <text x="1342.0" y="545.0" font-size="10.5" font-weight="900" fill="#e2231a">ABB</text>
+      <text x="1464.0" y="545.0" text-anchor="end" font-size="8.6" font-weight="800" fill="#334155">S203</text>
+      <text x="1403.0" y="559.0" text-anchor="middle" font-size="11" font-weight="900" fill="#0f172a">63A 3P</text>
+      
+          <rect x="1344.0" y="574.0" width="118.0" height="22" rx="4" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/>
+          <rect x="1347.0" y="577.0" width="112.0" height="14" rx="3" fill="#0369a1"/>
+          <rect x="1394.0" y="563.0" width="18" height="8" rx="2" fill="#dc2626"/>
+          <text x="1403.0" y="569.5" text-anchor="middle" font-size="6.8" font-weight="900" fill="#ffffff">I</text>
+        
+      
+          <circle cx="1357.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1353.0" y1="508.0" x2="1361.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1357.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">1</text>
+          <circle cx="1357.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1353.0" y1="662.0" x2="1361.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1357.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">2</text>
+        
+          <circle cx="1403.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1399.0" y1="508.0" x2="1407.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1403.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">3</text>
+          <circle cx="1403.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1399.0" y1="662.0" x2="1407.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1403.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">4</text>
+        
+          <circle cx="1449.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1445.0" y1="508.0" x2="1453.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1449.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">5</text>
+          <circle cx="1449.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1445.0" y1="662.0" x2="1453.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1449.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">6</text>
+        
+    </g>
+
+    <g>
+      <rect x="1534.0" y="490.0" width="138.0" height="190.0" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="1537.0" y="493.0" width="132.0" height="38" rx="3" fill="#e6ebef"/>
+      <rect x="1537.0" y="639.0" width="132.0" height="38" rx="3" fill="#e6ebef"/>
+      <line x1="1580.0" y1="494.0" x2="1580.0" y2="676.0" stroke="#cbd5e1" stroke-width="1"/><line x1="1626.0" y1="494.0" x2="1626.0" y2="676.0" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <text x="1542.0" y="545.0" font-size="10.5" font-weight="900" fill="#e2231a">ABB</text>
+      <text x="1664.0" y="545.0" text-anchor="end" font-size="8.6" font-weight="800" fill="#334155">S203</text>
+      <text x="1603.0" y="559.0" text-anchor="middle" font-size="11" font-weight="900" fill="#0f172a">63A 3P</text>
+      
+          <rect x="1544.0" y="574.0" width="118.0" height="22" rx="4" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/>
+          <rect x="1547.0" y="577.0" width="112.0" height="14" rx="3" fill="#ea580c"/>
+          <rect x="1594.0" y="563.0" width="18" height="8" rx="2" fill="#dc2626"/>
+          <text x="1603.0" y="569.5" text-anchor="middle" font-size="6.8" font-weight="900" fill="#ffffff">I</text>
+        
+      
+          <circle cx="1557.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1553.0" y1="508.0" x2="1561.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1557.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">1</text>
+          <circle cx="1557.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1553.0" y1="662.0" x2="1561.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1557.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">2</text>
+        
+          <circle cx="1603.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1599.0" y1="508.0" x2="1607.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1603.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">3</text>
+          <circle cx="1603.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1599.0" y1="662.0" x2="1607.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1603.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">4</text>
+        
+          <circle cx="1649.0" cy="508.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1645.0" y1="508.0" x2="1653.0" y2="508.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1649.0" y="526.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">5</text>
+          <circle cx="1649.0" cy="662.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1645.0" y1="662.0" x2="1653.0" y2="662.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="1649.0" y="650.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">6</text>
+        
+    </g>
+
+    <g>
+      <rect x="486.0" y="947.0" width="168.0" height="196.0" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="489.0" y="950.0" width="162.0" height="38" rx="3" fill="#e6ebef"/>
+      <rect x="489.0" y="1102.0" width="162.0" height="38" rx="3" fill="#e6ebef"/>
+      <line x1="528.0" y1="951.0" x2="528.0" y2="1139.0" stroke="#cbd5e1" stroke-width="1"/><line x1="570.0" y1="951.0" x2="570.0" y2="1139.0" stroke="#cbd5e1" stroke-width="1"/><line x1="612.0" y1="951.0" x2="612.0" y2="1139.0" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <text x="494.0" y="1002.0" font-size="10.5" font-weight="900" fill="#e2231a">ABB</text>
+      <text x="646.0" y="1002.0" text-anchor="end" font-size="8.6" font-weight="800" fill="#334155">FH204</text>
+      <text x="570.0" y="1016.0" text-anchor="middle" font-size="11" font-weight="900" fill="#0f172a">63A 4P</text>
+      
+          <rect x="496.0" y="1033.0" width="87.4" height="24" rx="4" fill="#1d4ed8" stroke="#0f172a" stroke-width="1.2"/>
+          <rect x="500.0" y="1039.0" width="79.4" height="12" rx="2" fill="#2563eb"/>
+          <rect x="600.2" y="1029.0" width="26" height="24" rx="4" fill="#f59e0b" stroke="#92400e" stroke-width="1.2"/>
+          <text x="613.2" y="1045.0" text-anchor="middle" font-size="11" font-weight="900" fill="#ffffff">T</text>
+          <text x="613.2" y="1064.0" text-anchor="middle" font-size="7.5" font-weight="800" fill="#92400e">30 mA</text>
+        
+      
+          <circle cx="507.0" cy="965.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="503.0" y1="965.0" x2="511.0" y2="965.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="507.0" y="983.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">1</text>
+          <circle cx="507.0" cy="1125.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="503.0" y1="1125.0" x2="511.0" y2="1125.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="507.0" y="1113.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">2</text>
+        
+          <circle cx="549.0" cy="965.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="545.0" y1="965.0" x2="553.0" y2="965.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="549.0" y="983.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">3</text>
+          <circle cx="549.0" cy="1125.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="545.0" y1="1125.0" x2="553.0" y2="1125.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="549.0" y="1113.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">4</text>
+        
+          <circle cx="591.0" cy="965.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="587.0" y1="965.0" x2="595.0" y2="965.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="591.0" y="983.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">5</text>
+          <circle cx="591.0" cy="1125.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="587.0" y1="1125.0" x2="595.0" y2="1125.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="591.0" y="1113.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">6</text>
+        
+          <circle cx="633.0" cy="965.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="629.0" y1="965.0" x2="637.0" y2="965.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="633.0" y="983.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">N</text>
+          <circle cx="633.0" cy="1125.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="629.0" y1="1125.0" x2="637.0" y2="1125.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="633.0" y="1113.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">N</text>
+        
+    </g>
+
+    <g>
+      <rect x="676.0" y="947.0" width="114.0" height="196.0" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="679.0" y="950.0" width="108.0" height="38" rx="3" fill="#e6ebef"/>
+      <rect x="679.0" y="1102.0" width="108.0" height="38" rx="3" fill="#e6ebef"/>
+      <line x1="714.0" y1="951.0" x2="714.0" y2="1139.0" stroke="#cbd5e1" stroke-width="1"/><line x1="752.0" y1="951.0" x2="752.0" y2="1139.0" stroke="#cbd5e1" stroke-width="1"/>
+      
+      <text x="684.0" y="1002.0" font-size="10.5" font-weight="900" fill="#e2231a">ABB</text>
+      <text x="782.0" y="1002.0" text-anchor="end" font-size="8.6" font-weight="800" fill="#334155">S203</text>
+      <text x="733.0" y="1016.0" text-anchor="middle" font-size="11" font-weight="900" fill="#0f172a">32A 3P</text>
+      
+          <rect x="686.0" y="1034.0" width="94.0" height="22" rx="4" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/>
+          <rect x="689.0" y="1037.0" width="88.0" height="14" rx="3" fill="#1e293b"/>
+          <rect x="724.0" y="1023.0" width="18" height="8" rx="2" fill="#dc2626"/>
+          <text x="733.0" y="1029.5" text-anchor="middle" font-size="6.8" font-weight="900" fill="#ffffff">I</text>
+        
+      
+          <circle cx="695.0" cy="965.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="691.0" y1="965.0" x2="699.0" y2="965.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="695.0" y="983.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">1</text>
+          <circle cx="695.0" cy="1125.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="691.0" y1="1125.0" x2="699.0" y2="1125.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="695.0" y="1113.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">2</text>
+        
+          <circle cx="733.0" cy="965.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="729.0" y1="965.0" x2="737.0" y2="965.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="733.0" y="983.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">3</text>
+          <circle cx="733.0" cy="1125.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="729.0" y1="1125.0" x2="737.0" y2="1125.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="733.0" y="1113.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">4</text>
+        
+          <circle cx="771.0" cy="965.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="767.0" y1="965.0" x2="775.0" y2="965.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="771.0" y="983.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">5</text>
+          <circle cx="771.0" cy="1125.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="767.0" y1="1125.0" x2="775.0" y2="1125.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="771.0" y="1113.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">6</text>
+        
+    </g>
+
+    <g>
+      <rect x="806.0" y="947.0" width="44.0" height="196.0" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="809.0" y="950.0" width="38.0" height="38" rx="3" fill="#e6ebef"/>
+      <rect x="809.0" y="1102.0" width="38.0" height="38" rx="3" fill="#e6ebef"/>
+      
+      
+      <text x="828.0" y="999.0" text-anchor="middle" font-size="9.5" font-weight="900" fill="#e2231a">ABB</text>
+      <text x="828.0" y="1010.0" text-anchor="middle" font-size="7.8" font-weight="800" fill="#334155">S201</text>
+      <text x="828.0" y="1023.0" text-anchor="middle" font-size="10.2" font-weight="900" fill="#0f172a">16A</text>
+      
+          <rect x="816.0" y="1034.0" width="24.0" height="22" rx="4" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/>
+          <rect x="819.0" y="1037.0" width="18.0" height="14" rx="3" fill="#1e293b"/>
+          <rect x="819.0" y="1023.0" width="18" height="8" rx="2" fill="#dc2626"/>
+          <text x="828.0" y="1029.5" text-anchor="middle" font-size="6.8" font-weight="900" fill="#ffffff">I</text>
+        
+      
+          <circle cx="828.0" cy="965.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="824.0" y1="965.0" x2="832.0" y2="965.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="828.0" y="983.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">1</text>
+          <circle cx="828.0" cy="1125.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="824.0" y1="1125.0" x2="832.0" y2="1125.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="828.0" y="1113.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">2</text>
+        
+    </g>
+
+    <g>
+      <rect x="878.0" y="947.0" width="44.0" height="196.0" rx="6" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="881.0" y="950.0" width="38.0" height="38" rx="3" fill="#e6ebef"/>
+      <rect x="881.0" y="1102.0" width="38.0" height="38" rx="3" fill="#e6ebef"/>
+      
+      
+      <text x="900.0" y="999.0" text-anchor="middle" font-size="9.5" font-weight="900" fill="#e2231a">ABB</text>
+      <text x="900.0" y="1010.0" text-anchor="middle" font-size="7.8" font-weight="800" fill="#334155">S201</text>
+      <text x="900.0" y="1023.0" text-anchor="middle" font-size="10.2" font-weight="900" fill="#0f172a">10A</text>
+      
+          <rect x="888.0" y="1034.0" width="24.0" height="22" rx="4" fill="#cbd5e1" stroke="#64748b" stroke-width="1"/>
+          <rect x="891.0" y="1037.0" width="18.0" height="14" rx="3" fill="#dc2626"/>
+          <rect x="891.0" y="1023.0" width="18" height="8" rx="2" fill="#dc2626"/>
+          <text x="900.0" y="1029.5" text-anchor="middle" font-size="6.8" font-weight="900" fill="#ffffff">I</text>
+        
+      
+          <circle cx="900.0" cy="965.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="896.0" y1="965.0" x2="904.0" y2="965.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="900.0" y="983.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">1</text>
+          <circle cx="900.0" cy="1125.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="896.0" y1="1125.0" x2="904.0" y2="1125.0" stroke="#1e293b" stroke-width="1.3"/>
+          <text x="900.0" y="1113.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#334155">2</text>
+        
+    </g>
+
+    <g>
+      <rect x="940.0" y="947.0" width="96.0" height="196.0" rx="6" fill="#f8fafc" stroke="#1e293b" stroke-width="1.7"/>
+      <rect x="943.0" y="950.0" width="90.0" height="36" rx="3" fill="#e6ebef"/>
+      <rect x="943.0" y="1104.0" width="90.0" height="36" rx="3" fill="#e6ebef"/>
+      <rect x="946.0" y="993.0" width="84.0" height="18" rx="3" fill="#b91c1c"/>
+      <text x="988.0" y="1005.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#ffffff">FAZ KOR.</text>
+      <text x="988.0" y="1025.0" text-anchor="middle" font-size="8.2" font-weight="700" fill="#334155">CM-PFS</text>
+      <circle cx="988.0" cy="1053.0" r="14" fill="#e2e8f0" stroke="#475569" stroke-width="1.3"/>
+      <line x1="988.0" y1="1053.0" x2="996.0" y2="1045.0" stroke="#0f172a" stroke-width="2.2" stroke-linecap="round"/>
+      <text x="988.0" y="1081.0" text-anchor="middle" font-size="8.5" font-weight="800" fill="#b91c1c">3~ 400V</text>
+      <circle cx="954.0" cy="1093.0" r="3.5" fill="#16a34a"/>
+      <circle cx="968.0" cy="1093.0" r="3.5" fill="#f59e0b"/>
+      <circle cx="956.0" cy="965.0" r="5.6" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><text x="956.0" y="981.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" fill="#1e293b">L1</text><circle cx="988.0" cy="965.0" r="5.6" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><text x="988.0" y="981.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" fill="#1e293b">L2</text><circle cx="1020.0" cy="965.0" r="5.6" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><text x="1020.0" y="981.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" fill="#1e293b">L3</text><circle cx="964.0" cy="1125.0" r="5.6" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><text x="964.0" y="1115.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" fill="#1e293b">11</text><circle cx="1012.0" cy="1125.0" r="5.6" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><text x="1012.0" y="1115.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" fill="#1e293b">14</text>
+    </g>
+
+    <g>
+      <rect x="1066.0" y="947.0" width="152.0" height="196.0" rx="6" fill="#475569" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="1070.0" y="951.0" width="144.0" height="40" rx="3" fill="#e6ebef"/>
+      <rect x="1070.0" y="1099.0" width="144.0" height="40" rx="3" fill="#e6ebef"/>
+      <rect x="1076.0" y="999.0" width="132.0" height="92.0" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+      <rect x="1084.0" y="1009.0" width="22" height="26" rx="2" fill="#0f172a"/>
+      <text x="1202.0" y="1021.0" text-anchor="end" font-size="12" font-weight="900" fill="#ef4444">ABB</text>
+      <text x="1142.0" y="1053.0" text-anchor="middle" font-size="11.5" font-weight="800" fill="#f8fafc">AF38-30</text>
+      <text x="1142.0" y="1069.0" text-anchor="middle" font-size="9.5" font-weight="700" fill="#34d399">40A • 18 Fan</text>
+      <text x="1142.0" y="1083.0" text-anchor="middle" font-size="8" font-weight="600" fill="#cbd5e1">Bobin: 230V AC</text>
+      
+          <circle cx="1090.0" cy="967.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1086.0" y1="963.0" x2="1094.0" y2="971.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1086.0" y1="971.0" x2="1094.0" y2="963.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1090.0" y="985.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">1L1</text>
+          <circle cx="1090.0" cy="1123.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1086.0" y1="1119.0" x2="1094.0" y2="1127.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1086.0" y1="1127.0" x2="1094.0" y2="1119.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1090.0" y="1111.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">2T1</text>
+        
+          <circle cx="1122.0" cy="967.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1118.0" y1="963.0" x2="1126.0" y2="971.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1118.0" y1="971.0" x2="1126.0" y2="963.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1122.0" y="985.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">3L2</text>
+          <circle cx="1122.0" cy="1123.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1118.0" y1="1119.0" x2="1126.0" y2="1127.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1118.0" y1="1127.0" x2="1126.0" y2="1119.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1122.0" y="1111.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">4T2</text>
+        
+          <circle cx="1154.0" cy="967.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1150.0" y1="963.0" x2="1158.0" y2="971.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1150.0" y1="971.0" x2="1158.0" y2="963.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1154.0" y="985.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">5L3</text>
+          <circle cx="1154.0" cy="1123.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1150.0" y1="1119.0" x2="1158.0" y2="1127.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1150.0" y1="1127.0" x2="1158.0" y2="1119.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1154.0" y="1111.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">6T3</text>
+        
+          <circle cx="1190.0" cy="967.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1186.0" y1="963.0" x2="1194.0" y2="971.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1186.0" y1="971.0" x2="1194.0" y2="963.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1190.0" y="985.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">A1</text>
+          <circle cx="1190.0" cy="1123.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1186.0" y1="1119.0" x2="1194.0" y2="1127.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1186.0" y1="1127.0" x2="1194.0" y2="1119.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1190.0" y="1111.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">A2</text>
+        
+    </g>
+
+    <g>
+      <rect x="1236.0" y="947.0" width="78.0" height="196.0" rx="6" fill="#f8fafc" stroke="#1e293b" stroke-width="1.7"/>
+      <rect x="1239.0" y="950.0" width="72.0" height="36" rx="3" fill="#e6ebef"/>
+      <rect x="1239.0" y="1104.0" width="72.0" height="36" rx="3" fill="#e6ebef"/>
+      <rect x="1242.0" y="993.0" width="66.0" height="18" rx="3" fill="#ea580c"/>
+      <text x="1275.0" y="1005.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#ffffff">ZAMAN</text>
+      <text x="1275.0" y="1025.0" text-anchor="middle" font-size="8.2" font-weight="700" fill="#334155">CT-ERD</text>
+      <circle cx="1275.0" cy="1053.0" r="14" fill="#e2e8f0" stroke="#475569" stroke-width="1.3"/>
+      <line x1="1275.0" y1="1053.0" x2="1283.0" y2="1045.0" stroke="#0f172a" stroke-width="2.2" stroke-linecap="round"/>
+      <text x="1275.0" y="1081.0" text-anchor="middle" font-size="8.5" font-weight="800" fill="#ea580c">3 sn</text>
+      <circle cx="1250.0" cy="1093.0" r="3.5" fill="#16a34a"/>
+      <circle cx="1264.0" cy="1093.0" r="3.5" fill="#f59e0b"/>
+      <circle cx="1255.5" cy="965.0" r="5.6" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><text x="1255.5" y="981.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" fill="#1e293b">A1</text><circle cx="1294.5" cy="965.0" r="5.6" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><text x="1294.5" y="981.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" fill="#1e293b">15</text><circle cx="1255.5" cy="1125.0" r="5.6" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><text x="1255.5" y="1115.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" fill="#1e293b">A2</text><circle cx="1294.5" cy="1125.0" r="5.6" fill="#fff" stroke="#1e293b" stroke-width="1.2"/><text x="1294.5" y="1115.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" fill="#1e293b">18</text>
+    </g>
+
+    <g>
+      <rect x="1332.0" y="947.0" width="152.0" height="196.0" rx="6" fill="#475569" stroke="#1e293b" stroke-width="1.8"/>
+      <rect x="1336.0" y="951.0" width="144.0" height="40" rx="3" fill="#e6ebef"/>
+      <rect x="1336.0" y="1099.0" width="144.0" height="40" rx="3" fill="#e6ebef"/>
+      <rect x="1342.0" y="999.0" width="132.0" height="92.0" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1"/>
+      <rect x="1350.0" y="1009.0" width="22" height="26" rx="2" fill="#0f172a"/>
+      <text x="1468.0" y="1021.0" text-anchor="end" font-size="12" font-weight="900" fill="#ef4444">ABB</text>
+      <text x="1408.0" y="1053.0" text-anchor="middle" font-size="11.5" font-weight="800" fill="#f8fafc">AF38-30</text>
+      <text x="1408.0" y="1069.0" text-anchor="middle" font-size="9.5" font-weight="700" fill="#34d399">40A • 18 Fan</text>
+      <text x="1408.0" y="1083.0" text-anchor="middle" font-size="8" font-weight="600" fill="#cbd5e1">Bobin: 230V AC</text>
+      
+          <circle cx="1356.0" cy="967.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1352.0" y1="963.0" x2="1360.0" y2="971.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1352.0" y1="971.0" x2="1360.0" y2="963.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1356.0" y="985.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">1L1</text>
+          <circle cx="1356.0" cy="1123.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1352.0" y1="1119.0" x2="1360.0" y2="1127.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1352.0" y1="1127.0" x2="1360.0" y2="1119.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1356.0" y="1111.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">2T1</text>
+        
+          <circle cx="1388.0" cy="967.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1384.0" y1="963.0" x2="1392.0" y2="971.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1384.0" y1="971.0" x2="1392.0" y2="963.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1388.0" y="985.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">3L2</text>
+          <circle cx="1388.0" cy="1123.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1384.0" y1="1119.0" x2="1392.0" y2="1127.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1384.0" y1="1127.0" x2="1392.0" y2="1119.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1388.0" y="1111.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">4T2</text>
+        
+          <circle cx="1420.0" cy="967.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1416.0" y1="963.0" x2="1424.0" y2="971.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1416.0" y1="971.0" x2="1424.0" y2="963.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1420.0" y="985.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">5L3</text>
+          <circle cx="1420.0" cy="1123.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1416.0" y1="1119.0" x2="1424.0" y2="1127.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1416.0" y1="1127.0" x2="1424.0" y2="1119.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1420.0" y="1111.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">6T3</text>
+        
+          <circle cx="1456.0" cy="967.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1452.0" y1="963.0" x2="1460.0" y2="971.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1452.0" y1="971.0" x2="1460.0" y2="963.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1456.0" y="985.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">A1</text>
+          <circle cx="1456.0" cy="1123.0" r="6.8" fill="#ffffff" stroke="#1e293b" stroke-width="1.3"/>
+          <line x1="1452.0" y1="1119.0" x2="1460.0" y2="1127.0" stroke="#1e293b" stroke-width="1.2"/>
+          <line x1="1452.0" y1="1127.0" x2="1460.0" y2="1119.0" stroke="#1e293b" stroke-width="1.2"/>
+          <text x="1456.0" y="1111.0" text-anchor="middle" font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="8.6" font-weight="700" fill="#1e293b">A2</text>
+        
+    </g>
+
+        <g>
+          <rect x="1524.0" y="972.0" width="26.0" height="146.0" rx="2.5" fill="#e2e8f0" stroke="#475569" stroke-width="1.1"/>
+          <circle cx="1537.0" cy="984.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <circle cx="1537.0" cy="1106.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <rect x="1526.0" y="1027.0" width="22.0" height="36" rx="2" fill="#ffffff" stroke="#7C3AED" stroke-width="1.4"/>
+          <text x="1537.0" y="1048.5" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">D1</text>
+        </g>
+
+        <g>
+          <rect x="1550.0" y="972.0" width="26.0" height="146.0" rx="2.5" fill="#e2e8f0" stroke="#475569" stroke-width="1.1"/>
+          <circle cx="1563.0" cy="984.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <circle cx="1563.0" cy="1106.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <rect x="1552.0" y="1027.0" width="22.0" height="36" rx="2" fill="#ffffff" stroke="#4338CA" stroke-width="1.4"/>
+          <text x="1563.0" y="1048.5" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">D2</text>
+        </g>
+
+        <g>
+          <rect x="1576.0" y="972.0" width="26.0" height="146.0" rx="2.5" fill="#e2e8f0" stroke="#475569" stroke-width="1.1"/>
+          <circle cx="1589.0" cy="984.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <circle cx="1589.0" cy="1106.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <rect x="1578.0" y="1027.0" width="22.0" height="36" rx="2" fill="#ffffff" stroke="#0F766E" stroke-width="1.4"/>
+          <text x="1589.0" y="1048.5" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">D3</text>
+        </g>
+
+        <g>
+          <rect x="1602.0" y="972.0" width="26.0" height="146.0" rx="2.5" fill="#e2e8f0" stroke="#475569" stroke-width="1.1"/>
+          <circle cx="1615.0" cy="984.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <circle cx="1615.0" cy="1106.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <rect x="1604.0" y="1027.0" width="22.0" height="36" rx="2" fill="#ffffff" stroke="#0284C7" stroke-width="1.4"/>
+          <text x="1615.0" y="1048.5" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">D4</text>
+        </g>
+
+        <g>
+          <rect x="1628.0" y="972.0" width="26.0" height="146.0" rx="2.5" fill="#e2e8f0" stroke="#475569" stroke-width="1.1"/>
+          <circle cx="1641.0" cy="984.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <circle cx="1641.0" cy="1106.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <rect x="1630.0" y="1027.0" width="22.0" height="36" rx="2" fill="#ffffff" stroke="#A21CAF" stroke-width="1.4"/>
+          <text x="1641.0" y="1048.5" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">D5</text>
+        </g>
+
+        <g>
+          <rect x="1654.0" y="972.0" width="26.0" height="146.0" rx="2.5" fill="#e2e8f0" stroke="#475569" stroke-width="1.1"/>
+          <circle cx="1667.0" cy="984.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <circle cx="1667.0" cy="1106.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <rect x="1656.0" y="1027.0" width="22.0" height="36" rx="2" fill="#ffffff" stroke="#DB2777" stroke-width="1.4"/>
+          <text x="1667.0" y="1048.5" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">P1</text>
+        </g>
+
+        <g>
+          <rect x="1680.0" y="972.0" width="26.0" height="146.0" rx="2.5" fill="#e2e8f0" stroke="#475569" stroke-width="1.1"/>
+          <circle cx="1693.0" cy="984.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <circle cx="1693.0" cy="1106.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <rect x="1682.0" y="1027.0" width="22.0" height="36" rx="2" fill="#ffffff" stroke="#059669" stroke-width="1.4"/>
+          <text x="1693.0" y="1048.5" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">P2</text>
+        </g>
+
+        <g>
+          <rect x="1706.0" y="972.0" width="26.0" height="146.0" rx="2.5" fill="#e2e8f0" stroke="#475569" stroke-width="1.1"/>
+          <circle cx="1719.0" cy="984.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <circle cx="1719.0" cy="1106.0" r="4.2" fill="#64748b" stroke="#1e293b" stroke-width="0.9"/>
+          <rect x="1708.0" y="1027.0" width="22.0" height="36" rx="2" fill="#ffffff" stroke="#A21CAF" stroke-width="1.4"/>
+          <text x="1719.0" y="1048.5" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0f172a">P3</text>
+        </g>
+</g>
+
+  <g id="left-control-panel" filter="url(#cardShadow)">
+    <rect x="56.0" y="460.0" width="344.0" height="720.0" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="56.0" y="460.0" width="344.0" height="64" rx="18" fill="#0B2540"/>
+    <text x="228.0" y="488.0" text-anchor="middle" font-size="15.5" font-weight="800" fill="#ffffff">BÖLGE KAPAK KUMANDA</text>
+    <text x="228.0" y="508.0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#34D399">230V AC • F1(10A) + FK1 Faz Korumalı</text>
+    
+    <g>
+      <circle cx="151.0" cy="590.0" r="24" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+      <circle cx="151.0" cy="590.0" r="18" fill="#1e293b" stroke="#0f172a" stroke-width="1.2"/>
+      <rect x="147.5" y="574.0" width="7" height="32" rx="3" fill="#f8fafc" transform="rotate(-28 151.0 590.0)"/>
+      <rect x="149.0" y="575.0" width="4" height="10" rx="1.5" fill="#1F9D6B" transform="rotate(-28 151.0 590.0)"/>
+      <text x="151.0" y="561.0" text-anchor="middle" font-size="8.2" font-weight="800" fill="#64748b">0</text>
+      <text x="124.0" y="573.0" text-anchor="end" font-size="8.2" font-weight="800" fill="#1F9D6B">OTO</text>
+      <text x="178.0" y="573.0" text-anchor="start" font-size="8.2" font-weight="800" fill="#0f172a">EL</text>
+      <rect x="109.0" y="619.0" width="84" height="17" rx="4" fill="#0B2540"/>
+      <text x="151.0" y="630.5" text-anchor="middle" font-size="8.8" font-weight="800" fill="#ffffff">S-MOD</text>
+      <text x="151.0" y="648.0" text-anchor="middle" font-size="9.2" font-weight="700" fill="#334155">Bölge Modu</text>
+    </g>
+    
+    <g>
+      <circle cx="306.0" cy="590.0" r="24" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+      <circle cx="306.0" cy="590.0" r="18" fill="#1e293b" stroke="#0f172a" stroke-width="1.2"/>
+      <rect x="302.5" y="574.0" width="7" height="32" rx="3" fill="#f8fafc" transform="rotate(-28 306.0 590.0)"/>
+      <rect x="304.0" y="575.0" width="4" height="10" rx="1.5" fill="#A21CAF" transform="rotate(-28 306.0 590.0)"/>
+      <text x="306.0" y="561.0" text-anchor="middle" font-size="8.2" font-weight="800" fill="#64748b">0</text>
+      <text x="279.0" y="573.0" text-anchor="end" font-size="8.2" font-weight="800" fill="#A21CAF">PANO</text>
+      <text x="333.0" y="573.0" text-anchor="start" font-size="8.2" font-weight="800" fill="#0f172a">YEREL</text>
+      <rect x="264.0" y="619.0" width="84" height="17" rx="4" fill="#0B2540"/>
+      <text x="306.0" y="630.5" text-anchor="middle" font-size="8.8" font-weight="800" fill="#ffffff">S-SAHA</text>
+      <text x="306.0" y="648.0" text-anchor="middle" font-size="9.2" font-weight="700" fill="#334155">Saha İzni (D5)</text>
+    </g>
+    
+    <g>
+      <circle cx="151.0" cy="726.0" r="24" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+      <circle cx="151.0" cy="726.0" r="18" fill="#1e293b" stroke="#0f172a" stroke-width="1.2"/>
+      <rect x="147.5" y="710.0" width="7" height="32" rx="3" fill="#f8fafc" transform="rotate(-28 151.0 726.0)"/>
+      <rect x="149.0" y="711.0" width="4" height="10" rx="1.5" fill="#4338CA" transform="rotate(-28 151.0 726.0)"/>
+      <text x="151.0" y="697.0" text-anchor="middle" font-size="8.2" font-weight="800" fill="#64748b">0</text>
+      <text x="124.0" y="709.0" text-anchor="end" font-size="8.2" font-weight="800" fill="#4338CA">AÇ</text>
+      <text x="178.0" y="709.0" text-anchor="start" font-size="8.2" font-weight="800" fill="#0f172a">KAPAT</text>
+      <rect x="109.0" y="755.0" width="84" height="17" rx="4" fill="#0B2540"/>
+      <text x="151.0" y="766.5" text-anchor="middle" font-size="8.8" font-weight="800" fill="#ffffff">S-HAV1</text>
+      <text x="151.0" y="784.0" text-anchor="middle" font-size="9.2" font-weight="700" fill="#334155">Havalandırma 1</text>
+    </g>
+    
+    <g>
+      <circle cx="306.0" cy="726.0" r="24" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+      <circle cx="306.0" cy="726.0" r="18" fill="#1e293b" stroke="#0f172a" stroke-width="1.2"/>
+      <rect x="302.5" y="710.0" width="7" height="32" rx="3" fill="#f8fafc" transform="rotate(-28 306.0 726.0)"/>
+      <rect x="304.0" y="711.0" width="4" height="10" rx="1.5" fill="#0284C7" transform="rotate(-28 306.0 726.0)"/>
+      <text x="306.0" y="697.0" text-anchor="middle" font-size="8.2" font-weight="800" fill="#64748b">0</text>
+      <text x="279.0" y="709.0" text-anchor="end" font-size="8.2" font-weight="800" fill="#0284C7">AÇ</text>
+      <text x="333.0" y="709.0" text-anchor="start" font-size="8.2" font-weight="800" fill="#0f172a">KAPAT</text>
+      <rect x="264.0" y="755.0" width="84" height="17" rx="4" fill="#0B2540"/>
+      <text x="306.0" y="766.5" text-anchor="middle" font-size="8.8" font-weight="800" fill="#ffffff">S-HAV2</text>
+      <text x="306.0" y="784.0" text-anchor="middle" font-size="9.2" font-weight="700" fill="#334155">Havalandırma 2</text>
+    </g>
+    
+    <g>
+      <circle cx="151.0" cy="862.0" r="24" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+      <circle cx="151.0" cy="862.0" r="18" fill="#1e293b" stroke="#0f172a" stroke-width="1.2"/>
+      <rect x="147.5" y="846.0" width="7" height="32" rx="3" fill="#f8fafc" transform="rotate(-28 151.0 862.0)"/>
+      <rect x="149.0" y="847.0" width="4" height="10" rx="1.5" fill="#059669" transform="rotate(-28 151.0 862.0)"/>
+      <text x="151.0" y="833.0" text-anchor="middle" font-size="8.2" font-weight="800" fill="#64748b">0</text>
+      <text x="124.0" y="845.0" text-anchor="end" font-size="8.2" font-weight="800" fill="#059669">SER</text>
+      <text x="178.0" y="845.0" text-anchor="start" font-size="8.2" font-weight="800" fill="#0f172a">TOPLA</text>
+      <rect x="109.0" y="891.0" width="84" height="17" rx="4" fill="#0B2540"/>
+      <text x="151.0" y="902.5" text-anchor="middle" font-size="8.8" font-weight="800" fill="#ffffff">S-PER</text>
+      <text x="151.0" y="920.0" text-anchor="middle" font-size="9.2" font-weight="700" fill="#334155">Perde (2 Motor)</text>
+    </g>
+    
+    <g>
+      <circle cx="306.0" cy="862.0" r="24" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+      <circle cx="306.0" cy="862.0" r="18" fill="#1e293b" stroke="#0f172a" stroke-width="1.2"/>
+      <rect x="302.5" y="846.0" width="7" height="32" rx="3" fill="#f8fafc" transform="rotate(-28 306.0 862.0)"/>
+      <rect x="304.0" y="847.0" width="4" height="10" rx="1.5" fill="#EA580C" transform="rotate(-28 306.0 862.0)"/>
+      <text x="306.0" y="833.0" text-anchor="middle" font-size="8.2" font-weight="800" fill="#64748b">0</text>
+      <text x="279.0" y="845.0" text-anchor="end" font-size="8.2" font-weight="800" fill="#EA580C">OTO</text>
+      <text x="333.0" y="845.0" text-anchor="start" font-size="8.2" font-weight="800" fill="#0f172a">AÇ</text>
+      <rect x="264.0" y="891.0" width="84" height="17" rx="4" fill="#0B2540"/>
+      <text x="306.0" y="902.5" text-anchor="middle" font-size="8.8" font-weight="800" fill="#ffffff">S-FAN</text>
+      <text x="306.0" y="920.0" text-anchor="middle" font-size="9.2" font-weight="700" fill="#334155">Fanlar (2×18)</text>
+    </g>
+
+    <!-- Alt bağlantı özeti kutusu -->
+    <rect x="72.0" y="950.0" width="312.0" height="210" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.4"/>
+    <text x="228.0" y="972.0" text-anchor="middle" font-size="12" font-weight="800" fill="#0B2540">Kapak Şalter Bağlantı Özeti</text>
+    <text x="84.0" y="994.0" font-size="11" font-weight="700" fill="#DC2626">• Ortak Kumanda Fazı ← FK1:14 (230V)</text>
+    <text x="84.0" y="1016.0" font-size="11" font-weight="700" fill="#4338CA">• S-HAV1 (Aç/Kapat) → X-KUM D2 / D1</text>
+    <text x="84.0" y="1038.0" font-size="11" font-weight="700" fill="#0284C7">• S-HAV2 (Aç/Kapat) → X-KUM D4 / D3</text>
+    <text x="84.0" y="1060.0" font-size="11" font-weight="700" fill="#059669">• S-PER (Ser/Topla)  → X-KUM P2 / P1</text>
+    <text x="84.0" y="1082.0" font-size="11" font-weight="700" fill="#EA580C">• S-FAN (Aç/Oto)    → KM-F1 + KT1(3sn)</text>
+    <text x="84.0" y="1104.0" font-size="11" font-weight="700" fill="#A21CAF">• S-SAHA (Yerel)    → D5 &amp; P3 (230V)</text>
+    <text x="228.0" y="1138.0" text-anchor="middle" font-size="10" font-weight="600" fill="#64748b">S-MOD=OTO iken merkez otomasyon devrededir.</text>
+    <text x="228.0" y="1152.0" text-anchor="middle" font-size="10" font-weight="600" fill="#64748b">S-SAHA=YEREL iken saha SW-BL4252 çalışır.</text>
+  </g>
+
+
+  <g id="right-panels" filter="url(#cardShadow)">
+    <!-- 1. MERKEZ OTOMASYON GİRİŞİ -->
+    <rect x="1880.0" y="460.0" width="344.0" height="290.0" rx="18" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+    <rect x="1880.0" y="460.0" width="344.0" height="52" rx="18" fill="#f5f3ff"/>
+    <text x="2052.0" y="484.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#6d28d9">MERKEZ OTOMASYON GİRİŞİ</text>
+    <text x="2052.0" y="502.0" text-anchor="middle" font-size="11" font-weight="600" fill="#5b21b6">O2Sera PLC / Kontrolör (230V / Kuru Kontak)</text>
+    <rect x="1896.0" y="526.0" width="312.0" height="206" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.3"/>
+    <text x="1908.0" y="552.0" font-size="11.5" font-weight="700" fill="#4338CA">• OTO Hav.1 Aç / Kapat → D2 / D1</text>
+    <text x="1908.0" y="576.0" font-size="11.5" font-weight="700" fill="#0284C7">• OTO Hav.2 Aç / Kapat → D4 / D3</text>
+    <text x="1908.0" y="600.0" font-size="11.5" font-weight="700" fill="#059669">• OTO Perde Ser / Topla → P2 / P1</text>
+    <text x="1908.0" y="624.0" font-size="11.5" font-weight="700" fill="#EA580C">• OTO Fan Aç → KM-F1 + KT1 → KM-F2</text>
+    <text x="1908.0" y="648.0" font-size="11.5" font-weight="700" fill="#A21CAF">• OTO Saha İzin (Ops.) → D5 &amp; P3</text>
+    <line x1="1908.0" y1="666.0" x2="2196.0" y2="666.0" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="2052.0" y="688.0" text-anchor="middle" font-size="10.8" font-weight="700" fill="#0B2540">S-MOD = OTO konumunda aktif olur.</text>
+    <text x="2052.0" y="708.0" text-anchor="middle" font-size="10.2" font-weight="600" fill="#64748b">Faz Koruma (FK1) arızasında tüm çıkışlar durur.</text>
+
+    <!-- 2. KOMBİNASYON PRİZİ KUTUSU (3P+N+PE 32A CEE + 2× 16A SCHUKO) -->
+    <rect x="1880.0" y="790.0" width="344.0" height="390.0" rx="18" fill="#ffffff" stroke="#2563eb" stroke-width="2.2"/>
+    <rect x="1880.0" y="790.0" width="344.0" height="56" rx="18" fill="#eff6ff"/>
+    <text x="2052.0" y="815.0" text-anchor="middle" font-size="15" font-weight="800" fill="#1d4ed8">KOMBİNASYON PRİZİ (IP54)</text>
+    <text x="2052.0" y="834.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1e40af">QF1 63A 4P 30mA Kaçak Akım Korumalı</text>
+
+    <!-- CEE 32A 3P+N+PE Kırmızı Priz Çizimi -->
+    <circle cx="1974.0" cy="932.0" r="50" fill="#dc2626" stroke="#7f1d1d" stroke-width="2.2"/>
+    <circle cx="1974.0" cy="932.0" r="36" fill="#fef2f2" stroke="#b91c1c" stroke-width="1.5"/>
+    <circle cx="1974.0" cy="908.0" r="5" fill="#9a4a12"/>
+    <circle cx="1996.0" cy="926.0" r="5" fill="#1e293b"/>
+    <circle cx="1952.0" cy="926.0" r="5" fill="#64748b"/>
+    <circle cx="1988.0" cy="952.0" r="5" fill="#1d4ed8"/>
+    <circle cx="1960.0" cy="952.0" r="6.2" fill="#16a34a" stroke="#facc15" stroke-width="1.5"/>
+    <text x="1974.0" y="999.0" text-anchor="middle" font-size="11" font-weight="800" fill="#b91c1c">32A 3P+N+PE CEE</text>
+    <text x="1974.0" y="1014.0" text-anchor="middle" font-size="9.5" font-weight="700" fill="#475569">Q4 (32A 3P) + N + PE</text>
+
+    <!-- 2× 16A 230V Mavi Kapaklı Schuko Priz -->
+    <rect x="2074.0" y="882.0" width="118" height="48" rx="8" fill="#2563eb" stroke="#1e3a8a" stroke-width="1.6"/>
+    <circle cx="2133.0" cy="906.0" r="18" fill="#eff6ff" stroke="#1e40af" stroke-width="1.3"/>
+    <circle cx="2125.0" cy="906.0" r="3.5" fill="#1e293b"/>
+    <circle cx="2141.0" cy="906.0" r="3.5" fill="#1d4ed8"/>
+    <rect x="2074.0" y="940.0" width="118" height="48" rx="8" fill="#2563eb" stroke="#1e3a8a" stroke-width="1.6"/>
+    <circle cx="2133.0" cy="964.0" r="18" fill="#eff6ff" stroke="#1e40af" stroke-width="1.3"/>
+    <circle cx="2125.0" cy="964.0" r="3.5" fill="#1e293b"/>
+    <circle cx="2141.0" cy="964.0" r="3.5" fill="#1d4ed8"/>
+    <text x="2133.0" y="1004.0" text-anchor="middle" font-size="10.5" font-weight="800" fill="#1d4ed8">2× 16A 230V Schuko</text>
+    <text x="2133.0" y="1018.0" text-anchor="middle" font-size="9.5" font-weight="700" fill="#475569">Q5 (16A 1P) + N + PE</text>
+
+    <!-- Alt bağlantı kutusu -->
+    <rect x="1896.0" y="1038.0" width="312.0" height="124" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.3"/>
+    <text x="1908.0" y="1062.0" font-size="11.5" font-weight="800" fill="#0B2540">Besleme Zinciri:</text>
+    <text x="1908.0" y="1084.0" font-size="11" font-weight="700" fill="#1d4ed8">1. DB1 (L1-L2-L3-N) → QF1 (63A 4P 30mA)</text>
+    <text x="1908.0" y="1105.0" font-size="11" font-weight="700" fill="#1E293B">2. QF1 → Q4 (32A 3P) → 32A CEE Priz</text>
+    <text x="1908.0" y="1126.0" font-size="11" font-weight="700" fill="#8B4513">3. QF1 → Q5 (16A 1P) → 2× 16A Schuko</text>
+    <text x="1908.0" y="1147.0" font-size="11" font-weight="700" fill="#16A34A">4. PE-BARA (PE5) → Tüm priz toprakları</text>
+  </g>
+
+<g id="internal-wiring">
+<path d="M 508.0 509.0 L 508.0 442.0 Q 508.0 434.0 516.0 434.0 L 755.0 434.0 Q 763.0 434.0 763.0 442.0 L 763.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 508.0 509.0 L 508.0 442.0 Q 508.0 434.0 516.0 434.0 L 755.0 434.0 Q 763.0 434.0 763.0 442.0 L 763.0 508.0" fill="none" stroke="#8B4513" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 763.0 662.0 L 763.0 700.0 Q 763.0 708.0 771.0 708.0 L 882.0 708.0 Q 890.0 708.0 890.0 700.0 L 890.0 452.0 Q 890.0 444.0 898.0 444.0 L 933.0 444.0 Q 941.0 444.0 941.0 452.0 L 941.0 512.0" fill="none" stroke="#ffffff" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 763.0 662.0 L 763.0 700.0 Q 763.0 708.0 771.0 708.0 L 882.0 708.0 Q 890.0 708.0 890.0 700.0 L 890.0 452.0 Q 890.0 444.0 898.0 444.0 L 933.0 444.0 Q 941.0 444.0 941.0 452.0 L 941.0 512.0" fill="none" stroke="#8B4513" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 552.0 509.0 L 552.0 454.0 Q 552.0 446.0 560.0 446.0 L 801.0 446.0 Q 809.0 446.0 809.0 454.0 L 809.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 552.0 509.0 L 552.0 454.0 Q 552.0 446.0 560.0 446.0 L 801.0 446.0 Q 809.0 446.0 809.0 454.0 L 809.0 508.0" fill="none" stroke="#1E293B" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 809.0 662.0 L 809.0 711.0 Q 809.0 719.0 817.0 719.0 L 889.0 719.0 Q 897.0 719.0 897.0 711.0 L 897.0 462.0 Q 897.0 454.0 905.0 454.0 L 971.0 454.0 Q 979.0 454.0 979.0 462.0 L 979.0 512.0" fill="none" stroke="#ffffff" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 809.0 662.0 L 809.0 711.0 Q 809.0 719.0 817.0 719.0 L 889.0 719.0 Q 897.0 719.0 897.0 711.0 L 897.0 462.0 Q 897.0 454.0 905.0 454.0 L 971.0 454.0 Q 979.0 454.0 979.0 462.0 L 979.0 512.0" fill="none" stroke="#1E293B" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 596.0 509.0 L 596.0 466.0 Q 596.0 458.0 604.0 458.0 L 847.0 458.0 Q 855.0 458.0 855.0 466.0 L 855.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 596.0 509.0 L 596.0 466.0 Q 596.0 458.0 604.0 458.0 L 847.0 458.0 Q 855.0 458.0 855.0 466.0 L 855.0 508.0" fill="none" stroke="#64748B" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 855.0 662.0 L 855.0 722.0 Q 855.0 730.0 863.0 730.0 L 896.0 730.0 Q 904.0 730.0 904.0 722.0 L 904.0 472.0 Q 904.0 464.0 912.0 464.0 L 1009.0 464.0 Q 1017.0 464.0 1017.0 472.0 L 1017.0 512.0" fill="none" stroke="#ffffff" stroke-width="7.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 855.0 662.0 L 855.0 722.0 Q 855.0 730.0 863.0 730.0 L 896.0 730.0 Q 904.0 730.0 904.0 722.0 L 904.0 472.0 Q 904.0 464.0 912.0 464.0 L 1009.0 464.0 Q 1017.0 464.0 1017.0 472.0 L 1017.0 512.0" fill="none" stroke="#64748B" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 640.0 509.0 L 640.0 426.0 Q 640.0 418.0 648.0 418.0 L 1047.0 418.0 Q 1055.0 418.0 1055.0 426.0 L 1055.0 512.0" fill="none" stroke="#ffffff" stroke-width="7.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 640.0 509.0 L 640.0 426.0 Q 640.0 418.0 648.0 418.0 L 1047.0 418.0 Q 1055.0 418.0 1055.0 426.0 L 1055.0 512.0" fill="none" stroke="#1D4ED8" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 640.0 661.0 L 640.0 734.0 Q 640.0 742.0 632.0 742.0 L 460.0 742.0 Q 452.0 742.0 452.0 750.0 L 452.0 1308.0 Q 452.0 1316.0 460.0 1316.0 L 500.0 1316.0 Q 508.0 1316.0 508.0 1324.0 L 508.0 1385.0" fill="none" stroke="#ffffff" stroke-width="7.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 640.0 661.0 L 640.0 734.0 Q 640.0 742.0 632.0 742.0 L 460.0 742.0 Q 452.0 742.0 452.0 750.0 L 452.0 1308.0 Q 452.0 1316.0 460.0 1316.0 L 500.0 1316.0 Q 508.0 1316.0 508.0 1324.0 L 508.0 1385.0" fill="none" stroke="#1D4ED8" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 684.0 661.0 L 684.0 748.0 Q 684.0 756.0 676.0 756.0 L 450.0 756.0 Q 442.0 756.0 442.0 764.0 L 442.0 1460.0 Q 442.0 1468.0 450.0 1468.0 L 1464.0 1468.0 Q 1472.0 1468.0 1472.0 1460.0 L 1472.0 1385.0" fill="none" stroke="#ffffff" stroke-width="7.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 684.0 661.0 L 684.0 748.0 Q 684.0 756.0 676.0 756.0 L 450.0 756.0 Q 442.0 756.0 442.0 764.0 L 442.0 1460.0 Q 442.0 1468.0 450.0 1468.0 L 1464.0 1468.0 Q 1472.0 1468.0 1472.0 1460.0 L 1472.0 1385.0" fill="none" stroke="#16A34A" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 684.0 661.0 L 684.0 748.0 Q 684.0 756.0 676.0 756.0 L 450.0 756.0 Q 442.0 756.0 442.0 764.0 L 442.0 1460.0 Q 442.0 1468.0 450.0 1468.0 L 1464.0 1468.0 Q 1472.0 1468.0 1472.0 1460.0 L 1472.0 1385.0" fill="none" stroke="#FACC15" stroke-width="4.8" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<path d="M 941.0 512.0 L 941.0 422.0 Q 941.0 414.0 949.0 414.0 L 1549.0 414.0 Q 1557.0 414.0 1557.0 422.0 L 1557.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 941.0 512.0 L 941.0 422.0 Q 941.0 414.0 949.0 414.0 L 1549.0 414.0 Q 1557.0 414.0 1557.0 422.0 L 1557.0 508.0" fill="none" stroke="#8B4513" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1156.0 414.0 L 1156.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1156.0 414.0 L 1156.0 508.0" fill="none" stroke="#8B4513" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1357.0 414.0 L 1357.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1357.0 414.0 L 1357.0 508.0" fill="none" stroke="#8B4513" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1156.0" cy="414.0" r="5.0" fill="#8B4513" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="1357.0" cy="414.0" r="4.8" fill="#8B4513" stroke="#ffffff" stroke-width="1.5"/>
+<path d="M 979.0 512.0 L 979.0 434.0 Q 979.0 426.0 987.0 426.0 L 1595.0 426.0 Q 1603.0 426.0 1603.0 434.0 L 1603.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 979.0 512.0 L 979.0 434.0 Q 979.0 426.0 987.0 426.0 L 1595.0 426.0 Q 1603.0 426.0 1603.0 434.0 L 1603.0 508.0" fill="none" stroke="#1E293B" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1204.0 426.0 L 1204.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1204.0 426.0 L 1204.0 508.0" fill="none" stroke="#1E293B" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1403.0 426.0 L 1403.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1403.0 426.0 L 1403.0 508.0" fill="none" stroke="#1E293B" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1204.0" cy="426.0" r="5.0" fill="#1E293B" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="1403.0" cy="426.0" r="4.8" fill="#1E293B" stroke="#ffffff" stroke-width="1.5"/>
+<path d="M 1017.0 512.0 L 1017.0 446.0 Q 1017.0 438.0 1025.0 438.0 L 1641.0 438.0 Q 1649.0 438.0 1649.0 446.0 L 1649.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1017.0 512.0 L 1017.0 446.0 Q 1017.0 438.0 1025.0 438.0 L 1641.0 438.0 Q 1649.0 438.0 1649.0 446.0 L 1649.0 508.0" fill="none" stroke="#64748B" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1252.0 438.0 L 1252.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1252.0 438.0 L 1252.0 508.0" fill="none" stroke="#64748B" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1449.0 438.0 L 1449.0 508.0" fill="none" stroke="#ffffff" stroke-width="7.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1449.0 438.0 L 1449.0 508.0" fill="none" stroke="#64748B" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1252.0" cy="438.0" r="5.0" fill="#64748B" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="1449.0" cy="438.0" r="4.8" fill="#64748B" stroke="#ffffff" stroke-width="1.5"/>
+<path d="M 941.0 658.0 L 941.0 774.0 Q 941.0 782.0 933.0 782.0 L 515.0 782.0 Q 507.0 782.0 507.0 790.0 L 507.0 965.0" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 941.0 658.0 L 941.0 774.0 Q 941.0 782.0 933.0 782.0 L 515.0 782.0 Q 507.0 782.0 507.0 790.0 L 507.0 965.0" fill="none" stroke="#8B4513" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 941.0 782.0 L 949.2 782.0 Q 956.0 782.0 956.0 788.8 L 956.0 965.0" fill="none" stroke="#ffffff" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 941.0 782.0 L 949.2 782.0 Q 956.0 782.0 956.0 788.8 L 956.0 965.0" fill="none" stroke="#8B4513" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="941.0" cy="782.0" r="4.5" fill="#8B4513" stroke="#ffffff" stroke-width="1.4"/>
+<path d="M 979.0 658.0 L 979.0 785.0 Q 979.0 793.0 971.0 793.0 L 557.0 793.0 Q 549.0 793.0 549.0 801.0 L 549.0 965.0" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 979.0 658.0 L 979.0 785.0 Q 979.0 793.0 971.0 793.0 L 557.0 793.0 Q 549.0 793.0 549.0 801.0 L 549.0 965.0" fill="none" stroke="#1E293B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 979.0 793.0 L 983.9 793.0 Q 988.0 793.0 988.0 797.1 L 988.0 965.0" fill="none" stroke="#ffffff" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 979.0 793.0 L 983.9 793.0 Q 988.0 793.0 988.0 797.1 L 988.0 965.0" fill="none" stroke="#1E293B" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="979.0" cy="793.0" r="4.5" fill="#1E293B" stroke="#ffffff" stroke-width="1.4"/>
+<path d="M 1017.0 658.0 L 1017.0 796.0 Q 1017.0 804.0 1009.0 804.0 L 599.0 804.0 Q 591.0 804.0 591.0 812.0 L 591.0 965.0" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1017.0 658.0 L 1017.0 796.0 Q 1017.0 804.0 1009.0 804.0 L 599.0 804.0 Q 591.0 804.0 591.0 812.0 L 591.0 965.0" fill="none" stroke="#64748B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1017.0 804.0 L 1018.6 804.0 Q 1020.0 804.0 1020.0 805.4 L 1020.0 965.0" fill="none" stroke="#ffffff" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1017.0 804.0 L 1018.6 804.0 Q 1020.0 804.0 1020.0 805.4 L 1020.0 965.0" fill="none" stroke="#64748B" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1017.0" cy="804.0" r="4.5" fill="#64748B" stroke="#ffffff" stroke-width="1.4"/>
+<path d="M 1055.0 658.0 L 1055.0 810.0 Q 1055.0 818.0 1047.0 818.0 L 641.0 818.0 Q 633.0 818.0 633.0 826.0 L 633.0 965.0" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1055.0 658.0 L 1055.0 810.0 Q 1055.0 818.0 1047.0 818.0 L 641.0 818.0 Q 633.0 818.0 633.0 826.0 L 633.0 965.0" fill="none" stroke="#1D4ED8" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 900.0 782.0 L 900.0 965.0" fill="none" stroke="#ffffff" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 900.0 782.0 L 900.0 965.0" fill="none" stroke="#8B4513" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="900.0" cy="782.0" r="4.2" fill="#8B4513" stroke="#ffffff" stroke-width="1.4"/>
+<path d="M 507.0 1125.0 L 507.0 1164.0 Q 507.0 1172.0 515.0 1172.0 L 656.0 1172.0 Q 664.0 1172.0 664.0 1164.0 L 664.0 904.0 Q 664.0 896.0 672.0 896.0 L 687.0 896.0 Q 695.0 896.0 695.0 904.0 L 695.0 965.0" fill="none" stroke="#ffffff" stroke-width="6.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 507.0 1125.0 L 507.0 1164.0 Q 507.0 1172.0 515.0 1172.0 L 656.0 1172.0 Q 664.0 1172.0 664.0 1164.0 L 664.0 904.0 Q 664.0 896.0 672.0 896.0 L 687.0 896.0 Q 695.0 896.0 695.0 904.0 L 695.0 965.0" fill="none" stroke="#8B4513" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 549.0 1125.0 L 549.0 1173.0 Q 549.0 1181.0 557.0 1181.0 L 661.0 1181.0 Q 669.0 1181.0 669.0 1173.0 L 669.0 913.0 Q 669.0 905.0 677.0 905.0 L 725.0 905.0 Q 733.0 905.0 733.0 913.0 L 733.0 965.0" fill="none" stroke="#ffffff" stroke-width="6.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 549.0 1125.0 L 549.0 1173.0 Q 549.0 1181.0 557.0 1181.0 L 661.0 1181.0 Q 669.0 1181.0 669.0 1173.0 L 669.0 913.0 Q 669.0 905.0 677.0 905.0 L 725.0 905.0 Q 733.0 905.0 733.0 913.0 L 733.0 965.0" fill="none" stroke="#1E293B" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 591.0 1125.0 L 591.0 1182.0 Q 591.0 1190.0 599.0 1190.0 L 666.0 1190.0 Q 674.0 1190.0 674.0 1182.0 L 674.0 922.0 Q 674.0 914.0 682.0 914.0 L 763.0 914.0 Q 771.0 914.0 771.0 922.0 L 771.0 965.0" fill="none" stroke="#ffffff" stroke-width="6.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 591.0 1125.0 L 591.0 1182.0 Q 591.0 1190.0 599.0 1190.0 L 666.0 1190.0 Q 674.0 1190.0 674.0 1182.0 L 674.0 922.0 Q 674.0 914.0 682.0 914.0 L 763.0 914.0 Q 771.0 914.0 771.0 922.0 L 771.0 965.0" fill="none" stroke="#64748B" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 695.0 896.0 L 820.0 896.0 Q 828.0 896.0 828.0 904.0 L 828.0 965.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 695.0 896.0 L 820.0 896.0 Q 828.0 896.0 828.0 904.0 L 828.0 965.0" fill="none" stroke="#8B4513" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="695.0" cy="896.0" r="4.0" fill="#8B4513" stroke="#ffffff" stroke-width="1.3"/>
+<path d="M 633.0 1125.0 L 633.0 1196.0 Q 633.0 1204.0 641.0 1204.0 L 1840.0 1204.0 Q 1848.0 1204.0 1848.0 1196.0 L 1848.0 1003.0 Q 1848.0 995.0 1856.0 995.0 L 1880.0 995.0" fill="none" stroke="#ffffff" stroke-width="6.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 633.0 1125.0 L 633.0 1196.0 Q 633.0 1204.0 641.0 1204.0 L 1840.0 1204.0 Q 1848.0 1204.0 1848.0 1196.0 L 1848.0 1003.0 Q 1848.0 995.0 1856.0 995.0 L 1880.0 995.0" fill="none" stroke="#1D4ED8" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 695.0 1125.0 L 695.0 1208.0 Q 695.0 1216.0 703.0 1216.0 L 1824.0 1216.0 Q 1832.0 1216.0 1832.0 1208.0 L 1832.0 958.0 Q 1832.0 950.0 1840.0 950.0 L 1880.0 950.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 695.0 1125.0 L 695.0 1208.0 Q 695.0 1216.0 703.0 1216.0 L 1824.0 1216.0 Q 1832.0 1216.0 1832.0 1208.0 L 1832.0 958.0 Q 1832.0 950.0 1840.0 950.0 L 1880.0 950.0" fill="none" stroke="#8B4513" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 733.0 1125.0 L 733.0 1217.0 Q 733.0 1225.0 741.0 1225.0 L 1816.0 1225.0 Q 1824.0 1225.0 1824.0 1217.0 L 1824.0 968.0 Q 1824.0 960.0 1832.0 960.0 L 1880.0 960.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 733.0 1125.0 L 733.0 1217.0 Q 733.0 1225.0 741.0 1225.0 L 1816.0 1225.0 Q 1824.0 1225.0 1824.0 1217.0 L 1824.0 968.0 Q 1824.0 960.0 1832.0 960.0 L 1880.0 960.0" fill="none" stroke="#1E293B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 771.0 1125.0 L 771.0 1226.0 Q 771.0 1234.0 779.0 1234.0 L 1808.0 1234.0 Q 1816.0 1234.0 1816.0 1226.0 L 1816.0 978.0 Q 1816.0 970.0 1824.0 970.0 L 1880.0 970.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 771.0 1125.0 L 771.0 1226.0 Q 771.0 1234.0 779.0 1234.0 L 1808.0 1234.0 Q 1816.0 1234.0 1816.0 1226.0 L 1816.0 978.0 Q 1816.0 970.0 1824.0 970.0 L 1880.0 970.0" fill="none" stroke="#64748B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 828.0 1125.0 L 828.0 1236.0 Q 828.0 1244.0 836.0 1244.0 L 1848.0 1244.0 Q 1856.0 1244.0 1856.0 1236.0 L 1856.0 990.0 Q 1856.0 982.0 1864.0 982.0 L 1880.0 982.0" fill="none" stroke="#ffffff" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 828.0 1125.0 L 828.0 1236.0 Q 828.0 1244.0 836.0 1244.0 L 1848.0 1244.0 Q 1856.0 1244.0 1856.0 1236.0 L 1856.0 990.0 Q 1856.0 982.0 1864.0 982.0 L 1880.0 982.0" fill="none" stroke="#8B4513" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1672.0 1385.0 L 1672.0 1268.0 Q 1672.0 1260.0 1680.0 1260.0 L 1858.0 1260.0 Q 1866.0 1260.0 1866.0 1252.0 L 1866.0 1014.4 Q 1866.0 1008.0 1872.4 1008.0 L 1880.0 1008.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1672.0 1385.0 L 1672.0 1268.0 Q 1672.0 1260.0 1680.0 1260.0 L 1858.0 1260.0 Q 1866.0 1260.0 1866.0 1252.0 L 1866.0 1014.4 Q 1866.0 1008.0 1872.4 1008.0 L 1880.0 1008.0" fill="none" stroke="#16A34A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1672.0 1385.0 L 1672.0 1268.0 Q 1672.0 1260.0 1680.0 1260.0 L 1858.0 1260.0 Q 1866.0 1260.0 1866.0 1252.0 L 1866.0 1014.4 Q 1866.0 1008.0 1872.4 1008.0 L 1880.0 1008.0" fill="none" stroke="#FACC15" stroke-width="3.4" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<path d="M 1557.0 662.0 L 1557.0 828.0 Q 1557.0 836.0 1549.0 836.0 L 1098.0 836.0 Q 1090.0 836.0 1090.0 844.0 L 1090.0 967.0" fill="none" stroke="#ffffff" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1557.0 662.0 L 1557.0 828.0 Q 1557.0 836.0 1549.0 836.0 L 1098.0 836.0 Q 1090.0 836.0 1090.0 844.0 L 1090.0 967.0" fill="none" stroke="#8B4513" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1356.0 836.0 L 1356.0 967.0" fill="none" stroke="#ffffff" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1356.0 836.0 L 1356.0 967.0" fill="none" stroke="#8B4513" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1356.0" cy="836.0" r="4.4" fill="#8B4513" stroke="#ffffff" stroke-width="1.4"/>
+<path d="M 1603.0 662.0 L 1603.0 838.0 Q 1603.0 846.0 1595.0 846.0 L 1130.0 846.0 Q 1122.0 846.0 1122.0 854.0 L 1122.0 967.0" fill="none" stroke="#ffffff" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1603.0 662.0 L 1603.0 838.0 Q 1603.0 846.0 1595.0 846.0 L 1130.0 846.0 Q 1122.0 846.0 1122.0 854.0 L 1122.0 967.0" fill="none" stroke="#1E293B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1388.0 846.0 L 1388.0 967.0" fill="none" stroke="#ffffff" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1388.0 846.0 L 1388.0 967.0" fill="none" stroke="#1E293B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1388.0" cy="846.0" r="4.4" fill="#1E293B" stroke="#ffffff" stroke-width="1.4"/>
+<path d="M 1649.0 662.0 L 1649.0 848.0 Q 1649.0 856.0 1641.0 856.0 L 1162.0 856.0 Q 1154.0 856.0 1154.0 864.0 L 1154.0 967.0" fill="none" stroke="#ffffff" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1649.0 662.0 L 1649.0 848.0 Q 1649.0 856.0 1641.0 856.0 L 1162.0 856.0 Q 1154.0 856.0 1154.0 864.0 L 1154.0 967.0" fill="none" stroke="#64748B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1420.0 856.0 L 1420.0 967.0" fill="none" stroke="#ffffff" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1420.0 856.0 L 1420.0 967.0" fill="none" stroke="#64748B" stroke-width="4.0" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1420.0" cy="856.0" r="4.4" fill="#64748B" stroke="#ffffff" stroke-width="1.4"/>
+<path d="M 900.0 1125.0 L 900.0 1156.0 Q 900.0 1164.0 908.0 1164.0 L 956.0 1164.0 Q 964.0 1164.0 964.0 1156.0 L 964.0 1125.0" fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 900.0 1125.0 L 900.0 1156.0 Q 900.0 1164.0 908.0 1164.0 L 956.0 1164.0 Q 964.0 1164.0 964.0 1156.0 L 964.0 1125.0" fill="none" stroke="#DC2626" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1012.0 1125.0 L 1012.0 1170.0 Q 1012.0 1178.0 1004.0 1178.0 L 428.0 1178.0 Q 420.0 1178.0 420.0 1170.0 L 420.0 734.0 Q 420.0 726.0 412.0 726.0 L 400.0 726.0" fill="none" stroke="#ffffff" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1012.0 1125.0 L 1012.0 1170.0 Q 1012.0 1178.0 1004.0 1178.0 L 428.0 1178.0 Q 420.0 1178.0 420.0 1170.0 L 420.0 734.0 Q 420.0 726.0 412.0 726.0 L 400.0 726.0" fill="none" stroke="#DC2626" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 400.0 862.0 L 424.7 862.0 Q 432.0 862.0 432.0 869.3 L 432.0 870.7 Q 432.0 878.0 439.3 878.0 L 1182.0 878.0 Q 1190.0 878.0 1190.0 886.0 L 1190.0 967.0" fill="none" stroke="#ffffff" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 400.0 862.0 L 424.7 862.0 Q 432.0 862.0 432.0 869.3 L 432.0 870.7 Q 432.0 878.0 439.3 878.0 L 1182.0 878.0 Q 1190.0 878.0 1190.0 886.0 L 1190.0 967.0" fill="none" stroke="#EA580C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1190.0 878.0 L 1247.5 878.0 Q 1255.5 878.0 1255.5 886.0 L 1255.5 965.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1190.0 878.0 L 1247.5 878.0 Q 1255.5 878.0 1255.5 886.0 L 1255.5 965.0" fill="none" stroke="#EA580C" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1255.5 878.0 L 1286.5 878.0 Q 1294.5 878.0 1294.5 886.0 L 1294.5 965.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1255.5 878.0 L 1286.5 878.0 Q 1294.5 878.0 1294.5 886.0 L 1294.5 965.0" fill="none" stroke="#EA580C" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1190.0" cy="878.0" r="3.8" fill="#EA580C" stroke="#ffffff" stroke-width="1.2"/>
+<circle cx="1255.5" cy="878.0" r="3.8" fill="#EA580C" stroke="#ffffff" stroke-width="1.2"/>
+<path d="M 1294.5 1125.0 L 1294.5 1164.0 Q 1294.5 1172.0 1302.5 1172.0 L 1312.0 1172.0 Q 1320.0 1172.0 1320.0 1164.0 L 1320.0 900.0 Q 1320.0 892.0 1328.0 892.0 L 1448.0 892.0 Q 1456.0 892.0 1456.0 900.0 L 1456.0 967.0" fill="none" stroke="#ffffff" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1294.5 1125.0 L 1294.5 1164.0 Q 1294.5 1172.0 1302.5 1172.0 L 1312.0 1172.0 Q 1320.0 1172.0 1320.0 1164.0 L 1320.0 900.0 Q 1320.0 892.0 1328.0 892.0 L 1448.0 892.0 Q 1456.0 892.0 1456.0 900.0 L 1456.0 967.0" fill="none" stroke="#EA580C" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="10 6"/>
+<path d="M 1190.0 1123.0 L 1190.0 1270.0 Q 1190.0 1278.0 1182.0 1278.0 L 716.0 1278.0 Q 708.0 1278.0 708.0 1286.0 L 708.0 1385.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1190.0 1123.0 L 1190.0 1270.0 Q 1190.0 1278.0 1182.0 1278.0 L 716.0 1278.0 Q 708.0 1278.0 708.0 1286.0 L 708.0 1385.0" fill="none" stroke="#1D4ED8" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1255.5 1125.0 L 1255.5 1270.0 Q 1255.5 1278.0 1247.5 1278.0 L 1190.0 1278.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1255.5 1125.0 L 1255.5 1270.0 Q 1255.5 1278.0 1247.5 1278.0 L 1190.0 1278.0" fill="none" stroke="#1D4ED8" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1456.0 1123.0 L 1456.0 1270.0 Q 1456.0 1278.0 1448.0 1278.0 L 1255.5 1278.0" fill="none" stroke="#ffffff" stroke-width="5.3" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1456.0 1123.0 L 1456.0 1270.0 Q 1456.0 1278.0 1448.0 1278.0 L 1255.5 1278.0" fill="none" stroke="#1D4ED8" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1190.0" cy="1278.0" r="3.8" fill="#1D4ED8" stroke="#ffffff" stroke-width="1.2"/>
+<circle cx="1255.5" cy="1278.0" r="3.8" fill="#1D4ED8" stroke="#ffffff" stroke-width="1.2"/>
+<path d="M 400.0 780.0 L 456.0 780.0" fill="none" stroke="#0f172a" stroke-width="11.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 400.0 780.0 L 456.0 780.0" fill="none" stroke="#334155" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.55"/>
+<path d="M 1880.0 600.0 L 1835.0 600.0" fill="none" stroke="#0f172a" stroke-width="11.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1880.0 600.0 L 1835.0 600.0" fill="none" stroke="#334155" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.55"/>
+<path d="M 1835.0 580.0 L 1800.0 580.0 Q 1792.0 580.0 1792.0 588.0 L 1792.0 892.0 Q 1792.0 900.0 1784.0 900.0 L 1545.0 900.0 Q 1537.0 900.0 1537.0 908.0 L 1537.0 984.0" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1835.0 580.0 L 1800.0 580.0 Q 1792.0 580.0 1792.0 588.0 L 1792.0 892.0 Q 1792.0 900.0 1784.0 900.0 L 1545.0 900.0 Q 1537.0 900.0 1537.0 908.0 L 1537.0 984.0" fill="none" stroke="#7C3AED" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1835.0 585.5 L 1795.5 585.5 Q 1787.5 585.5 1787.5 593.5 L 1787.5 899.0 Q 1787.5 907.0 1779.5 907.0 L 1571.0 907.0 Q 1563.0 907.0 1563.0 915.0 L 1563.0 984.0" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1835.0 585.5 L 1795.5 585.5 Q 1787.5 585.5 1787.5 593.5 L 1787.5 899.0 Q 1787.5 907.0 1779.5 907.0 L 1571.0 907.0 Q 1563.0 907.0 1563.0 915.0 L 1563.0 984.0" fill="none" stroke="#4338CA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1835.0 591.0 L 1791.0 591.0 Q 1783.0 591.0 1783.0 599.0 L 1783.0 906.0 Q 1783.0 914.0 1775.0 914.0 L 1597.0 914.0 Q 1589.0 914.0 1589.0 922.0 L 1589.0 984.0" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1835.0 591.0 L 1791.0 591.0 Q 1783.0 591.0 1783.0 599.0 L 1783.0 906.0 Q 1783.0 914.0 1775.0 914.0 L 1597.0 914.0 Q 1589.0 914.0 1589.0 922.0 L 1589.0 984.0" fill="none" stroke="#0F766E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1835.0 596.5 L 1786.5 596.5 Q 1778.5 596.5 1778.5 604.5 L 1778.5 913.0 Q 1778.5 921.0 1770.5 921.0 L 1623.0 921.0 Q 1615.0 921.0 1615.0 929.0 L 1615.0 984.0" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1835.0 596.5 L 1786.5 596.5 Q 1778.5 596.5 1778.5 604.5 L 1778.5 913.0 Q 1778.5 921.0 1770.5 921.0 L 1623.0 921.0 Q 1615.0 921.0 1615.0 929.0 L 1615.0 984.0" fill="none" stroke="#0284C7" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1835.0 602.0 L 1782.0 602.0 Q 1774.0 602.0 1774.0 610.0 L 1774.0 920.0 Q 1774.0 928.0 1766.0 928.0 L 1649.0 928.0 Q 1641.0 928.0 1641.0 936.0 L 1641.0 984.0" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1835.0 602.0 L 1782.0 602.0 Q 1774.0 602.0 1774.0 610.0 L 1774.0 920.0 Q 1774.0 928.0 1766.0 928.0 L 1649.0 928.0 Q 1641.0 928.0 1641.0 936.0 L 1641.0 984.0" fill="none" stroke="#A21CAF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1835.0 607.5 L 1777.5 607.5 Q 1769.5 607.5 1769.5 615.5 L 1769.5 927.0 Q 1769.5 935.0 1761.5 935.0 L 1675.0 935.0 Q 1667.0 935.0 1667.0 943.0 L 1667.0 984.0" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1835.0 607.5 L 1777.5 607.5 Q 1769.5 607.5 1769.5 615.5 L 1769.5 927.0 Q 1769.5 935.0 1761.5 935.0 L 1675.0 935.0 Q 1667.0 935.0 1667.0 943.0 L 1667.0 984.0" fill="none" stroke="#DB2777" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1835.0 613.0 L 1773.0 613.0 Q 1765.0 613.0 1765.0 621.0 L 1765.0 934.0 Q 1765.0 942.0 1757.0 942.0 L 1701.0 942.0 Q 1693.0 942.0 1693.0 950.0 L 1693.0 984.0" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1835.0 613.0 L 1773.0 613.0 Q 1765.0 613.0 1765.0 621.0 L 1765.0 934.0 Q 1765.0 942.0 1757.0 942.0 L 1701.0 942.0 Q 1693.0 942.0 1693.0 950.0 L 1693.0 984.0" fill="none" stroke="#059669" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1835.0 618.5 L 1768.5 618.5 Q 1760.5 618.5 1760.5 626.5 L 1760.5 941.0 Q 1760.5 949.0 1752.5 949.0 L 1727.0 949.0 Q 1719.0 949.0 1719.0 957.0 L 1719.0 984.0" fill="none" stroke="#ffffff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1835.0 618.5 L 1768.5 618.5 Q 1760.5 618.5 1760.5 626.5 L 1760.5 941.0 Q 1760.5 949.0 1752.5 949.0 L 1727.0 949.0 Q 1719.0 949.0 1719.0 957.0 L 1719.0 984.0" fill="none" stroke="#A21CAF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 508.0 661.0 L 508.0 702.0 Q 508.0 710.0 500.0 710.0 L 424.0 710.0 Q 416.0 710.0 416.0 718.0 L 416.0 1508.0 Q 416.0 1516.0 424.0 1516.0 L 626.0 1516.0 Q 634.0 1516.0 634.0 1524.0 L 634.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 508.0 661.0 L 508.0 702.0 Q 508.0 710.0 500.0 710.0 L 424.0 710.0 Q 416.0 710.0 416.0 718.0 L 416.0 1508.0 Q 416.0 1516.0 424.0 1516.0 L 626.0 1516.0 Q 634.0 1516.0 634.0 1524.0 L 634.0 1585.0" fill="none" stroke="#8B4513" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 552.0 661.0 L 552.0 712.0 Q 552.0 720.0 544.0 720.0 L 432.0 720.0 Q 424.0 720.0 424.0 728.0 L 424.0 1516.0 Q 424.0 1524.0 432.0 1524.0 L 634.0 1524.0 Q 642.0 1524.0 642.0 1532.0 L 642.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 552.0 661.0 L 552.0 712.0 Q 552.0 720.0 544.0 720.0 L 432.0 720.0 Q 424.0 720.0 424.0 728.0 L 424.0 1516.0 Q 424.0 1524.0 432.0 1524.0 L 634.0 1524.0 Q 642.0 1524.0 642.0 1532.0 L 642.0 1585.0" fill="none" stroke="#1E293B" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 596.0 661.0 L 596.0 722.0 Q 596.0 730.0 588.0 730.0 L 440.0 730.0 Q 432.0 730.0 432.0 738.0 L 432.0 1524.0 Q 432.0 1532.0 440.0 1532.0 L 642.0 1532.0 Q 650.0 1532.0 650.0 1540.0 L 650.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 596.0 661.0 L 596.0 722.0 Q 596.0 730.0 588.0 730.0 L 440.0 730.0 Q 432.0 730.0 432.0 738.0 L 432.0 1524.0 Q 432.0 1532.0 440.0 1532.0 L 642.0 1532.0 Q 650.0 1532.0 650.0 1540.0 L 650.0 1585.0" fill="none" stroke="#64748B" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 508.0 1385.0 L 508.0 1432.0 Q 508.0 1440.0 516.0 1440.0 L 650.0 1440.0 Q 658.0 1440.0 658.0 1448.0 L 658.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 508.0 1385.0 L 508.0 1432.0 Q 508.0 1440.0 516.0 1440.0 L 650.0 1440.0 Q 658.0 1440.0 658.0 1448.0 L 658.0 1585.0" fill="none" stroke="#1D4ED8" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1472.0 1385.0 L 1472.0 1490.0 Q 1472.0 1498.0 1464.0 1498.0 L 674.0 1498.0 Q 666.0 1498.0 666.0 1506.0 L 666.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1472.0 1385.0 L 1472.0 1490.0 Q 1472.0 1498.0 1464.0 1498.0 L 674.0 1498.0 Q 666.0 1498.0 666.0 1506.0 L 666.0 1585.0" fill="none" stroke="#16A34A" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1472.0 1385.0 L 1472.0 1490.0 Q 1472.0 1498.0 1464.0 1498.0 L 674.0 1498.0 Q 666.0 1498.0 666.0 1506.0 L 666.0 1585.0" fill="none" stroke="#FACC15" stroke-width="4.2" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<path d="M 1156.0 662.0 L 1156.0 714.0 Q 1156.0 722.0 1148.0 722.0 L 1054.0 722.0 Q 1046.0 722.0 1046.0 730.0 L 1046.0 1290.0 Q 1046.0 1298.0 1038.0 1298.0 L 899.0 1298.0 Q 891.0 1298.0 891.0 1306.0 L 891.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1156.0 662.0 L 1156.0 714.0 Q 1156.0 722.0 1148.0 722.0 L 1054.0 722.0 Q 1046.0 722.0 1046.0 730.0 L 1046.0 1290.0 Q 1046.0 1298.0 1038.0 1298.0 L 899.0 1298.0 Q 891.0 1298.0 891.0 1306.0 L 891.0 1585.0" fill="none" stroke="#8B4513" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1204.0 662.0 L 1204.0 723.0 Q 1204.0 731.0 1196.0 731.0 L 1060.0 731.0 Q 1052.0 731.0 1052.0 739.0 L 1052.0 1297.0 Q 1052.0 1305.0 1044.0 1305.0 L 906.0 1305.0 Q 898.0 1305.0 898.0 1313.0 L 898.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1204.0 662.0 L 1204.0 723.0 Q 1204.0 731.0 1196.0 731.0 L 1060.0 731.0 Q 1052.0 731.0 1052.0 739.0 L 1052.0 1297.0 Q 1052.0 1305.0 1044.0 1305.0 L 906.0 1305.0 Q 898.0 1305.0 898.0 1313.0 L 898.0 1585.0" fill="none" stroke="#1E293B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1252.0 662.0 L 1252.0 732.0 Q 1252.0 740.0 1244.0 740.0 L 1066.0 740.0 Q 1058.0 740.0 1058.0 748.0 L 1058.0 1304.0 Q 1058.0 1312.0 1050.0 1312.0 L 913.0 1312.0 Q 905.0 1312.0 905.0 1320.0 L 905.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1252.0 662.0 L 1252.0 732.0 Q 1252.0 740.0 1244.0 740.0 L 1066.0 740.0 Q 1058.0 740.0 1058.0 748.0 L 1058.0 1304.0 Q 1058.0 1312.0 1050.0 1312.0 L 913.0 1312.0 Q 905.0 1312.0 905.0 1320.0 L 905.0 1585.0" fill="none" stroke="#64748B" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 558.0 1385.0 L 558.0 1442.0 Q 558.0 1450.0 566.0 1450.0 L 904.0 1450.0 Q 912.0 1450.0 912.0 1458.0 L 912.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 558.0 1385.0 L 558.0 1442.0 Q 558.0 1450.0 566.0 1450.0 L 904.0 1450.0 Q 912.0 1450.0 912.0 1458.0 L 912.0 1585.0" fill="none" stroke="#1D4ED8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1522.0 1385.0 L 1522.0 1480.0 Q 1522.0 1488.0 1514.0 1488.0 L 927.0 1488.0 Q 919.0 1488.0 919.0 1496.0 L 919.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1522.0 1385.0 L 1522.0 1480.0 Q 1522.0 1488.0 1514.0 1488.0 L 927.0 1488.0 Q 919.0 1488.0 919.0 1496.0 L 919.0 1585.0" fill="none" stroke="#16A34A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1522.0 1385.0 L 1522.0 1480.0 Q 1522.0 1488.0 1514.0 1488.0 L 927.0 1488.0 Q 919.0 1488.0 919.0 1496.0 L 919.0 1585.0" fill="none" stroke="#FACC15" stroke-width="3.4" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<path d="M 1357.0 662.0 L 1357.0 738.0 Q 1357.0 746.0 1365.0 746.0 L 1486.0 746.0 Q 1494.0 746.0 1494.0 754.0 L 1494.0 1286.0 Q 1494.0 1294.0 1486.0 1294.0 L 1122.0 1294.0 Q 1114.0 1294.0 1114.0 1302.0 L 1114.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1357.0 662.0 L 1357.0 738.0 Q 1357.0 746.0 1365.0 746.0 L 1486.0 746.0 Q 1494.0 746.0 1494.0 754.0 L 1494.0 1286.0 Q 1494.0 1294.0 1486.0 1294.0 L 1122.0 1294.0 Q 1114.0 1294.0 1114.0 1302.0 L 1114.0 1585.0" fill="none" stroke="#8B4513" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1345.0 1294.0 L 1345.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1345.0 1294.0 L 1345.0 1585.0" fill="none" stroke="#8B4513" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1345.0" cy="1294.0" r="4.0" fill="#8B4513" stroke="#ffffff" stroke-width="1.3"/>
+<path d="M 1403.0 662.0 L 1403.0 747.0 Q 1403.0 755.0 1411.0 755.0 L 1493.0 755.0 Q 1501.0 755.0 1501.0 763.0 L 1501.0 1293.0 Q 1501.0 1301.0 1493.0 1301.0 L 1129.0 1301.0 Q 1121.0 1301.0 1121.0 1309.0 L 1121.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1403.0 662.0 L 1403.0 747.0 Q 1403.0 755.0 1411.0 755.0 L 1493.0 755.0 Q 1501.0 755.0 1501.0 763.0 L 1501.0 1293.0 Q 1501.0 1301.0 1493.0 1301.0 L 1129.0 1301.0 Q 1121.0 1301.0 1121.0 1309.0 L 1121.0 1585.0" fill="none" stroke="#1E293B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1352.0 1301.0 L 1352.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1352.0 1301.0 L 1352.0 1585.0" fill="none" stroke="#1E293B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1352.0" cy="1301.0" r="4.0" fill="#1E293B" stroke="#ffffff" stroke-width="1.3"/>
+<path d="M 1449.0 662.0 L 1449.0 756.0 Q 1449.0 764.0 1457.0 764.0 L 1500.0 764.0 Q 1508.0 764.0 1508.0 772.0 L 1508.0 1300.0 Q 1508.0 1308.0 1500.0 1308.0 L 1136.0 1308.0 Q 1128.0 1308.0 1128.0 1316.0 L 1128.0 1585.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1449.0 662.0 L 1449.0 756.0 Q 1449.0 764.0 1457.0 764.0 L 1500.0 764.0 Q 1508.0 764.0 1508.0 772.0 L 1508.0 1300.0 Q 1508.0 1308.0 1500.0 1308.0 L 1136.0 1308.0 Q 1128.0 1308.0 1128.0 1316.0 L 1128.0 1585.0" fill="none" stroke="#64748B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1359.0 1308.0 L 1359.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1359.0 1308.0 L 1359.0 1585.0" fill="none" stroke="#64748B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1359.0" cy="1308.0" r="4.0" fill="#64748B" stroke="#ffffff" stroke-width="1.3"/>
+<path d="M 608.0 1385.0 L 608.0 1452.0 Q 608.0 1460.0 616.0 1460.0 L 1127.0 1460.0 Q 1135.0 1460.0 1135.0 1468.0 L 1135.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 608.0 1385.0 L 608.0 1452.0 Q 608.0 1460.0 616.0 1460.0 L 1127.0 1460.0 Q 1135.0 1460.0 1135.0 1468.0 L 1135.0 1585.0" fill="none" stroke="#1D4ED8" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1572.0 1385.0 L 1572.0 1470.0 Q 1572.0 1478.0 1564.0 1478.0 L 1150.0 1478.0 Q 1142.0 1478.0 1142.0 1486.0 L 1142.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1572.0 1385.0 L 1572.0 1470.0 Q 1572.0 1478.0 1564.0 1478.0 L 1150.0 1478.0 Q 1142.0 1478.0 1142.0 1486.0 L 1142.0 1585.0" fill="none" stroke="#16A34A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1572.0 1385.0 L 1572.0 1470.0 Q 1572.0 1478.0 1564.0 1478.0 L 1150.0 1478.0 Q 1142.0 1478.0 1142.0 1486.0 L 1142.0 1585.0" fill="none" stroke="#FACC15" stroke-width="3.2" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<path d="M 1537.0 1106.0 L 1537.0 1220.0 Q 1537.0 1228.0 1529.0 1228.0 L 1157.0 1228.0 Q 1149.0 1228.0 1149.0 1236.0 L 1149.0 1585.0" fill="none" stroke="#ffffff" stroke-width="4.9" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1537.0 1106.0 L 1537.0 1220.0 Q 1537.0 1228.0 1529.0 1228.0 L 1157.0 1228.0 Q 1149.0 1228.0 1149.0 1236.0 L 1149.0 1585.0" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1563.0 1106.0 L 1563.0 1227.0 Q 1563.0 1235.0 1555.0 1235.0 L 1162.0 1235.0 Q 1154.0 1235.0 1154.0 1243.0 L 1154.0 1585.0" fill="none" stroke="#ffffff" stroke-width="4.9" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1563.0 1106.0 L 1563.0 1227.0 Q 1563.0 1235.0 1555.0 1235.0 L 1162.0 1235.0 Q 1154.0 1235.0 1154.0 1243.0 L 1154.0 1585.0" fill="none" stroke="#4338CA" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1589.0 1106.0 L 1589.0 1234.0 Q 1589.0 1242.0 1581.0 1242.0 L 1167.0 1242.0 Q 1159.0 1242.0 1159.0 1250.0 L 1159.0 1585.0" fill="none" stroke="#ffffff" stroke-width="4.9" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1589.0 1106.0 L 1589.0 1234.0 Q 1589.0 1242.0 1581.0 1242.0 L 1167.0 1242.0 Q 1159.0 1242.0 1159.0 1250.0 L 1159.0 1585.0" fill="none" stroke="#0F766E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1615.0 1106.0 L 1615.0 1241.0 Q 1615.0 1249.0 1607.0 1249.0 L 1172.0 1249.0 Q 1164.0 1249.0 1164.0 1257.0 L 1164.0 1585.0" fill="none" stroke="#ffffff" stroke-width="4.9" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1615.0 1106.0 L 1615.0 1241.0 Q 1615.0 1249.0 1607.0 1249.0 L 1172.0 1249.0 Q 1164.0 1249.0 1164.0 1257.0 L 1164.0 1585.0" fill="none" stroke="#0284C7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1641.0 1106.0 L 1641.0 1248.0 Q 1641.0 1256.0 1633.0 1256.0 L 1177.0 1256.0 Q 1169.0 1256.0 1169.0 1264.0 L 1169.0 1585.0" fill="none" stroke="#ffffff" stroke-width="4.9" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1641.0 1106.0 L 1641.0 1248.0 Q 1641.0 1256.0 1633.0 1256.0 L 1177.0 1256.0 Q 1169.0 1256.0 1169.0 1264.0 L 1169.0 1585.0" fill="none" stroke="#A21CAF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1667.0 1106.0 L 1667.0 1257.0 Q 1667.0 1265.0 1659.0 1265.0 L 1379.0 1265.0 Q 1371.0 1265.0 1371.0 1273.0 L 1371.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1667.0 1106.0 L 1667.0 1257.0 Q 1667.0 1265.0 1659.0 1265.0 L 1379.0 1265.0 Q 1371.0 1265.0 1371.0 1273.0 L 1371.0 1585.0" fill="none" stroke="#DB2777" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1693.0 1106.0 L 1693.0 1264.0 Q 1693.0 1272.0 1685.0 1272.0 L 1385.0 1272.0 Q 1377.0 1272.0 1377.0 1280.0 L 1377.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1693.0 1106.0 L 1693.0 1264.0 Q 1693.0 1272.0 1685.0 1272.0 L 1385.0 1272.0 Q 1377.0 1272.0 1377.0 1280.0 L 1377.0 1585.0" fill="none" stroke="#059669" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1719.0 1106.0 L 1719.0 1271.0 Q 1719.0 1279.0 1711.0 1279.0 L 1391.0 1279.0 Q 1383.0 1279.0 1383.0 1287.0 L 1383.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1719.0 1106.0 L 1719.0 1271.0 Q 1719.0 1279.0 1711.0 1279.0 L 1391.0 1279.0 Q 1383.0 1279.0 1383.0 1287.0 L 1383.0 1585.0" fill="none" stroke="#A21CAF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1090.0 1123.0 L 1090.0 1502.0 Q 1090.0 1510.0 1098.0 1510.0 L 1598.0 1510.0 Q 1606.0 1510.0 1606.0 1518.0 L 1606.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1090.0 1123.0 L 1090.0 1502.0 Q 1090.0 1510.0 1098.0 1510.0 L 1598.0 1510.0 Q 1606.0 1510.0 1606.0 1518.0 L 1606.0 1585.0" fill="none" stroke="#8B4513" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1356.0 1123.0 L 1356.0 1524.0 Q 1356.0 1532.0 1364.0 1532.0 L 1618.0 1532.0 Q 1626.0 1532.0 1626.0 1540.0 L 1626.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1356.0 1123.0 L 1356.0 1524.0 Q 1356.0 1532.0 1364.0 1532.0 L 1618.0 1532.0 Q 1626.0 1532.0 1626.0 1540.0 L 1626.0 1585.0" fill="none" stroke="#8B4513" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1122.0 1123.0 L 1122.0 1509.0 Q 1122.0 1517.0 1130.0 1517.0 L 1604.0 1517.0 Q 1612.0 1517.0 1612.0 1525.0 L 1612.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1122.0 1123.0 L 1122.0 1509.0 Q 1122.0 1517.0 1130.0 1517.0 L 1604.0 1517.0 Q 1612.0 1517.0 1612.0 1525.0 L 1612.0 1585.0" fill="none" stroke="#1E293B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1388.0 1123.0 L 1388.0 1531.0 Q 1388.0 1539.0 1396.0 1539.0 L 1624.0 1539.0 Q 1632.0 1539.0 1632.0 1547.0 L 1632.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1388.0 1123.0 L 1388.0 1531.0 Q 1388.0 1539.0 1396.0 1539.0 L 1624.0 1539.0 Q 1632.0 1539.0 1632.0 1547.0 L 1632.0 1585.0" fill="none" stroke="#1E293B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1154.0 1123.0 L 1154.0 1516.0 Q 1154.0 1524.0 1162.0 1524.0 L 1610.0 1524.0 Q 1618.0 1524.0 1618.0 1532.0 L 1618.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1154.0 1123.0 L 1154.0 1516.0 Q 1154.0 1524.0 1162.0 1524.0 L 1610.0 1524.0 Q 1618.0 1524.0 1618.0 1532.0 L 1618.0 1585.0" fill="none" stroke="#64748B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1420.0 1123.0 L 1420.0 1538.0 Q 1420.0 1546.0 1428.0 1546.0 L 1630.0 1546.0 Q 1638.0 1546.0 1638.0 1554.0 L 1638.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1420.0 1123.0 L 1420.0 1538.0 Q 1420.0 1546.0 1428.0 1546.0 L 1630.0 1546.0 Q 1638.0 1546.0 1638.0 1554.0 L 1638.0 1585.0" fill="none" stroke="#64748B" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 658.0 1385.0 L 658.0 1460.0 Q 658.0 1468.0 666.0 1468.0 L 1638.0 1468.0 Q 1646.0 1468.0 1646.0 1476.0 L 1646.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 658.0 1385.0 L 658.0 1460.0 Q 658.0 1468.0 666.0 1468.0 L 1638.0 1468.0 Q 1646.0 1468.0 1646.0 1476.0 L 1646.0 1585.0" fill="none" stroke="#1D4ED8" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1622.0 1385.0 L 1622.0 1442.0 Q 1622.0 1450.0 1630.0 1450.0 L 1644.0 1450.0 Q 1652.0 1450.0 1652.0 1458.0 L 1652.0 1585.0" fill="none" stroke="#ffffff" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1622.0 1385.0 L 1622.0 1442.0 Q 1622.0 1450.0 1630.0 1450.0 L 1644.0 1450.0 Q 1652.0 1450.0 1652.0 1458.0 L 1652.0 1585.0" fill="none" stroke="#16A34A" stroke-width="3.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1622.0 1385.0 L 1622.0 1442.0 Q 1622.0 1450.0 1630.0 1450.0 L 1644.0 1450.0 Q 1652.0 1450.0 1652.0 1458.0 L 1652.0 1585.0" fill="none" stroke="#FACC15" stroke-width="3.0" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+</g>
+
+  <g id="n-pe-bars-bottom" filter="url(#softShadow)">
+    <rect x="480.0" y="1345.0" width="356.0" height="62.0" rx="9" fill="#eff6ff" stroke="#2563eb" stroke-width="2.2"/>
+    <rect x="492.0" y="1377.0" width="332.0" height="16" rx="4" fill="#d97706" stroke="#92400e" stroke-width="1"/>
+    <text x="508.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1e3a8a">N1</text><text x="508.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#3b82f6">Giriş</text><circle cx="508.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="558.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1e3a8a">N2</text><text x="558.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#3b82f6">Isıtma</text><circle cx="558.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="608.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1e3a8a">N3</text><text x="608.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#3b82f6">Hav+Per</text><circle cx="608.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="658.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1e3a8a">N4</text><text x="658.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#3b82f6">Fan</text><circle cx="658.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="708.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1e3a8a">N5</text><text x="708.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#3b82f6">Kum.</text><circle cx="708.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="758.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1e3a8a">N6</text><text x="758.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#3b82f6">Yedek</text><circle cx="758.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="808.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#1e3a8a">N7</text><text x="808.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#3b82f6">Yedek</text><circle cx="808.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/>
+    <rect x="480.0" y="1323.0" width="118" height="20" rx="5" fill="#1d4ed8"/>
+    <text x="539.0" y="1336.5" text-anchor="middle" font-size="10.2" font-weight="800" fill="#ffffff">N-BARA (35 mm²)</text>
+
+    <rect x="1444.0" y="1345.0" width="356.0" height="62.0" rx="9" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.2"/>
+    <rect x="1456.0" y="1377.0" width="332.0" height="16" rx="4" fill="#d97706" stroke="#92400e" stroke-width="1"/>
+    <text x="1472.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#14532d">PE1</text><text x="1472.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#16a34a">Giriş</text><circle cx="1472.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="1522.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#14532d">PE2</text><text x="1522.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#16a34a">Isıtma</text><circle cx="1522.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="1572.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#14532d">PE3</text><text x="1572.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#16a34a">Hav+Per</text><circle cx="1572.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="1622.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#14532d">PE4</text><text x="1622.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#16a34a">Fan</text><circle cx="1622.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="1672.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#14532d">PE5</text><text x="1672.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#16a34a">K.Priz</text><circle cx="1672.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="1722.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#14532d">PE6</text><text x="1722.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#16a34a">Gövde</text><circle cx="1722.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/><text x="1772.0" y="1358.0" text-anchor="middle" font-size="9.5" font-weight="800" fill="#14532d">PE7</text><text x="1772.0" y="1370.0" text-anchor="middle" font-size="7.8" font-weight="700" fill="#16a34a">Yedek</text><circle cx="1772.0" cy="1385.0" r="5.2" fill="#fef08a" stroke="#78350f" stroke-width="1.3"/>
+    <rect x="1674.0" y="1323.0" width="126" height="20" rx="5" fill="#15803d"/>
+    <text x="1737.0" y="1336.5" text-anchor="middle" font-size="10.2" font-weight="800" fill="#ffffff">PE-BARA (50 mm²)</text>
+  </g>
+
+<g id="badges-top" filter="url(#softShadow)">
+
+        <g>
+          <rect x="518.0" y="461.0" width="156.0" height="26" rx="6" fill="#0B2540" stroke="#ffffff" stroke-width="2"/>
+          <text x="596.0" y="478.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">X0 • 50/35/50 mm²</text>
+        </g>
+
+        <g>
+          <rect x="741.0" y="461.0" width="136.0" height="26" rx="6" fill="#b91c1c" stroke="#ffffff" stroke-width="2"/>
+          <text x="809.0" y="478.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">Q0 • 160A ŞALTER</text>
+        </g>
+
+        <g>
+          <rect x="938.0" y="461.0" width="122.0" height="26" rx="6" fill="#334155" stroke="#ffffff" stroke-width="2"/>
+          <text x="999.0" y="478.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">DB1 • 4×160A</text>
+        </g>
+
+        <g>
+          <rect x="1137.0" y="461.0" width="134.0" height="26" rx="6" fill="#991b1b" stroke="#ffffff" stroke-width="2"/>
+          <text x="1204.0" y="478.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">Q1 • 80A ISITMA</text>
+        </g>
+
+        <g>
+          <rect x="1334.0" y="461.0" width="138.0" height="26" rx="6" fill="#0369a1" stroke="#ffffff" stroke-width="2"/>
+          <text x="1403.0" y="478.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">Q2 • 63A HAV+PER</text>
+        </g>
+
+        <g>
+          <rect x="1541.0" y="461.0" width="124.0" height="26" rx="6" fill="#ea580c" stroke="#ffffff" stroke-width="2"/>
+          <text x="1603.0" y="478.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">Q3 • 63A FAN</text>
+        </g>
+
+        <g>
+          <rect x="494.0" y="917.0" width="152.0" height="26" rx="6" fill="#1d4ed8" stroke="#ffffff" stroke-width="2"/>
+          <text x="570.0" y="934.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">QF1 • 63A 4P 30mA</text>
+        </g>
+
+        <g>
+          <rect x="687.0" y="917.0" width="92.0" height="26" rx="6" fill="#1e293b" stroke="#ffffff" stroke-width="2"/>
+          <text x="733.0" y="934.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">Q4 • 32A</text>
+        </g>
+
+        <g>
+          <rect x="805.0" y="917.0" width="46.0" height="26" rx="6" fill="#334155" stroke="#ffffff" stroke-width="2"/>
+          <text x="828.0" y="934.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">Q5</text>
+        </g>
+
+        <g>
+          <rect x="877.0" y="917.0" width="46.0" height="26" rx="6" fill="#dc2626" stroke="#ffffff" stroke-width="2"/>
+          <text x="900.0" y="934.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">F1</text>
+        </g>
+
+        <g>
+          <rect x="944.0" y="917.0" width="88.0" height="26" rx="6" fill="#b91c1c" stroke="#ffffff" stroke-width="2"/>
+          <text x="988.0" y="934.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">FK1 • FAZ</text>
+        </g>
+
+        <g>
+          <rect x="1076.0" y="917.0" width="132.0" height="26" rx="6" fill="#ea580c" stroke="#ffffff" stroke-width="2"/>
+          <text x="1142.0" y="934.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">KM-F1 • 18 FAN</text>
+        </g>
+
+        <g>
+          <rect x="1241.0" y="917.0" width="68.0" height="26" rx="6" fill="#c2410c" stroke="#ffffff" stroke-width="2"/>
+          <text x="1275.0" y="934.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">KT1 3s</text>
+        </g>
+
+        <g>
+          <rect x="1342.0" y="917.0" width="132.0" height="26" rx="6" fill="#ea580c" stroke="#ffffff" stroke-width="2"/>
+          <text x="1408.0" y="934.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">KM-F2 • 18 FAN</text>
+        </g>
+
+        <g>
+          <rect x="1541.0" y="941.0" width="174.0" height="26" rx="6" fill="#6d28d9" stroke="#ffffff" stroke-width="2"/>
+          <text x="1628.0" y="958.0" text-anchor="middle" font-size="11.2" font-weight="800" fill="#ffffff">X-KUM • D1–D5 / P1–P3</text>
+        </g>
+<rect x="403" y="771" width="54" height="18" rx="4" fill="#6d28d9" stroke="#ffffff" stroke-width="1.5"/><text x="430" y="783" text-anchor="middle" font-size="8.2" font-weight="800" fill="#ffffff">→ X-KUM</text>
+</g>
+<g id="field-sheaths">
+<path d="M 650.0 1585.0 L 650.0 1634.0 Q 650.0 1650.0 634.0 1650.0 L 281.0 1650.0 Q 265.0 1650.0 265.0 1666.0 L 265.0 1740.0" fill="none" stroke="#0f172a" stroke-width="16.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 650.0 1585.0 L 650.0 1634.0 Q 650.0 1650.0 634.0 1650.0 L 281.0 1650.0 Q 265.0 1650.0 265.0 1666.0 L 265.0 1740.0" fill="none" stroke="#334155" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.55"/>
+<path d="M 905.0 1585.0 L 905.0 1664.0 Q 905.0 1680.0 889.0 1680.0 L 721.0 1680.0 Q 705.0 1680.0 705.0 1696.0 L 705.0 1740.0" fill="none" stroke="#0f172a" stroke-width="15.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 905.0 1585.0 L 905.0 1664.0 Q 905.0 1680.0 889.0 1680.0 L 721.0 1680.0 Q 705.0 1680.0 705.0 1696.0 L 705.0 1740.0" fill="none" stroke="#334155" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.55"/>
+<path d="M 1140.0 1585.0 L 1140.0 1740.0" fill="none" stroke="#0f172a" stroke-width="15.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1140.0 1585.0 L 1140.0 1740.0" fill="none" stroke="#334155" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.55"/>
+<path d="M 1365.0 1585.0 L 1365.0 1664.0 Q 1365.0 1680.0 1381.0 1680.0 L 1559.0 1680.0 Q 1575.0 1680.0 1575.0 1696.0 L 1575.0 1740.0" fill="none" stroke="#0f172a" stroke-width="14.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1365.0 1585.0 L 1365.0 1664.0 Q 1365.0 1680.0 1381.0 1680.0 L 1559.0 1680.0 Q 1575.0 1680.0 1575.0 1696.0 L 1575.0 1740.0" fill="none" stroke="#334155" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.55"/>
+<path d="M 1630.0 1585.0 L 1630.0 1634.0 Q 1630.0 1650.0 1646.0 1650.0 L 1999.0 1650.0 Q 2015.0 1650.0 2015.0 1666.0 L 2015.0 1740.0" fill="none" stroke="#0f172a" stroke-width="15.0" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1630.0 1585.0 L 1630.0 1634.0 Q 1630.0 1650.0 1646.0 1650.0 L 1999.0 1650.0 Q 2015.0 1650.0 2015.0 1666.0 L 2015.0 1740.0" fill="none" stroke="#334155" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.55"/>
+<rect x="612.0" y="1574.0" width="76" height="22" rx="6" fill="#0B2540" stroke="#1F9D6B" stroke-width="1.4"/>
+<text x="650.0" y="1588.5" text-anchor="middle" font-size="9.2" font-weight="800" fill="#ffffff">GİRİŞ</text>
+<rect x="867.0" y="1574.0" width="76" height="22" rx="6" fill="#0B2540" stroke="#1F9D6B" stroke-width="1.4"/>
+<text x="905.0" y="1588.5" text-anchor="middle" font-size="9.2" font-weight="800" fill="#ffffff">80A ISITMA</text>
+<rect x="1102.0" y="1574.0" width="76" height="22" rx="6" fill="#0B2540" stroke="#1F9D6B" stroke-width="1.4"/>
+<text x="1140.0" y="1588.5" text-anchor="middle" font-size="9.2" font-weight="800" fill="#ffffff">HAV. 36M</text>
+<rect x="1327.0" y="1574.0" width="76" height="22" rx="6" fill="#0B2540" stroke="#1F9D6B" stroke-width="1.4"/>
+<text x="1365.0" y="1588.5" text-anchor="middle" font-size="9.2" font-weight="800" fill="#ffffff">PERDE 2M</text>
+<rect x="1592.0" y="1574.0" width="76" height="22" rx="6" fill="#0B2540" stroke="#1F9D6B" stroke-width="1.4"/>
+<text x="1630.0" y="1588.5" text-anchor="middle" font-size="9.2" font-weight="800" fill="#ffffff">FAN 2×18</text>
+</g>
+<g id="field-cores">
+<rect x="253.0" y="1734" width="24" height="14" rx="4" fill="#0f172a"/>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 257.2 1766.6 L 178.5 1792.8 Q 169.0 1796.0 169.0 1806.0 L 169.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 257.2 1766.6 L 178.5 1792.8 Q 169.0 1796.0 169.0 1806.0 L 169.0 1850.0" fill="none" stroke="#8B4513" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="148.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#8B4513" stroke-width="1.5"/>
+<text x="169.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">L1</text>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 258.2 1768.5 L 225.3 1790.5 Q 217.0 1796.0 217.0 1806.0 L 217.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 258.2 1768.5 L 225.3 1790.5 Q 217.0 1796.0 217.0 1806.0 L 217.0 1850.0" fill="none" stroke="#1E293B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="196.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#1E293B" stroke-width="1.5"/>
+<text x="217.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">L2</text>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 265.0 1772.2 L 265.0 1786.0 Q 265.0 1796.0 265.0 1806.0 L 265.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 265.0 1772.2 L 265.0 1786.0 Q 265.0 1796.0 265.0 1806.0 L 265.0 1850.0" fill="none" stroke="#64748B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="244.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#64748B" stroke-width="1.5"/>
+<text x="265.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">L3</text>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 271.8 1768.5 L 304.7 1790.5 Q 313.0 1796.0 313.0 1806.0 L 313.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 271.8 1768.5 L 304.7 1790.5 Q 313.0 1796.0 313.0 1806.0 L 313.0 1850.0" fill="none" stroke="#1D4ED8" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="292.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#1D4ED8" stroke-width="1.5"/>
+<text x="313.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">N</text>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 272.8 1766.6 L 351.5 1792.8 Q 361.0 1796.0 361.0 1806.0 L 361.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 272.8 1766.6 L 351.5 1792.8 Q 361.0 1796.0 361.0 1806.0 L 361.0 1850.0" fill="none" stroke="#16A34A" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 265.0 1746.0 L 265.0 1755.8 Q 265.0 1764.0 272.8 1766.6 L 351.5 1792.8 Q 361.0 1796.0 361.0 1806.0 L 361.0 1850.0" fill="none" stroke="#FACC15" stroke-width="3.8" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<rect x="340.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#16A34A" stroke-width="1.5"/>
+<text x="361.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">PE</text>
+<rect x="693.0" y="1734" width="24" height="14" rx="4" fill="#0f172a"/>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 697.2 1766.6 L 618.5 1792.8 Q 609.0 1796.0 609.0 1806.0 L 609.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 697.2 1766.6 L 618.5 1792.8 Q 609.0 1796.0 609.0 1806.0 L 609.0 1850.0" fill="none" stroke="#8B4513" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="588.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#8B4513" stroke-width="1.5"/>
+<text x="609.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">L1</text>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 698.2 1768.5 L 665.3 1790.5 Q 657.0 1796.0 657.0 1806.0 L 657.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 698.2 1768.5 L 665.3 1790.5 Q 657.0 1796.0 657.0 1806.0 L 657.0 1850.0" fill="none" stroke="#1E293B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="636.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#1E293B" stroke-width="1.5"/>
+<text x="657.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">L2</text>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 705.0 1772.2 L 705.0 1786.0 Q 705.0 1796.0 705.0 1806.0 L 705.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 705.0 1772.2 L 705.0 1786.0 Q 705.0 1796.0 705.0 1806.0 L 705.0 1850.0" fill="none" stroke="#64748B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="684.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#64748B" stroke-width="1.5"/>
+<text x="705.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">L3</text>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 711.8 1768.5 L 744.7 1790.5 Q 753.0 1796.0 753.0 1806.0 L 753.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 711.8 1768.5 L 744.7 1790.5 Q 753.0 1796.0 753.0 1806.0 L 753.0 1850.0" fill="none" stroke="#1D4ED8" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="732.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#1D4ED8" stroke-width="1.5"/>
+<text x="753.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">N</text>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 712.8 1766.6 L 791.5 1792.8 Q 801.0 1796.0 801.0 1806.0 L 801.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 712.8 1766.6 L 791.5 1792.8 Q 801.0 1796.0 801.0 1806.0 L 801.0 1850.0" fill="none" stroke="#16A34A" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 705.0 1746.0 L 705.0 1755.8 Q 705.0 1764.0 712.8 1766.6 L 791.5 1792.8 Q 801.0 1796.0 801.0 1806.0 L 801.0 1850.0" fill="none" stroke="#FACC15" stroke-width="3.8" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<rect x="780.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#16A34A" stroke-width="1.5"/>
+<text x="801.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">PE</text>
+<rect x="1128.0" y="1734" width="24" height="14" rx="4" fill="#0f172a"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1132.0 1765.5 L 981.8 1794.1 Q 972.0 1796.0 972.0 1806.0 L 972.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1132.0 1765.5 L 981.8 1794.1 Q 972.0 1796.0 972.0 1806.0 L 972.0 1850.0" fill="none" stroke="#8B4513" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="951.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#8B4513" stroke-width="1.5"/>
+<text x="972.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">3~</text>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1132.1 1766.1 L 1029.7 1793.4 Q 1020.0 1796.0 1020.0 1806.0 L 1020.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1132.1 1766.1 L 1029.7 1793.4 Q 1020.0 1796.0 1020.0 1806.0 L 1020.0 1850.0" fill="none" stroke="#1D4ED8" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="999.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#1D4ED8" stroke-width="1.5"/>
+<text x="1020.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">N</text>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1132.5 1767.3 L 1077.1 1791.9 Q 1068.0 1796.0 1068.0 1806.0 L 1068.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1132.5 1767.3 L 1077.1 1791.9 Q 1068.0 1796.0 1068.0 1806.0 L 1068.0 1850.0" fill="none" stroke="#16A34A" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1132.5 1767.3 L 1077.1 1791.9 Q 1068.0 1796.0 1068.0 1806.0 L 1068.0 1850.0" fill="none" stroke="#FACC15" stroke-width="3.8" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<rect x="1047.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#16A34A" stroke-width="1.5"/>
+<text x="1068.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">PE</text>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1135.1 1770.5 L 1122.0 1788.0 Q 1116.0 1796.0 1116.0 1806.0 L 1116.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1135.1 1770.5 L 1122.0 1788.0 Q 1116.0 1796.0 1116.0 1806.0 L 1116.0 1850.0" fill="none" stroke="#7C3AED" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1095.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#7C3AED" stroke-width="1.5"/>
+<text x="1116.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">D1</text>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1144.9 1770.5 L 1158.0 1788.0 Q 1164.0 1796.0 1164.0 1806.0 L 1164.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1144.9 1770.5 L 1158.0 1788.0 Q 1164.0 1796.0 1164.0 1806.0 L 1164.0 1850.0" fill="none" stroke="#4338CA" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1143.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#4338CA" stroke-width="1.5"/>
+<text x="1164.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">D2</text>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1147.5 1767.3 L 1202.9 1791.9 Q 1212.0 1796.0 1212.0 1806.0 L 1212.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1147.5 1767.3 L 1202.9 1791.9 Q 1212.0 1796.0 1212.0 1806.0 L 1212.0 1850.0" fill="none" stroke="#0F766E" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1191.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#0F766E" stroke-width="1.5"/>
+<text x="1212.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">D3</text>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1147.9 1766.1 L 1250.3 1793.4 Q 1260.0 1796.0 1260.0 1806.0 L 1260.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1147.9 1766.1 L 1250.3 1793.4 Q 1260.0 1796.0 1260.0 1806.0 L 1260.0 1850.0" fill="none" stroke="#0284C7" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1239.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#0284C7" stroke-width="1.5"/>
+<text x="1260.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">D4</text>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1148.0 1765.5 L 1298.2 1794.1 Q 1308.0 1796.0 1308.0 1806.0 L 1308.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1140.0 1746.0 L 1140.0 1755.8 Q 1140.0 1764.0 1148.0 1765.5 L 1298.2 1794.1 Q 1308.0 1796.0 1308.0 1806.0 L 1308.0 1850.0" fill="none" stroke="#A21CAF" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1287.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#A21CAF" stroke-width="1.5"/>
+<text x="1308.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">D5</text>
+<rect x="1563.0" y="1734" width="24" height="14" rx="4" fill="#0f172a"/>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1567.1 1766.1 L 1464.7 1793.4 Q 1455.0 1796.0 1455.0 1806.0 L 1455.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1567.1 1766.1 L 1464.7 1793.4 Q 1455.0 1796.0 1455.0 1806.0 L 1455.0 1850.0" fill="none" stroke="#1E293B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1434.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#1E293B" stroke-width="1.5"/>
+<text x="1455.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">3~</text>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1567.5 1767.3 L 1512.1 1791.9 Q 1503.0 1796.0 1503.0 1806.0 L 1503.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1567.5 1767.3 L 1512.1 1791.9 Q 1503.0 1796.0 1503.0 1806.0 L 1503.0 1850.0" fill="none" stroke="#1D4ED8" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1482.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#1D4ED8" stroke-width="1.5"/>
+<text x="1503.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">N</text>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1570.1 1770.5 L 1557.0 1788.0 Q 1551.0 1796.0 1551.0 1806.0 L 1551.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1570.1 1770.5 L 1557.0 1788.0 Q 1551.0 1796.0 1551.0 1806.0 L 1551.0 1850.0" fill="none" stroke="#16A34A" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1570.1 1770.5 L 1557.0 1788.0 Q 1551.0 1796.0 1551.0 1806.0 L 1551.0 1850.0" fill="none" stroke="#FACC15" stroke-width="3.8" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<rect x="1530.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#16A34A" stroke-width="1.5"/>
+<text x="1551.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">PE</text>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1579.9 1770.5 L 1593.0 1788.0 Q 1599.0 1796.0 1599.0 1806.0 L 1599.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1579.9 1770.5 L 1593.0 1788.0 Q 1599.0 1796.0 1599.0 1806.0 L 1599.0 1850.0" fill="none" stroke="#DB2777" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1578.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#DB2777" stroke-width="1.5"/>
+<text x="1599.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">P1</text>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1582.5 1767.3 L 1637.9 1791.9 Q 1647.0 1796.0 1647.0 1806.0 L 1647.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1582.5 1767.3 L 1637.9 1791.9 Q 1647.0 1796.0 1647.0 1806.0 L 1647.0 1850.0" fill="none" stroke="#059669" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1626.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+<text x="1647.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">P2</text>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1582.9 1766.1 L 1685.3 1793.4 Q 1695.0 1796.0 1695.0 1806.0 L 1695.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 1575.0 1746.0 L 1575.0 1755.8 Q 1575.0 1764.0 1582.9 1766.1 L 1685.3 1793.4 Q 1695.0 1796.0 1695.0 1806.0 L 1695.0 1850.0" fill="none" stroke="#A21CAF" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1674.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#A21CAF" stroke-width="1.5"/>
+<text x="1695.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">P3</text>
+<rect x="2003.0" y="1734" width="24" height="14" rx="4" fill="#0f172a"/>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2007.0 1765.8 L 1880.8 1793.8 Q 1871.0 1796.0 1871.0 1806.0 L 1871.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2007.0 1765.8 L 1880.8 1793.8 Q 1871.0 1796.0 1871.0 1806.0 L 1871.0 1850.0" fill="none" stroke="#8B4513" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1850.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#8B4513" stroke-width="1.5"/>
+<text x="1871.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">G1-U</text>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2007.2 1766.6 L 1928.5 1792.8 Q 1919.0 1796.0 1919.0 1806.0 L 1919.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2007.2 1766.6 L 1928.5 1792.8 Q 1919.0 1796.0 1919.0 1806.0 L 1919.0 1850.0" fill="none" stroke="#1E293B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1898.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#1E293B" stroke-width="1.5"/>
+<text x="1919.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">G1-V</text>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2008.2 1768.5 L 1975.3 1790.5 Q 1967.0 1796.0 1967.0 1806.0 L 1967.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2008.2 1768.5 L 1975.3 1790.5 Q 1967.0 1796.0 1967.0 1806.0 L 1967.0 1850.0" fill="none" stroke="#64748B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1946.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#64748B" stroke-width="1.5"/>
+<text x="1967.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">G1-W</text>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2015.0 1772.2 L 2015.0 1786.0 Q 2015.0 1796.0 2015.0 1806.0 L 2015.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2015.0 1772.2 L 2015.0 1786.0 Q 2015.0 1796.0 2015.0 1806.0 L 2015.0 1850.0" fill="none" stroke="#8B4513" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1994.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#8B4513" stroke-width="1.5"/>
+<text x="2015.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">G2-U</text>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2021.8 1768.5 L 2054.7 1790.5 Q 2063.0 1796.0 2063.0 1806.0 L 2063.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2021.8 1768.5 L 2054.7 1790.5 Q 2063.0 1796.0 2063.0 1806.0 L 2063.0 1850.0" fill="none" stroke="#1E293B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="2042.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#1E293B" stroke-width="1.5"/>
+<text x="2063.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">G2-V</text>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2022.8 1766.6 L 2101.5 1792.8 Q 2111.0 1796.0 2111.0 1806.0 L 2111.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2022.8 1766.6 L 2101.5 1792.8 Q 2111.0 1796.0 2111.0 1806.0 L 2111.0 1850.0" fill="none" stroke="#64748B" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="2090.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#64748B" stroke-width="1.5"/>
+<text x="2111.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">G2-W</text>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2023.0 1765.8 L 2149.2 1793.8 Q 2159.0 1796.0 2159.0 1806.0 L 2159.0 1850.0" fill="none" stroke="#ffffff" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.92"/>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2023.0 1765.8 L 2149.2 1793.8 Q 2159.0 1796.0 2159.0 1806.0 L 2159.0 1850.0" fill="none" stroke="#16A34A" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 2015.0 1746.0 L 2015.0 1755.8 Q 2015.0 1764.0 2023.0 1765.8 L 2149.2 1793.8 Q 2159.0 1796.0 2159.0 1806.0 L 2159.0 1850.0" fill="none" stroke="#FACC15" stroke-width="3.8" stroke-dasharray="8 8" stroke-linecap="butt" stroke-linejoin="round"/>
+<rect x="2138.0" y="1828.0" width="42" height="20" rx="4" fill="#ffffff" stroke="#16A34A" stroke-width="1.5"/>
+<text x="2159.0" y="1841.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f172a">PE</text>
+</g>
+<g id="field-cards" filter="url(#cardShadow)">
+
+        <g>
+          <rect x="61.0" y="1850.0" width="408.0" height="315.0" rx="16" fill="#ffffff" stroke="#0B2540" stroke-width="2.2"/>
+          <rect x="61.0" y="1850.0" width="408.0" height="46" rx="16" fill="#f1f5f9"/>
+          <text x="265.0" y="1874.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#0B2540">1. ANA GÜÇ GİRİŞİ (160A)</text>
+          <text x="265.0" y="1891.0" text-anchor="middle" font-size="10.8" font-weight="700" fill="#475569">3~ 400V / 230V AC • 50 Hz</text>
+          <rect x="75.0" y="1912.0" width="380.0" height="214" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.3"/>
+          <text x="83.0" y="1946.0" font-size="12" font-weight="700" fill="#8B4513">• L1 (Kahve) → X0:L1 (50 mm² Klemens)</text><text x="83.0" y="1972.0" font-size="12" font-weight="700" fill="#1E293B">• L2 (Siyah)  → X0:L2 (50 mm² Klemens)</text><text x="83.0" y="1998.0" font-size="12" font-weight="700" fill="#64748B">• L3 (Gri)    → X0:L3 (50 mm² Klemens)</text><text x="83.0" y="2024.0" font-size="12" font-weight="700" fill="#1D4ED8">• N (Mavi)    → X0:N (35 mm²) → DB1 &amp; N1</text><text x="83.0" y="2050.0" font-size="12" font-weight="700" fill="#16A34A">• PE (Sr-Yşl) → X0:PE (50 mm²) → PE1</text><text x="83.0" y="2076.0" font-size="12" font-weight="700" fill="#0B2540">• Q0 (160A) → DB1 (4×160A Bara)</text>
+          <text x="265.0" y="2148.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b">Ana dağıtım panosundan gelen bölge beslemesi</text>
+        </g>
+
+        <g>
+          <rect x="501.0" y="1850.0" width="408.0" height="315.0" rx="16" fill="#ffffff" stroke="#b91c1c" stroke-width="2.2"/>
+          <rect x="501.0" y="1850.0" width="408.0" height="46" rx="16" fill="#fef2f2"/>
+          <text x="705.0" y="1874.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#991b1b">2. ISITMA HATTI (80A 3P)</text>
+          <text x="705.0" y="1891.0" text-anchor="middle" font-size="10.8" font-weight="700" fill="#475569">Q1: ABB S803S-C80 Çıkışı</text>
+          <rect x="515.0" y="1912.0" width="380.0" height="214" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.3"/>
+          <text x="523.0" y="1946.0" font-size="12" font-weight="700" fill="#8B4513">• L1 (Kahve) → Q1:2 (80A Çıkış)</text><text x="523.0" y="1972.0" font-size="12" font-weight="700" fill="#1E293B">• L2 (Siyah)  → Q1:4 (80A Çıkış)</text><text x="523.0" y="1998.0" font-size="12" font-weight="700" fill="#64748B">• L3 (Gri)    → Q1:6 (80A Çıkış)</text><text x="523.0" y="2024.0" font-size="12" font-weight="700" fill="#1D4ED8">• N (Mavi)    → Alt N-BARA (N2)</text><text x="523.0" y="2050.0" font-size="12" font-weight="700" fill="#16A34A">• PE (Sr-Yşl) → Alt PE-BARA (PE2)</text><text x="523.0" y="2076.0" font-size="12" font-weight="700" fill="#991b1b">• Önerilen Kablo: 4×25 + PE veya 5×25 mm²</text>
+          <text x="705.0" y="2148.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b">Isıtma kazan / sirkülasyon / üfleme grubu</text>
+        </g>
+
+        <g>
+          <rect x="936.0" y="1850.0" width="408.0" height="315.0" rx="16" fill="#ffffff" stroke="#0369a1" stroke-width="2.2"/>
+          <rect x="936.0" y="1850.0" width="408.0" height="46" rx="16" fill="#f0f9ff"/>
+          <text x="1140.0" y="1874.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#0369a1">3. HAVALANDIRMA (36 MOTOR)</text>
+          <text x="1140.0" y="1891.0" text-anchor="middle" font-size="10.8" font-weight="700" fill="#475569">Q2 (63A Ortak) + 5×1 mm² Sektör Kumanda</text>
+          <rect x="950.0" y="1912.0" width="380.0" height="214" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.3"/>
+          <text x="958.0" y="1946.0" font-size="12" font-weight="700" fill="#8B4513">• 3~ Güç (L1-L2-L3) → Q2:2-4-6 (63A)</text><text x="958.0" y="1972.0" font-size="12" font-weight="700" fill="#1D4ED8">• N &amp; PE → N-BARA (N3) &amp; PE-BARA (PE3)</text><text x="958.0" y="1998.0" font-size="12" font-weight="700" fill="#4338CA">• D1 (Mor) / D2 (İndigo) → Hav.1 Kapat/Aç</text><text x="958.0" y="2024.0" font-size="12" font-weight="700" fill="#0284C7">• D3 (Teal) / D4 (Turkuaz) → Hav.2 Kapat/Aç</text><text x="958.0" y="2050.0" font-size="12" font-weight="700" fill="#A21CAF">• D5 (Macenta) → Saha Yerel Buton İzni</text><text x="958.0" y="2076.0" font-size="12" font-weight="700" fill="#1F9D6B">• 18× O2Sera İkili Motor Panosu paralel!</text>
+          <text x="1140.0" y="2148.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b">Önceki O2Sera İkili Motor Panosuyla %100 uyumlu</text>
+        </g>
+
+        <g>
+          <rect x="1371.0" y="1850.0" width="408.0" height="315.0" rx="16" fill="#ffffff" stroke="#059669" stroke-width="2.2"/>
+          <rect x="1371.0" y="1850.0" width="408.0" height="46" rx="16" fill="#ecfdf5"/>
+          <text x="1575.0" y="1874.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#047857">4. PERDE GRUBU (2 MOTOR)</text>
+          <text x="1575.0" y="1891.0" text-anchor="middle" font-size="10.8" font-weight="700" fill="#475569">Q2 (63A Hav. ile Ortak) + Ser / Topla</text>
+          <rect x="1385.0" y="1912.0" width="380.0" height="214" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.3"/>
+          <text x="1393.0" y="1946.0" font-size="12" font-weight="700" fill="#1E293B">• 3~ Güç (L1-L2-L3) → Q2:2-4-6 (Ortak)</text><text x="1393.0" y="1972.0" font-size="12" font-weight="700" fill="#1D4ED8">• N &amp; PE → N-BARA (N3) &amp; PE-BARA (PE3)</text><text x="1393.0" y="1998.0" font-size="12" font-weight="700" fill="#DB2777">• P1 (Pembe) → Perde Topla (▼) Komutu</text><text x="1393.0" y="2024.0" font-size="12" font-weight="700" fill="#059669">• P2 (Yeşil)  → Perde Ser (▲) Komutu</text><text x="1393.0" y="2050.0" font-size="12" font-weight="700" fill="#A21CAF">• P3 (Macenta) → Saha Yerel İzin</text><text x="1393.0" y="2076.0" font-size="12" font-weight="700" fill="#047857">• 1× O2Sera İkili Motor Panosunu besler</text>
+          <text x="1575.0" y="2148.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b">Isı / gölge perdesi ileri-geri redüktör grubu</text>
+        </g>
+
+        <g>
+          <rect x="1811.0" y="1850.0" width="408.0" height="315.0" rx="16" fill="#ffffff" stroke="#ea580c" stroke-width="2.2"/>
+          <rect x="1811.0" y="1850.0" width="408.0" height="46" rx="16" fill="#fff7ed"/>
+          <text x="2015.0" y="1874.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#c2410c">5. SİRKÜLASYON FANLARI (36 ADET)</text>
+          <text x="2015.0" y="1891.0" text-anchor="middle" font-size="10.8" font-weight="700" fill="#475569">Q3 (63A) → KM-F1 (18) + KM-F2 (18)</text>
+          <rect x="1825.0" y="1912.0" width="380.0" height="214" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.3"/>
+          <text x="1833.0" y="1946.0" font-size="12" font-weight="700" fill="#8B4513">• Grup 1 (18 Fan): KM-F1 (2T1-4T2-6T3)</text><text x="1833.0" y="1972.0" font-size="12" font-weight="700" fill="#1E293B">• Grup 2 (18 Fan): KM-F2 (2T1-4T2-6T3)</text><text x="1833.0" y="1998.0" font-size="12" font-weight="700" fill="#EA580C">• Kademe: KT1 (3 sn) → KM-F2 gecikmeli</text><text x="1833.0" y="2024.0" font-size="12" font-weight="700" fill="#1D4ED8">• N &amp; PE → N-BARA (N4) &amp; PE-BARA (PE4)</text><text x="1833.0" y="2050.0" font-size="12" font-weight="700" fill="#c2410c">• S-FAN = OTO: Merkezden | AÇ: Manuel</text><text x="1833.0" y="2076.0" font-size="12" font-weight="700" fill="#0B2540">• 2× 40A Kontaktör → Düşük demeraj akımı</text>
+          <text x="2015.0" y="2148.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b">36 sirkülasyon fanı 2 eşit 18'li kademe</text>
+        </g>
+</g>
+
+  <g id="footer">
+    <rect x="56" y="2236" width="2168" height="66" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="74" y="2264" width="20" height="8" rx="4" fill="#8B4513"/><text x="100" y="2272" font-size="11.5" font-weight="700" fill="#334155">L1 Faz</text><rect x="229" y="2264" width="20" height="8" rx="4" fill="#1E293B"/><text x="255" y="2272" font-size="11.5" font-weight="700" fill="#334155">L2 Faz</text><rect x="384" y="2264" width="20" height="8" rx="4" fill="#64748B"/><text x="410" y="2272" font-size="11.5" font-weight="700" fill="#334155">L3 Faz</text><rect x="539" y="2264" width="20" height="8" rx="4" fill="#1D4ED8"/><text x="565" y="2272" font-size="11.5" font-weight="700" fill="#334155">Nötr (N)</text><rect x="694" y="2264" width="20" height="8" rx="4" fill="#16A34A"/><line x1="696" y1="2268" x2="712" y2="2268" stroke="#FACC15" stroke-width="5" stroke-dasharray="4 4"/><text x="720" y="2272" font-size="11.5" font-weight="700" fill="#334155">Toprak (PE)</text><rect x="849" y="2264" width="20" height="8" rx="4" fill="#DC2626"/><text x="875" y="2272" font-size="11.5" font-weight="700" fill="#334155">Kumanda 230V</text><rect x="1004" y="2264" width="20" height="8" rx="4" fill="#4338CA"/><text x="1030" y="2272" font-size="11.5" font-weight="700" fill="#334155">Hav.1 ↑/↓</text><rect x="1159" y="2264" width="20" height="8" rx="4" fill="#0284C7"/><text x="1185" y="2272" font-size="11.5" font-weight="700" fill="#334155">Hav.2 ↑/↓</text><rect x="1314" y="2264" width="20" height="8" rx="4" fill="#059669"/><text x="1340" y="2272" font-size="11.5" font-weight="700" fill="#334155">Perde Ser</text><rect x="1469" y="2264" width="20" height="8" rx="4" fill="#DB2777"/><text x="1495" y="2272" font-size="11.5" font-weight="700" fill="#334155">Perde Topla</text><rect x="1624" y="2264" width="20" height="8" rx="4" fill="#EA580C"/><text x="1650" y="2272" font-size="11.5" font-weight="700" fill="#334155">Fan KM/KT</text><rect x="1779" y="2264" width="20" height="8" rx="4" fill="#A21CAF"/><text x="1805" y="2272" font-size="11.5" font-weight="700" fill="#334155">Yerel İzin</text>
+    <text x="2206" y="2272" text-anchor="end" font-size="12.5" font-weight="800" fill="#0B2540"><tspan fill="#1F9D6B">O2Sera</tspan> • Sera İçi Bölge Panosu</text>
+  </g>
+</svg>

@@ -141,74 +141,93 @@ function makeTopBottomPins(
   return result;
 }
 
-function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
-  const nodes: SchematicNode[] = [];
+function isBemisMotorPreset(items: PanelItem[], wires: SchematicWire[]): boolean {
+  if (wires.some((w) => w.fromNodeId.startsWith('sys-m') || w.toNodeId.startsWith('sys-m'))) {
+    return true;
+  }
+  const hasButtons = items.some((i) => i.category === 'button');
+  const mksCount = items.filter((i) => i.category === 'mks').length;
+  return hasButtons && mksCount >= 2;
+}
 
-  // 1. Sabit pano besleme (5×2,5 mm²) ve Bemis dahili N/PE baraları
+function buildSchematicNodes(items: PanelItem[], wires: SchematicWire[]): SchematicNode[] {
+  const nodes: SchematicNode[] = [];
+  const bemisMode = isBemisMotorPreset(items, wires);
+  const hasHighCurrent = items.some(
+    (i) => i.rating?.includes('50') || i.rating?.includes('80A') || i.rating?.includes('160A') || i.rating?.includes('63A')
+  );
+
+  // 1. Ana besleme bloğu (her panoda vardır)
   nodes.push({
     id: 'sys-supply',
-    title: 'BESLEME (5×2,5 mm²)',
+    title: bemisMode
+      ? 'BESLEME (5×2,5 mm²)'
+      : hasHighCurrent
+        ? 'ANA GÜÇ GİRİŞİ (3×50+35N+50PE)'
+        : 'ANA BESLEME (3~ 400V / 230V)',
     subtitle: '3~ 400V / 230V Ana Giriş',
-    width: 230,
-    height: 66,
+    width: 240,
+    height: 68,
     accent: '#ef4444',
     defaultX: 40,
     defaultY: 28,
     pins: makeTopBottomPins(
-      230,
-      66,
+      240,
+      68,
       [],
       [
-        { id: 'L1', label: 'L1', subLabel: 'Faz', subColor: '#d97706', title: 'Besleme 5×2,5 — Faz L1' },
-        { id: 'L2', label: 'L2', subLabel: 'Faz', subColor: '#94a3b8', title: 'Besleme 5×2,5 — Faz L2' },
-        { id: 'L3', label: 'L3', subLabel: 'Faz', subColor: '#e2e8f0', title: 'Besleme 5×2,5 — Faz L3' },
-        { id: 'N', label: 'N', subLabel: 'Nötr', subColor: '#3b82f6', title: 'Besleme 5×2,5 — Nötr' },
-        { id: 'PE', label: 'PE', subLabel: 'Toprak', subColor: '#22c55e', title: 'Besleme 5×2,5 — Toprak' },
+        { id: 'L1', label: 'L1', subLabel: 'Faz', subColor: '#d97706', title: 'Ana Besleme — Faz L1' },
+        { id: 'L2', label: 'L2', subLabel: 'Faz', subColor: '#94a3b8', title: 'Ana Besleme — Faz L2' },
+        { id: 'L3', label: 'L3', subLabel: 'Faz', subColor: '#e2e8f0', title: 'Ana Besleme — Faz L3' },
+        { id: 'N', label: 'N', subLabel: 'Nötr', subColor: '#3b82f6', title: 'Ana Besleme — Nötr' },
+        { id: 'PE', label: 'PE', subLabel: 'Toprak', subColor: '#22c55e', title: 'Ana Besleme — Toprak' },
       ]
     ),
   });
 
-  nodes.push({
-    id: 'sys-neutral',
-    title: 'PANO NÖTR (N)',
-    subtitle: 'Bemis Dahili Bara',
-    width: 220,
-    height: 60,
-    accent: '#3b82f6',
-    defaultX: 300,
-    defaultY: 30,
-    pins: makeTopBottomPins(
-      220,
-      60,
-      [],
-      [1, 2, 3, 4, 5, 6].map((n) => ({
-        id: `N${n}`,
-        label: `N${n}`,
-        title: `Dahili Nötr Barası Uç ${n}`,
-      }))
-    ),
-  });
+  if (bemisMode) {
+    nodes.push({
+      id: 'sys-neutral',
+      title: 'PANO NÖTR (N)',
+      subtitle: 'Bemis Dahili Bara',
+      width: 220,
+      height: 60,
+      accent: '#3b82f6',
+      defaultX: 300,
+      defaultY: 30,
+      pins: makeTopBottomPins(
+        220,
+        60,
+        [],
+        [1, 2, 3, 4, 5, 6].map((n) => ({
+          id: `N${n}`,
+          label: `N${n}`,
+          title: `Dahili Nötr Barası Uç ${n}`,
+        }))
+      ),
+    });
 
-  nodes.push({
-    id: 'sys-pe',
-    title: 'PANO TOPRAK (PE)',
-    subtitle: 'Bemis Dahili Bara',
-    width: 220,
-    height: 60,
-    accent: '#22c55e',
-    defaultX: 550,
-    defaultY: 30,
-    pins: makeTopBottomPins(
-      220,
-      60,
-      [],
-      [1, 2, 3, 4, 5, 6].map((n) => ({
-        id: `PE${n}`,
-        label: `PE${n}`,
-        title: `Dahili Toprak Barası Uç ${n}`,
-      }))
-    ),
-  });
+    nodes.push({
+      id: 'sys-pe',
+      title: 'PANO TOPRAK (PE)',
+      subtitle: 'Bemis Dahili Bara',
+      width: 220,
+      height: 60,
+      accent: '#22c55e',
+      defaultX: 550,
+      defaultY: 30,
+      pins: makeTopBottomPins(
+        220,
+        60,
+        [],
+        [1, 2, 3, 4, 5, 6].map((n) => ({
+          id: `PE${n}`,
+          label: `PE${n}`,
+          title: `Dahili Toprak Barası Uç ${n}`,
+        }))
+      ),
+    });
+  }
 
   // 2. MKŞ'ler (2. Satır — üstten ferah boşluk)
   const mksItems = items.filter((i) => i.category === 'mks').sort((a, b) => a.order - b.order);
@@ -239,9 +258,69 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     });
   });
 
-  // 3. 14 Pin Mini Röleler (Üst: 1–4 NC, 5–8 NO | Alt: 9–12 COM, 13–14 Bobin A1/A2)
+  // 3. Röleler (Faz Koruma, Zaman Rölesi veya 14 Pin Mini Röle)
   const relays = items.filter((i) => i.category === 'relay').sort((a, b) => a.order - b.order);
   relays.forEach((item, idx) => {
+    const lowName = `${item.code} ${item.name} ${item.model}`.toLowerCase();
+    const isPhaseRelay = lowName.includes('faz') || item.code.startsWith('FK');
+    const isTimerRelay = lowName.includes('zaman') || item.code.startsWith('KT');
+
+    if (isPhaseRelay) {
+      nodes.push({
+        id: item.id,
+        title: item.code,
+        subtitle: 'Faz Koruma Rölesi',
+        width: 176,
+        height: 88,
+        accent: item.color,
+        defaultX: 470 + idx * 210,
+        defaultY: 360,
+        pins: makeTopBottomPins(
+          176,
+          88,
+          [
+            { id: 'L1', label: 'L1', title: `${item.code} Faz L1` },
+            { id: 'L2', label: 'L2', title: `${item.code} Faz L2` },
+            { id: 'L3', label: 'L3', title: `${item.code} Faz L3` },
+            { id: 'N', label: 'N', subColor: '#3b82f6', title: `${item.code} Nötr` },
+          ],
+          [
+            { id: '11', label: '11', subLabel: 'COM', subColor: '#38bdf8', title: `${item.code} Ortak (11)` },
+            { id: '12', label: '12', subLabel: 'NC', subColor: '#fbbf24', title: `${item.code} NC (12)` },
+            { id: '14', label: '14', subLabel: 'NO', subColor: '#34d399', title: `${item.code} NO (14)` },
+          ]
+        ),
+      });
+      return;
+    }
+
+    if (isTimerRelay) {
+      nodes.push({
+        id: item.id,
+        title: item.code,
+        subtitle: `Zaman Rölesi (${item.rating ?? 'Gecikmeli'})`,
+        width: 164,
+        height: 88,
+        accent: item.color,
+        defaultX: 470 + idx * 210,
+        defaultY: 360,
+        pins: makeTopBottomPins(
+          164,
+          88,
+          [
+            { id: 'A1', label: 'A1', subLabel: 'Bobin', subColor: '#f87171', title: `${item.code} Bobin A1` },
+            { id: 'A2', label: 'A2', subLabel: 'Nötr', subColor: '#60a5fa', title: `${item.code} Bobin A2` },
+          ],
+          [
+            { id: '15', label: '15', subLabel: 'COM', subColor: '#38bdf8', title: `${item.code} Ortak (15)` },
+            { id: '16', label: '16', subLabel: 'NC', subColor: '#fbbf24', title: `${item.code} NC (16)` },
+            { id: '18', label: '18', subLabel: 'NO', subColor: '#34d399', title: `${item.code} NO (18)` },
+          ]
+        ),
+      });
+      return;
+    }
+
     nodes.push({
       id: item.id,
       title: item.code,
@@ -386,11 +465,74 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
     });
   }
 
-  // 8. Diğer özel elemanlar (sigorta, güç kaynağı, PLC/ESP32 vb.)
+  // 8. Diğer özel elemanlar (sigorta, kaçak akım, şalter, dağıtım bloğu/bara, güç kaynağı, PLC/ESP32)
   const others = items.filter(
-    (i) => i.category === 'breaker' || i.category === 'psu' || i.category === 'plc'
+    (i) => i.category === 'breaker' || i.category === 'psu' || i.category === 'plc' || i.category === 'busbar'
   );
   others.forEach((item, idx) => {
+    if (item.category === 'busbar') {
+      const isDistBlock =
+        item.code.toUpperCase().startsWith('DB') ||
+        item.name.toLowerCase().includes('dağıtım') ||
+        item.rating?.includes('4×');
+      if (isDistBlock) {
+        nodes.push({
+          id: item.id,
+          title: item.code,
+          subtitle: item.rating ? `Dağıtım Bloğu (${item.rating})` : item.name,
+          width: 280,
+          height: 82,
+          accent: item.color,
+          defaultX: 320 + idx * 300,
+          defaultY: 160,
+          pins: makeTopBottomPins(
+            280,
+            82,
+            [
+              { id: 'L1', label: 'L1', subColor: '#d97706', title: `${item.code} Giriş L1` },
+              { id: 'L2', label: 'L2', subColor: '#94a3b8', title: `${item.code} Giriş L2` },
+              { id: 'L3', label: 'L3', subColor: '#e2e8f0', title: `${item.code} Giriş L3` },
+              { id: 'N', label: 'N', subColor: '#3b82f6', title: `${item.code} Giriş Nötr` },
+            ],
+            [
+              { id: 'L1a', label: 'L1', title: `${item.code} Çıkış L1 (1)` },
+              { id: 'L1b', label: 'L1', title: `${item.code} Çıkış L1 (2)` },
+              { id: 'L2a', label: 'L2', title: `${item.code} Çıkış L2 (1)` },
+              { id: 'L2b', label: 'L2', title: `${item.code} Çıkış L2 (2)` },
+              { id: 'L3a', label: 'L3', title: `${item.code} Çıkış L3 (1)` },
+              { id: 'L3b', label: 'L3', title: `${item.code} Çıkış L3 (2)` },
+              { id: 'Na', label: 'N', subColor: '#3b82f6', title: `${item.code} Çıkış N (1)` },
+              { id: 'Nb', label: 'N', subColor: '#3b82f6', title: `${item.code} Çıkış N (2)` },
+            ]
+          ),
+        });
+      } else {
+        const isPe = item.code.toUpperCase().startsWith('PE') || item.name.toLowerCase().includes('toprak');
+        const prefix = isPe ? 'PE' : 'N';
+        nodes.push({
+          id: item.id,
+          title: item.code,
+          subtitle: item.name,
+          width: 210,
+          height: 62,
+          accent: item.color,
+          defaultX: 340 + idx * 240,
+          defaultY: 32,
+          pins: makeTopBottomPins(
+            210,
+            62,
+            [],
+            [1, 2, 3, 4, 5, 6].map((n) => ({
+              id: `${prefix}${n}`,
+              label: `${prefix}${n}`,
+              title: `${item.code} Bara Uç ${n}`,
+            }))
+          ),
+        });
+      }
+      return;
+    }
+
     if (item.category === 'plc') {
       nodes.push({
         id: item.id,
@@ -423,96 +565,126 @@ function buildSchematicNodes(items: PanelItem[]): SchematicNode[] {
       return;
     }
 
-    const is3P = item.widthMm >= 50 && item.category === 'breaker';
+    const low = `${item.name} ${item.model} ${item.rating ?? ''}`.toLowerCase();
+    const is4P =
+      item.category === 'breaker' &&
+      (low.includes('4p') || low.includes('3p+n') || low.includes('kaçak') || item.code.startsWith('QF') || item.code.startsWith('FI'));
+    const is3P = !is4P && item.category === 'breaker' && (item.widthMm >= 48 || low.includes('3p'));
+    const is1P = item.category === 'breaker' && !is4P && !is3P;
+
+    const w = is4P ? 200 : is3P ? 164 : is1P ? 110 : 136;
+    const rowY = bemisMode ? 30 : 210;
+    const colX = bemisMode ? 1080 + idx * 175 : 40 + (idx % 6) * 215;
+    const extraY = bemisMode ? 0 : Math.floor(idx / 6) * 140;
+
     nodes.push({
       id: item.id,
-      title: item.code,
+      title: `${item.code}${item.rating ? ` (${item.rating})` : ''}`,
       subtitle: item.name,
-      width: is3P ? 160 : 130,
-      height: 72,
+      width: w,
+      height: 76,
       accent: item.color,
-      defaultX: 1080 + idx * 165,
-      defaultY: 30,
+      defaultX: colX,
+      defaultY: rowY + extraY,
       pins: makeTopBottomPins(
-        is3P ? 160 : 130,
-        72,
-        is3P
+        w,
+        76,
+        is4P
           ? [
               { id: '1', label: '1/L1', title: `${item.code} Giriş L1` },
               { id: '3', label: '3/L2', title: `${item.code} Giriş L2` },
               { id: '5', label: '5/L3', title: `${item.code} Giriş L3` },
+              { id: 'N1', label: 'N', subColor: '#3b82f6', title: `${item.code} Giriş Nötr` },
             ]
-          : [
-              { id: 'IN1', label: 'L/1', title: `${item.code} Giriş 1` },
-              { id: 'IN2', label: 'N/3', title: `${item.code} Giriş 2` },
-            ],
-        is3P
+          : is3P
+            ? [
+                { id: '1', label: '1/L1', title: `${item.code} Giriş L1` },
+                { id: '3', label: '3/L2', title: `${item.code} Giriş L2` },
+                { id: '5', label: '5/L3', title: `${item.code} Giriş L3` },
+              ]
+            : is1P
+              ? [{ id: '1', label: '1/L', title: `${item.code} Faz Giriş` }]
+              : [
+                  { id: 'IN1', label: 'L/1', title: `${item.code} Giriş 1` },
+                  { id: 'IN2', label: 'N/3', title: `${item.code} Giriş 2` },
+                ],
+        is4P
           ? [
               { id: '2', label: '2/T1', title: `${item.code} Çıkış T1` },
               { id: '4', label: '4/T2', title: `${item.code} Çıkış T2` },
               { id: '6', label: '6/T3', title: `${item.code} Çıkış T3` },
+              { id: 'N2', label: 'N', subColor: '#3b82f6', title: `${item.code} Çıkış Nötr` },
             ]
-          : [
-              { id: 'OUT1', label: '+/2', title: `${item.code} Çıkış 1` },
-              { id: 'OUT2', label: '-/4', title: `${item.code} Çıkış 2` },
-            ]
+          : is3P
+            ? [
+                { id: '2', label: '2/T1', title: `${item.code} Çıkış T1` },
+                { id: '4', label: '4/T2', title: `${item.code} Çıkış T2` },
+                { id: '6', label: '6/T3', title: `${item.code} Çıkış T3` },
+              ]
+            : is1P
+              ? [{ id: '2', label: '2/T', title: `${item.code} Faz Çıkış` }]
+              : [
+                  { id: 'OUT1', label: '+/2', title: `${item.code} Çıkış 1` },
+                  { id: 'OUT2', label: '-/4', title: `${item.code} Çıkış 2` },
+                ]
       ),
     });
   });
 
-  // 9. Saha Motorları (2× Motor — Her birinden 7 kablo: U, V, W, PE + 3 limit/switch damarı)
-  ['M1', 'M2'].forEach((mCode, idx) => {
-    nodes.push({
-      id: `sys-${mCode.toLowerCase()}`,
-      title: `MOTOR ${idx + 1} (${mCode} • 7 Damar)`,
-      subtitle: '3 Faz + PE + Limit / Sinyal (PG36)',
-      width: 320,
-      height: 76,
-      accent: '#06b6d4',
-      defaultX: 40 + idx * 360,
-      defaultY: 890,
-      pins: makeTopBottomPins(
-        320,
-        76,
-        [
-          { id: '1', label: '1', subLabel: 'U', subColor: '#d97706', title: `${mCode} Damar 1 — Faz U` },
-          { id: '2', label: '2', subLabel: 'V', subColor: '#94a3b8', title: `${mCode} Damar 2 — Faz V` },
-          { id: '3', label: '3', subLabel: 'W', subColor: '#e2e8f0', title: `${mCode} Damar 3 — Faz W` },
-          { id: '4', label: '4', subLabel: 'PE', subColor: '#22c55e', title: `${mCode} Damar 4 — Toprak (PE)` },
-          { id: '5', label: '5', subLabel: 'C', subColor: '#38bdf8', title: `${mCode} Damar 5 — Limit Ortak (COM)` },
-          { id: '6', label: '6', subLabel: 'L↑', subColor: '#fbbf24', title: `${mCode} Damar 6 — Yukarı Limit / Termik` },
-          { id: '7', label: '7', subLabel: 'L↓', subColor: '#fbbf24', title: `${mCode} Damar 7 — Aşağı Limit / Termik` },
-        ],
-        []
-      ),
+  // 9–10. Saha Motorları & Sektör Kumanda blokları (sadece Bemis ikili motor projesinde otomatik çıkar)
+  if (bemisMode) {
+    ['M1', 'M2'].forEach((mCode, idx) => {
+      nodes.push({
+        id: `sys-${mCode.toLowerCase()}`,
+        title: `MOTOR ${idx + 1} (${mCode} • 7 Damar)`,
+        subtitle: '3 Faz + PE + Limit / Sinyal (PG36)',
+        width: 320,
+        height: 76,
+        accent: '#06b6d4',
+        defaultX: 40 + idx * 360,
+        defaultY: 890,
+        pins: makeTopBottomPins(
+          320,
+          76,
+          [
+            { id: '1', label: '1', subLabel: 'U', subColor: '#d97706', title: `${mCode} Damar 1 — Faz U` },
+            { id: '2', label: '2', subLabel: 'V', subColor: '#94a3b8', title: `${mCode} Damar 2 — Faz V` },
+            { id: '3', label: '3', subLabel: 'W', subColor: '#e2e8f0', title: `${mCode} Damar 3 — Faz W` },
+            { id: '4', label: '4', subLabel: 'PE', subColor: '#22c55e', title: `${mCode} Damar 4 — Toprak (PE)` },
+            { id: '5', label: '5', subLabel: 'C', subColor: '#38bdf8', title: `${mCode} Damar 5 — Limit Ortak (COM)` },
+            { id: '6', label: '6', subLabel: 'L↑', subColor: '#fbbf24', title: `${mCode} Damar 6 — Yukarı Limit / Termik` },
+            { id: '7', label: '7', subLabel: 'L↓', subColor: '#fbbf24', title: `${mCode} Damar 7 — Aşağı Limit / Termik` },
+          ],
+          []
+        ),
+      });
     });
-  });
 
-  // 10. 2 Adet 5×1 mm² Sektör Kumanda Kablosu
-  [1, 2].forEach((secNo, idx) => {
-    nodes.push({
-      id: `sys-sector-${secNo}`,
-      title: `SEKTÖR KUMANDA ${secNo} (5×1 mm²)`,
-      subtitle: `5×1 mm² Sektör Kumanda Kablosu ${secNo}`,
-      width: 270,
-      height: 76,
-      accent: '#ec4899',
-      defaultX: 790 + idx * 310,
-      defaultY: 890,
-      pins: makeTopBottomPins(
-        270,
-        76,
-        [
-          { id: '1', label: '1', subLabel: 'D1', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 1` },
-          { id: '2', label: '2', subLabel: 'D2', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 2` },
-          { id: '3', label: '3', subLabel: 'D3', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 3` },
-          { id: '4', label: '4', subLabel: 'D4', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 4` },
-          { id: '5', label: '5', subLabel: 'D5', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 5` },
-        ],
-        []
-      ),
+    [1, 2].forEach((secNo, idx) => {
+      nodes.push({
+        id: `sys-sector-${secNo}`,
+        title: `SEKTÖR KUMANDA ${secNo} (5×1 mm²)`,
+        subtitle: `5×1 mm² Sektör Kumanda Kablosu ${secNo}`,
+        width: 270,
+        height: 76,
+        accent: '#ec4899',
+        defaultX: 790 + idx * 310,
+        defaultY: 890,
+        pins: makeTopBottomPins(
+          270,
+          76,
+          [
+            { id: '1', label: '1', subLabel: 'D1', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 1` },
+            { id: '2', label: '2', subLabel: 'D2', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 2` },
+            { id: '3', label: '3', subLabel: 'D3', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 3` },
+            { id: '4', label: '4', subLabel: 'D4', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 4` },
+            { id: '5', label: '5', subLabel: 'D5', subColor: '#f472b6', title: `Sektör Kumanda ${secNo} (5×1) — Damar 5` },
+          ],
+          []
+        ),
+      });
     });
-  });
+  }
 
   return nodes;
 }
@@ -528,17 +700,19 @@ export default function SchematicEditor({
   onSelectInPanel,
 }: SchematicEditorProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [tool, setTool] = useState<'wire' | 'move'>('wire');
+  const [tool, setTool] = useState<'smart' | 'wire' | 'move'>('smart');
   const [orthoMode, setOrthoMode] = useState(true);
+  const [autoRouteNewWire, setAutoRouteNewWire] = useState(true);
   const [wireColor, setWireColor] = useState(STANDARD_WIRE_COLORS[0].hex);
-  const [wireSection, setWireSection] = useState('1,0');
+  const [wireSection, setWireSection] = useState('2,5');
   const [wireLabel, setWireLabel] = useState('');
   const [selectedWireId, setSelectedWireId] = useState<string | null>(null);
   const [hoveredWireId, setHoveredWireId] = useState<string | null>(null);
+  const [hoveredPinKey, setHoveredPinKey] = useState<string | null>(null);
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
   const [displayMode, setDisplayMode] = useState<
     'power-page' | 'control-page' | 'cards' | 'lines' | 'tags'
-  >('power-page');
+  >(() => (isBemisMotorPreset(items, wires) ? 'power-page' : 'lines'));
   const wireFilter: 'all' | 'power' | 'control' = 'all';
   const [showWireLabels, setShowWireLabels] = useState(true);
   const dimOthersOnSelect = true;
@@ -546,6 +720,7 @@ export default function SchematicEditor({
   const [autoRerouteOnDrag, setAutoRerouteOnDrag] = useState(false);
   const [routeMetrics, setRouteMetrics] = useState<RouteMetrics | null>(null);
   const [zoom, setZoom] = useState<number | 'fit'>('fit');
+  const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [preOptimizeBackup, setPreOptimizeBackup] = useState<{
     nodePositions: Record<string, SchematicNodePos>;
@@ -563,6 +738,17 @@ export default function SchematicEditor({
     id: string;
     offsetX: number;
     offsetY: number;
+    startClientX: number;
+    startClientY: number;
+    moved: boolean;
+  } | null>(null);
+
+  const [panningCanvas, setPanningCanvas] = useState<{
+    startClientX: number;
+    startClientY: number;
+    startPanX: number;
+    startPanY: number;
+    moved: boolean;
   } | null>(null);
 
   const [draggingWaypoint, setDraggingWaypoint] = useState<{
@@ -570,7 +756,7 @@ export default function SchematicEditor({
     index: number;
   } | null>(null);
 
-  const rawNodes = useMemo(() => buildSchematicNodes(items), [items]);
+  const rawNodes = useMemo(() => buildSchematicNodes(items, wires), [items, wires]);
   const [smartFlipPins, setSmartFlipPins] = useState(true);
 
   // Tek taraflı sistem bloklarında (Besleme, N, PE, Motor, Sektör) pinleri parça konumunu
@@ -655,26 +841,35 @@ export default function SchematicEditor({
     return { x: pos.x + pin.dx, y: pos.y + pin.dy };
   };
 
-  // Klavye kısayolları: ESC çizimi iptal eder, Delete seçili kabloyu siler
+  // Klavye kısayolları: ESC iptal eder, Backspace çizimde son köşeyi geri alır, Delete seçili kabloyu siler
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      const inInput =
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        e.target instanceof HTMLSelectElement;
+      if (inInput) return;
+
       if (e.key === 'Escape') {
         setDraft(null);
         setSelectedWireId(null);
         setFocusedNodeId(null);
-      } else if (
-        (e.key === 'Delete' || e.key === 'Backspace') &&
-        selectedWireId &&
-        !(e.target instanceof HTMLInputElement) &&
-        !(e.target instanceof HTMLTextAreaElement)
-      ) {
+      } else if (e.key === 'Backspace' && draft) {
+        e.preventDefault();
+        if (draft.waypoints.length > 0) {
+          setDraft({ ...draft, waypoints: draft.waypoints.slice(0, -1) });
+        } else {
+          setDraft(null);
+        }
+      } else if ((e.key === 'Delete' || e.key === 'Backspace') && selectedWireId) {
+        e.preventDefault();
         onChangeWires(wires.filter((w) => w.id !== selectedWireId));
         setSelectedWireId(null);
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [selectedWireId, wires, onChangeWires]);
+  }, [selectedWireId, wires, onChangeWires, draft]);
 
   const handleOptimizeAll = () => {
     if (wires.length === 0) return;
@@ -782,8 +977,8 @@ export default function SchematicEditor({
     if (!ctm) return null;
     const local = pt.matrixTransform(ctm.inverse());
     return {
-      x: snap(Math.max(dynamicBounds.minX + 20, Math.min(dynamicBounds.maxX - 20, local.x))),
-      y: snap(Math.max(dynamicBounds.minY + 20, Math.min(dynamicBounds.maxY - 20, local.y))),
+      x: snap(local.x),
+      y: snap(local.y),
     };
   };
 
@@ -796,7 +991,7 @@ export default function SchematicEditor({
 
   const handlePinClick = (e: React.MouseEvent, nodeId: string, pinId: string) => {
     e.stopPropagation();
-    if (tool !== 'wire') return;
+    if (tool === 'move') return;
 
     if (!draft) {
       setSelectedWireId(null);
@@ -814,8 +1009,9 @@ export default function SchematicEditor({
     const endPt = getPinAbsPos(nodeId, pinId);
     let finalWaypoints = [...draft.waypoints];
 
-    // Ara nokta konmadıysa ve 90° dik açı açıksa temiz Z-bükümü oluştur
-    if (orthoMode && finalWaypoints.length === 0 && startPt && endPt && startPt.x !== endPt.x) {
+    // Ara nokta konmadıysa: Akıllı A* tek-kablo rotası veya temiz Z-bükümü oluştur
+    const noManualWaypoints = finalWaypoints.length === 0;
+    if (orthoMode && noManualWaypoints && startPt && endPt && startPt.x !== endPt.x) {
       const midY = snap((startPt.y + endPt.y) / 2);
       finalWaypoints = [
         { x: startPt.x, y: midY },
@@ -828,7 +1024,7 @@ export default function SchematicEditor({
       }
     }
 
-    const nextWire: SchematicWire = {
+    let nextWire: SchematicWire = {
       id: `w-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       fromNodeId: draft.fromNodeId,
       fromPinId: draft.fromPinId,
@@ -840,14 +1036,28 @@ export default function SchematicEditor({
       label: wireLabel.trim() || `K${wires.length + 1}`,
     };
 
-    // Yeni çizilen kabloyu diğer kabloları bozmadan doğrudan ekle
+    // Tek tıkla pin→pin bağlandığında blokların etrafından otomatik temiz yol bul
+    if (noManualWaypoints && autoRouteNewWire) {
+      const routed = autoRouteWiresWithMetrics(
+        [...wires, nextWire],
+        nodes,
+        nodePositions,
+        CANVAS_W,
+        CANVAS_H,
+        mergeSameNet
+      );
+      const found = routed.wires.find((w) => w.id === nextWire.id);
+      if (found) nextWire = found;
+    }
+
     onChangeWires([...wires, nextWire]);
     setDraft(null);
     setSelectedWireId(nextWire.id);
   };
 
   const handleCanvasClick = (e: React.MouseEvent<SVGSVGElement>) => {
-    if (draft && tool === 'wire') {
+    if (panningCanvas?.moved) return;
+    if (draft && tool !== 'move') {
       const pt = toSvgCoords(e.clientX, e.clientY);
       if (!pt) return;
       const startPt = getPinAbsPos(draft.fromNodeId, draft.fromPinId);
@@ -863,7 +1073,35 @@ export default function SchematicEditor({
     }
   };
 
+  const handleSchematicWheel = (e: React.WheelEvent<SVGSVGElement>) => {
+    e.preventDefault();
+    const cur = zoom === 'fit' ? 1 : zoom;
+    const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+    const next = Math.max(0.5, Math.min(3.2, Number((cur * factor).toFixed(2))));
+    setZoom(next);
+  };
+
   const handlePointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (panningCanvas) {
+      const dx = e.clientX - panningCanvas.startClientX;
+      const dy = e.clientY - panningCanvas.startClientY;
+      if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+        const svg = svgRef.current;
+        const rect = svg?.getBoundingClientRect();
+        const z = zoom === 'fit' ? 1 : zoom;
+        const scaleX = rect && rect.width > 0 ? (dynamicBounds.width / z) / rect.width : 1;
+        const scaleY = rect && rect.height > 0 ? (dynamicBounds.height / z) / rect.height : 1;
+        setPan({
+          x: panningCanvas.startPanX - dx * scaleX,
+          y: panningCanvas.startPanY - dy * scaleY,
+        });
+        if (!panningCanvas.moved) {
+          setPanningCanvas({ ...panningCanvas, moved: true });
+        }
+      }
+      return;
+    }
+
     const pt = toSvgCoords(e.clientX, e.clientY);
     if (!pt) return;
 
@@ -881,12 +1119,21 @@ export default function SchematicEditor({
     }
 
     if (draggingNode) {
-      const nextX = snap(Math.max(10, Math.min(CANVAS_W - 140, pt.x - draggingNode.offsetX)));
-      const nextY = snap(Math.max(10, Math.min(CANVAS_H - 70, pt.y - draggingNode.offsetY)));
-      onChangeNodePositions({
-        ...nodePositions,
-        [draggingNode.id]: { x: nextX, y: nextY },
-      });
+      const dist = Math.hypot(
+        e.clientX - draggingNode.startClientX,
+        e.clientY - draggingNode.startClientY
+      );
+      if (dist > 4 || draggingNode.moved) {
+        const nextX = snap(Math.max(-400, Math.min(4200, pt.x - draggingNode.offsetX)));
+        const nextY = snap(Math.max(-400, Math.min(3200, pt.y - draggingNode.offsetY)));
+        onChangeNodePositions({
+          ...nodePositions,
+          [draggingNode.id]: { x: nextX, y: nextY },
+        });
+        if (!draggingNode.moved) {
+          setDraggingNode({ ...draggingNode, moved: true });
+        }
+      }
       return;
     }
 
@@ -971,13 +1218,22 @@ export default function SchematicEditor({
       <aside className="left-sidebar">
         <section className="sidebar-section">
           <div className="section-title">Çizim Aracı</div>
-          <div className="tool-toggle">
+          <div className="tool-toggle" style={{ gridTemplateColumns: '1fr' }}>
+            <button
+              type="button"
+              className={tool === 'smart' ? 'btn-primary' : 'btn-sm'}
+              onClick={() => setTool('smart')}
+            >
+              ✦ Akıllı Mod (Pin: Çiz • Blok: Taşı)
+            </button>
+          </div>
+          <div className="tool-toggle" style={{ marginTop: 6 }}>
             <button
               type="button"
               className={tool === 'wire' ? 'btn-primary' : 'btn-sm'}
               onClick={() => setTool('wire')}
             >
-              ✎ Kablo Çiz
+              ✎ Sadece Kablo
             </button>
             <button
               type="button"
@@ -987,7 +1243,7 @@ export default function SchematicEditor({
                 setDraft(null);
               }}
             >
-              ✥ Eleman Taşı
+              ✥ Sadece Taşı
             </button>
           </div>
 
@@ -999,16 +1255,25 @@ export default function SchematicEditor({
             />
             <span>90° Dik açılı kablo çizimi</span>
           </label>
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={autoRouteNewWire}
+              onChange={(e) => setAutoRouteNewWire(e.target.checked)}
+            />
+            <span>Pin→Pin otomatik temiz yol (A*)</span>
+          </label>
 
           <div className="hint-box" style={{ marginTop: 8 }}>
-            <strong>Nasıl çizilir?</strong>
+            <strong>Kolay Çizim:</strong>
             <br />
-            1. <strong>Kablo Çiz</strong> seçiliyken bir terminal pinine tıklayın.
+            • <strong>Pine tıkla → diğer pine tıkla:</strong> Otomatik temiz kablo çizer.
             <br />
-            2. Boş alana tıklayıp köşe koyun (veya doğrudan hedef pine tıklayın).
+            • <strong>Blok gövdesini sürükle:</strong> Mod değiştirmeden taşır.
             <br />
-            3. İptal için <strong>ESC</strong> veya sağ tık. Elemanları sürüklemek için{' '}
-            <strong>Eleman Taşı</strong> modunu seçin.
+            • <strong>Boş alanı sürükle / Tekerlek:</strong> Kaydır & Yakınlaştır.
+            <br />
+            • <strong>Sağ tık / Backspace:</strong> Son köşeyi geri al, <strong>ESC:</strong> iptal.
           </div>
         </section>
 
@@ -1056,8 +1321,12 @@ export default function SchematicEditor({
                 <option value="1,5">1,5 mm²</option>
                 <option value="2,5">2,5 mm²</option>
                 <option value="4,0">4,0 mm²</option>
-                <option value="5,0">5,0 mm²</option>
                 <option value="6,0">6,0 mm²</option>
+                <option value="10,0">10 mm²</option>
+                <option value="16,0">16 mm²</option>
+                <option value="25,0">25 mm²</option>
+                <option value="35,0">35 mm²</option>
+                <option value="50,0">50 mm²</option>
               </select>
             </label>
             <label className="field">
@@ -1251,16 +1520,19 @@ export default function SchematicEditor({
                     type="button"
                     title="Küçült"
                     onClick={() =>
-                      setZoom((z) => Math.max(0.7, Number(((z === 'fit' ? 1 : z) - 0.15).toFixed(2))))
+                      setZoom((z) => Math.max(0.5, Number(((z === 'fit' ? 1 : z) - 0.2).toFixed(2))))
                     }
                   >
                     −
                   </button>
                   <button
                     type="button"
-                    className={zoom === 'fit' ? 'active' : ''}
+                    className={zoom === 'fit' && pan.x === 0 && pan.y === 0 ? 'active' : ''}
                     title="Ekrana Sığdır"
-                    onClick={() => setZoom('fit')}
+                    onClick={() => {
+                      setZoom('fit');
+                      setPan({ x: 0, y: 0 });
+                    }}
                   >
                     {zoom === 'fit' ? 'Sığdır' : `${Math.round(zoom * 100)}%`}
                   </button>
@@ -1268,7 +1540,7 @@ export default function SchematicEditor({
                     type="button"
                     title="Büyüt"
                     onClick={() =>
-                      setZoom((z) => Math.min(2.4, Number(((z === 'fit' ? 1 : z) + 0.15).toFixed(2))))
+                      setZoom((z) => Math.min(3.2, Number(((z === 'fit' ? 1 : z) + 0.2).toFixed(2))))
                     }
                   >
                     +
@@ -1388,25 +1660,52 @@ export default function SchematicEditor({
             </div>
           ) : (
           <div className="schematic-scroll-wrap">
+          {(() => {
+            const zNum = zoom === 'fit' ? 1 : zoom;
+            const vbW = dynamicBounds.width / zNum;
+            const vbH = dynamicBounds.height / zNum;
+            const vbX = dynamicBounds.minX + (dynamicBounds.width - vbW) / 2 + pan.x;
+            const vbY = dynamicBounds.minY + (dynamicBounds.height - vbH) / 2 + pan.y;
+            return (
           <svg
             ref={svgRef}
-            viewBox={`${dynamicBounds.minX} ${dynamicBounds.minY} ${dynamicBounds.width} ${dynamicBounds.height}`}
+            viewBox={`${vbX.toFixed(1)} ${vbY.toFixed(1)} ${vbW.toFixed(1)} ${vbH.toFixed(1)}`}
             className="cad-svg schematic-svg"
-            style={
-              zoom === 'fit'
-                ? { width: '100%', maxHeight: 'calc(100vh - 126px)' }
-                : { width: `${Math.round(dynamicBounds.width * zoom * 0.78)}px`, minWidth: '100%' }
-            }
+            style={{
+              width: '100%',
+              height: isFullscreen ? 'calc(100vh - 68px)' : 'calc(100vh - 132px)',
+              cursor: panningCanvas?.moved
+                ? 'grabbing'
+                : draft
+                  ? 'crosshair'
+                  : 'grab',
+            }}
+            onWheel={handleSchematicWheel}
+            onPointerDown={(e) => {
+              if ((e.button === 0 && !draft) || e.button === 1) {
+                setPanningCanvas({
+                  startClientX: e.clientX,
+                  startClientY: e.clientY,
+                  startPanX: pan.x,
+                  startPanY: pan.y,
+                  moved: false,
+                });
+              }
+            }}
             onClick={handleCanvasClick}
             onContextMenu={(e) => {
               if (draft) {
                 e.preventDefault();
-                setDraft(null);
+                if (draft.waypoints.length > 0) {
+                  setDraft({ ...draft, waypoints: draft.waypoints.slice(0, -1) });
+                } else {
+                  setDraft(null);
+                }
               }
             }}
             onPointerMove={handlePointerMove}
             onPointerUp={() => {
-              if (draggingNode && autoRerouteOnDrag && wires.length > 0) {
+              if (draggingNode?.moved && autoRerouteOnDrag && wires.length > 0) {
                 const res = autoRouteWiresWithMetrics(
                   wires,
                   nodes,
@@ -1420,10 +1719,12 @@ export default function SchematicEditor({
               }
               setDraggingNode(null);
               setDraggingWaypoint(null);
+              setPanningCanvas(null);
             }}
             onPointerLeave={() => {
               setDraggingNode(null);
               setDraggingWaypoint(null);
+              setPanningCanvas(null);
             }}
           >
             <defs>
@@ -1432,8 +1733,8 @@ export default function SchematicEditor({
               </pattern>
             </defs>
 
-            <rect x={dynamicBounds.minX} y={dynamicBounds.minY} width={dynamicBounds.width} height={dynamicBounds.height} fill="#0b1220" />
-            <rect x={dynamicBounds.minX} y={dynamicBounds.minY} width={dynamicBounds.width} height={dynamicBounds.height} fill="url(#sch-grid)" />
+            <rect x={vbX - 400} y={vbY - 400} width={vbW + 800} height={vbH + 800} fill="#0b1220" />
+            <rect x={vbX - 400} y={vbY - 400} width={vbW + 800} height={vbH + 800} fill="url(#sch-grid)" />
 
             {/* KATMAN 1: NORMAL KABLO HATLARI (Sadece 'Tüm Hatlar' modunda, blokların altında değil temiz kanallarda) */}
             {displayMode === 'lines' &&
@@ -1547,13 +1848,14 @@ export default function SchematicEditor({
                   transform={`translate(${pos.x}, ${pos.y})`}
                   onClick={(e) => {
                     e.stopPropagation();
+                    if (draggingNode?.moved) return;
                     if (!draft) {
                       setSelectedWireId(null);
                       setFocusedNodeId(isNodeFocused ? null : node.id);
                     }
                   }}
                   onPointerDown={(e) => {
-                    if (tool !== 'move') return;
+                    if (tool === 'wire' || draft || e.button !== 0) return;
                     e.stopPropagation();
                     const pt = toSvgCoords(e.clientX, e.clientY);
                     if (!pt) return;
@@ -1561,9 +1863,12 @@ export default function SchematicEditor({
                       id: node.id,
                       offsetX: pt.x - pos.x,
                       offsetY: pt.y - pos.y,
+                      startClientX: e.clientX,
+                      startClientY: e.clientY,
+                      moved: false,
                     });
                   }}
-                  style={{ cursor: tool === 'move' ? 'grab' : 'pointer' }}
+                  style={{ cursor: tool === 'wire' ? 'pointer' : 'grab' }}
                 >
                   <rect
                     x={0}
@@ -1608,25 +1913,46 @@ export default function SchematicEditor({
                     {node.subtitle}
                   </text>
 
-                  {/* Terminal Pinleri */}
+                  {/* Terminal Pinleri (Geniş Tıklama Alanı + Hover Vurgusu) */}
                   {node.pins.map((pin) => {
+                    const pinKey = `${node.id}::${pin.id}`;
                     const isDraftStart =
                       draft?.fromNodeId === node.id && draft?.fromPinId === pin.id;
+                    const isPinHovered = hoveredPinKey === pinKey;
+                    const canWire = tool !== 'move';
                     return (
                       <g
                         key={pin.id}
                         className="sch-pin"
+                        onPointerDown={(e) => {
+                          if (canWire) e.stopPropagation();
+                        }}
+                        onMouseEnter={() => setHoveredPinKey(pinKey)}
+                        onMouseLeave={() => setHoveredPinKey((prev) => (prev === pinKey ? null : prev))}
                         onClick={(e) => handlePinClick(e, node.id, pin.id)}
-                        style={{ cursor: tool === 'wire' ? 'crosshair' : 'pointer' }}
+                        style={{ cursor: canWire ? 'crosshair' : 'pointer' }}
                       >
                         <title>{pin.title}</title>
+                        {/* Geniş görünmez tıklama alanı (tutturmayı çok kolaylaştırır) */}
+                        <circle cx={pin.dx} cy={pin.dy} r={12} fill="transparent" />
+                        {(isPinHovered || isDraftStart) && (
+                          <circle
+                            cx={pin.dx}
+                            cy={pin.dy}
+                            r={10}
+                            fill={isDraftStart ? 'rgba(56,189,248,0.28)' : 'rgba(16,185,129,0.22)'}
+                            stroke={isDraftStart ? '#38bdf8' : '#34d399'}
+                            strokeWidth={1.2}
+                            pointerEvents="none"
+                          />
+                        )}
                         <circle
                           cx={pin.dx}
                           cy={pin.dy}
-                          r={isDraftStart ? 6.5 : 5}
-                          fill={isDraftStart ? '#38bdf8' : '#0f172a'}
-                          stroke={isDraftStart ? '#f8fafc' : '#cbd5e1'}
-                          strokeWidth={1.6}
+                          r={isDraftStart || isPinHovered ? 6.5 : 5}
+                          fill={isDraftStart ? '#38bdf8' : isPinHovered ? '#10b981' : '#0f172a'}
+                          stroke={isDraftStart || isPinHovered ? '#f8fafc' : '#cbd5e1'}
+                          strokeWidth={1.7}
                         />
                         <text
                           x={pin.dx}
@@ -1901,6 +2227,8 @@ export default function SchematicEditor({
                 );
               })()}
           </svg>
+            );
+          })()}
           </div>
           )}
         </div>
@@ -1965,8 +2293,12 @@ export default function SchematicEditor({
                   <option value="1,5">1,5 mm²</option>
                   <option value="2,5">2,5 mm²</option>
                   <option value="4,0">4,0 mm²</option>
-                  <option value="5,0">5,0 mm²</option>
                   <option value="6,0">6,0 mm²</option>
+                  <option value="10,0">10 mm²</option>
+                  <option value="16,0">16 mm²</option>
+                  <option value="25,0">25 mm²</option>
+                  <option value="35,0">35 mm²</option>
+                  <option value="50,0">50 mm²</option>
                 </select>
               </label>
               <div className="field">
